@@ -1,0 +1,24 @@
+{
+  "siaApp": {
+    "auditCache": {
+      "home": {
+        "title": "Audit Caches",
+        "createLabel": "Audit Cache erstellen",
+        "createOrEditLabel": "Audit Cache erstellen oder bearbeiten"
+      },
+      "created": "Audit Cache erstellt mit ID {{ param }}",
+      "updated": "Audit Cache aktualisiert mit ID {{ param }}",
+      "deleted": "Audit Cache gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Audit Cache {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Audit Cache"
+      },
+      "guildId": "Guild Id",
+      "old": "Old",
+      "older": "Older",
+      "oldest": "Oldest"
+    }
+  }
+}
