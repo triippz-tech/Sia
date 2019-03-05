@@ -1,0 +1,11 @@
+version: '2'
+services:
+    sia-postgresql:
+        image: postgres:10.4
+        # volumes:
+        #     - ~/volumes/jhipster/sia/postgresql/:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=sia
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432
