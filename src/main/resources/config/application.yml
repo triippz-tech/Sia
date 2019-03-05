@@ -188,4 +188,18 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+    api:
+        openweathermap: null
+        google: null
+        youtube: null
+        giphy: 4zFUl8QxMZbhRSHnbSMmM6fUhyrke5eb # will need a production key
+        cryptoCompare: ab134d00401076bef5c3074fbcfb8edc498583dbe2fe9775066ba5ed78be7159
+    discord:
+        token: NTQ3NDgyMzMwNTYyOTUzMjI2.D1cAzA.yKUulWFKlpUI8u44qJFo2UQyDEM
+        authorId: 110926644876689408
+        prefix: /
+        alternatePrefix: +
+        shards: 1
+        guildId: 484462646763061249 #Trievo Server ID
+        schedulerPoolSize: 50
