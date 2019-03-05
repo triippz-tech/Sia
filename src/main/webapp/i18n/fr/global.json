@@ -8,6 +8,7 @@
       "entities": {
         "main": "Entités",
         "auditCache": "Audit Cache",
+        "autoMod": "Auto Mod",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

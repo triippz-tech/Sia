@@ -1,0 +1,35 @@
+{
+  "siaApp": {
+    "autoMod": {
+      "home": {
+        "title": "Auto Mods",
+        "createLabel": "Auto Mod erstellen",
+        "createOrEditLabel": "Auto Mod erstellen oder bearbeiten"
+      },
+      "created": "Auto Mod erstellt mit ID {{ param }}",
+      "updated": "Auto Mod aktualisiert mit ID {{ param }}",
+      "deleted": "Auto Mod gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Auto Mod {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Auto Mod"
+      },
+      "guildId": "Guild Id",
+      "resolveUrls": "Resolve Urls",
+      "maxMentions": "Max Mentions",
+      "maxRoleMentions": "Max Role Mentions",
+      "maxLines": "Max Lines",
+      "raidModeNumber": "Raid Mode Number",
+      "raidModeTime": "Raid Mode Time",
+      "inviteStrikes": "Invite Strikes",
+      "refStrikes": "Ref Strikes",
+      "copyPastaStrikes": "Copy Pasta Strikes",
+      "everyoneStrikes": "Everyone Strikes",
+      "dupeStrikes": "Dupe Strikes",
+      "dupeDeleteThresh": "Dupe Delete Thresh",
+      "dupeStrikesThresh": "Dupe Strikes Thresh",
+      "dehoistChar": "Dehoist Char"
+    }
+  }
+}
