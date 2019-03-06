@@ -15,6 +15,10 @@ import auditCache, {
 import autoMod, {
   AutoModState
 } from 'app/entities/auto-mod/auto-mod.reducer';
+// prettier-ignore
+import guildSettings, {
+  GuildSettingsState
+} from 'app/entities/guild-settings/guild-settings.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -25,6 +29,7 @@ export interface IRootState {
   readonly userManagement: UserManagementState;
   readonly auditCache: AuditCacheState;
   readonly autoMod: AutoModState;
+  readonly guildSettings: GuildSettingsState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -37,6 +42,7 @@ const rootReducer = combineReducers<IRootState>({
   userManagement,
   auditCache,
   autoMod,
+  guildSettings,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

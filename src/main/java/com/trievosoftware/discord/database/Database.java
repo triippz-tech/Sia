@@ -24,7 +24,7 @@ import com.trievosoftware.discord.database.managers.*;
 public class Database
 {
 //    public final AutomodManager automod; // automod settings
-    public final GuildSettingsDataManager settings; // logs and other settings
+//    public final GuildSettingsDataManager settings; // logs and other settings
     public final IgnoreManager ignores; // ignored roles and channels
 //    public final AuditCacheManager auditcache; // cache of latest audit logs
     public final StrikeManager strikes; // strike counts for members
@@ -32,12 +32,12 @@ public class Database
     public final TempMuteManager tempmutes;
     public final TempBanManager tempbans;
     public final PremiumManager premium;
-    
+
     public Database(String host, String user, String pass) throws Exception
     {
 
 //        automod = new AutomodManager();
-        settings = new GuildSettingsDataManager();
+//        settings = new GuildSettingsDataManager();
         ignores = new IgnoreManager();
 //        auditcache = new AuditCacheManager();
         strikes = new StrikeManager();
@@ -45,6 +45,6 @@ public class Database
         tempmutes = new TempMuteManager();
         tempbans = new TempBanManager();
         premium = new PremiumManager();
-        
+
     }
 }

@@ -1,0 +1,31 @@
+{
+  "siaApp": {
+    "guildSettings": {
+      "home": {
+        "title": "GuildSettings",
+        "createLabel": "Créer un nouveau Guild Settings",
+        "createOrEditLabel": "Créer ou éditer un Guild Settings"
+      },
+      "created": "Un nouveau Guild Settings a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Guild Settings avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Guild Settings avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Guild Settings {{ id }} ?"
+      },
+      "detail": {
+        "title": "Guild Settings"
+      },
+      "guildId": "Guild Id",
+      "modRoleId": "Mod Role Id",
+      "modLogId": "Mod Log Id",
+      "serverLogId": "Server Log Id",
+      "messageLogId": "Message Log Id",
+      "voiceLogId": "Voice Log Id",
+      "avatarLogId": "Avatar Log Id",
+      "prefix": "Prefix",
+      "timezone": "Timezone",
+      "raidMode": "Raid Mode",
+      "muteRole": "Mute Role"
+    }
+  }
+}
