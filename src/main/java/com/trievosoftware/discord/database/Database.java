@@ -30,10 +30,10 @@ public class Database
 //    public final StrikeManager strikes; // strike counts for members
 //    public final PunishmentManager actions; // strike punishment settings
 //    public final TempMuteManager tempmutes;
-    public final TempBanManager tempbans;
+//    public final TempBanManager tempbans;
 //    public final PremiumManager premium;
 
-    public Database(String host, String user, String pass) throws Exception
+    public Database()
     {
 
 //        automod = new AutomodManager();
@@ -43,7 +43,7 @@ public class Database
 //        strikes = new StrikeManager();
 //        actions = new PunishmentManager();
 //        tempmutes = new TempMuteManager();
-        tempbans = new TempBanManager();
+//        tempbans = new TempBanManager();
 //        premium = new PremiumManager();
 
     }

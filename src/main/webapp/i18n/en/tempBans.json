@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "tempBans": {
+      "home": {
+        "title": "Temp Bans",
+        "createLabel": "Create a new Temp Bans",
+        "createOrEditLabel": "Create or edit a Temp Bans"
+      },
+      "created": "A new Temp Bans is created with identifier {{ param }}",
+      "updated": "A Temp Bans is updated with identifier {{ param }}",
+      "deleted": "A Temp Bans is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Temp Bans {{ id }}?"
+      },
+      "detail": {
+        "title": "Temp Bans"
+      },
+      "guildId": "Guild Id",
+      "userId": "User Id",
+      "finish": "Finish"
+    }
+  }
+}

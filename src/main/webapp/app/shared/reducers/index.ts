@@ -39,6 +39,10 @@ import strikes, {
 import tempMutes, {
   TempMutesState
 } from 'app/entities/temp-mutes/temp-mutes.reducer';
+// prettier-ignore
+import tempBans, {
+  TempBansState
+} from 'app/entities/temp-bans/temp-bans.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -55,6 +59,7 @@ export interface IRootState {
   readonly actions: ActionsState;
   readonly strikes: StrikesState;
   readonly tempMutes: TempMutesState;
+  readonly tempBans: TempBansState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -73,6 +78,7 @@ const rootReducer = combineReducers<IRootState>({
   actions,
   strikes,
   tempMutes,
+  tempBans,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

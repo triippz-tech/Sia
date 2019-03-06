@@ -15,6 +15,7 @@
         "actions": "Actions",
         "strikes": "Strikes",
         "tempMutes": "Temp Mutes",
+        "tempBans": "Temp Bans",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

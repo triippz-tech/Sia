@@ -12,6 +12,7 @@ import Premium from './premium';
 import Actions from './actions';
 import Strikes from './strikes';
 import TempMutes from './temp-mutes';
+import TempBans from './temp-bans';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -26,6 +27,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/actions`} component={Actions} />
       <ErrorBoundaryRoute path={`${match.url}/strikes`} component={Strikes} />
       <ErrorBoundaryRoute path={`${match.url}/temp-mutes`} component={TempMutes} />
+      <ErrorBoundaryRoute path={`${match.url}/temp-bans`} component={TempBans} />
       {/* jhipster-needle-add-route-path - JHipster will routes here */}
     </Switch>
   </div>
