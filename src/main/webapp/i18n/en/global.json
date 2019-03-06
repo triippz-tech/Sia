@@ -13,6 +13,8 @@
         "ignored": "Ignored",
         "premium": "Premium",
         "actions": "Actions",
+        "strikes": "Strikes",
+        "tempMutes": "Temp Mutes",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

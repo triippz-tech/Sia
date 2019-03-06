@@ -55,6 +55,8 @@ public interface GuildSettingsService {
      */
     MessageEmbed.Field getSettingsDisplay(Guild guild);
 
+    public GuildSettings getSettings(Guild guild);
+
     Optional<GuildSettings> findByGuildId(Long guildId);
 
     void setModLogChannel(Guild guild, TextChannel tc);

@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "tempMutes": {
+      "home": {
+        "title": "TempMutes",
+        "createLabel": "Créer un nouveau Temp Mutes",
+        "createOrEditLabel": "Créer ou éditer un Temp Mutes"
+      },
+      "created": "Un nouveau Temp Mutes a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Temp Mutes avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Temp Mutes avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Temp Mutes {{ id }} ?"
+      },
+      "detail": {
+        "title": "Temp Mutes"
+      },
+      "guildId": "Guild Id",
+      "userId": "User Id",
+      "finish": "Finish"
+    }
+  }
+}

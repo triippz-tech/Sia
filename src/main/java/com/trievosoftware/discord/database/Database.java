@@ -27,9 +27,9 @@ public class Database
 //    public final GuildSettingsDataManager settings; // logs and other settings
 //    public final IgnoreManager ignores; // ignored roles and channels
 //    public final AuditCacheManager auditcache; // cache of latest audit logs
-    public final StrikeManager strikes; // strike counts for members
+//    public final StrikeManager strikes; // strike counts for members
 //    public final PunishmentManager actions; // strike punishment settings
-    public final TempMuteManager tempmutes;
+//    public final TempMuteManager tempmutes;
     public final TempBanManager tempbans;
 //    public final PremiumManager premium;
 
@@ -40,9 +40,9 @@ public class Database
 //        settings = new GuildSettingsDataManager();
 //        ignores = new IgnoreManager();
 //        auditcache = new AuditCacheManager();
-        strikes = new StrikeManager();
+//        strikes = new StrikeManager();
 //        actions = new PunishmentManager();
-        tempmutes = new TempMuteManager();
+//        tempmutes = new TempMuteManager();
         tempbans = new TempBanManager();
 //        premium = new PremiumManager();
 

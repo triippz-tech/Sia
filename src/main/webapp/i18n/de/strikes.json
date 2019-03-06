@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "strikes": {
+      "home": {
+        "title": "Strikes",
+        "createLabel": "Strikes erstellen",
+        "createOrEditLabel": "Strikes erstellen oder bearbeiten"
+      },
+      "created": "Strikes erstellt mit ID {{ param }}",
+      "updated": "Strikes aktualisiert mit ID {{ param }}",
+      "deleted": "Strikes gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Strikes {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Strikes"
+      },
+      "guildId": "Guild Id",
+      "userId": "User Id",
+      "strikes": "Strikes"
+    }
+  }
+}

@@ -31,6 +31,14 @@ import premium, {
 import actions, {
   ActionsState
 } from 'app/entities/actions/actions.reducer';
+// prettier-ignore
+import strikes, {
+  StrikesState
+} from 'app/entities/strikes/strikes.reducer';
+// prettier-ignore
+import tempMutes, {
+  TempMutesState
+} from 'app/entities/temp-mutes/temp-mutes.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -45,6 +53,8 @@ export interface IRootState {
   readonly ignored: IgnoredState;
   readonly premium: PremiumState;
   readonly actions: ActionsState;
+  readonly strikes: StrikesState;
+  readonly tempMutes: TempMutesState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -61,6 +71,8 @@ const rootReducer = combineReducers<IRootState>({
   ignored,
   premium,
   actions,
+  strikes,
+  tempMutes,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });
