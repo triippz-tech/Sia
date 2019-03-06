@@ -10,6 +10,7 @@
     <include file="config/liquibase/changelog/20190305224432_added_entity_GuildSettings.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190306005221_added_entity_Ignored.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190306151753_added_entity_Premium.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190306165728_added_entity_Actions.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

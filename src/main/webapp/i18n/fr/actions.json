@@ -1,0 +1,24 @@
+{
+  "siaApp": {
+    "actions": {
+      "home": {
+        "title": "Actions",
+        "createLabel": "Créer un nouveau Actions",
+        "createOrEditLabel": "Créer ou éditer un Actions"
+      },
+      "created": "Un nouveau Actions a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Actions avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Actions avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Actions {{ id }} ?"
+      },
+      "detail": {
+        "title": "Actions"
+      },
+      "guildId": "Guild Id",
+      "numStrikes": "Num Strikes",
+      "action": "Action",
+      "time": "Time"
+    }
+  }
+}

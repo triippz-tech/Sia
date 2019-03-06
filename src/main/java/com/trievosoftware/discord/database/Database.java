@@ -28,7 +28,7 @@ public class Database
 //    public final IgnoreManager ignores; // ignored roles and channels
 //    public final AuditCacheManager auditcache; // cache of latest audit logs
     public final StrikeManager strikes; // strike counts for members
-    public final PunishmentManager actions; // strike punishment settings
+//    public final PunishmentManager actions; // strike punishment settings
     public final TempMuteManager tempmutes;
     public final TempBanManager tempbans;
 //    public final PremiumManager premium;
@@ -41,7 +41,7 @@ public class Database
 //        ignores = new IgnoreManager();
 //        auditcache = new AuditCacheManager();
         strikes = new StrikeManager();
-        actions = new PunishmentManager();
+//        actions = new PunishmentManager();
         tempmutes = new TempMuteManager();
         tempbans = new TempBanManager();
 //        premium = new PremiumManager();
