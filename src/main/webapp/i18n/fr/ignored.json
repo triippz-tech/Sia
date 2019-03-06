@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "ignored": {
+      "home": {
+        "title": "Ignoreds",
+        "createLabel": "Créer un nouveau Ignored",
+        "createOrEditLabel": "Créer ou éditer un Ignored"
+      },
+      "created": "Un nouveau Ignored a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Ignored avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Ignored avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Ignored {{ id }} ?"
+      },
+      "detail": {
+        "title": "Ignored"
+      },
+      "guildId": "Guild Id",
+      "entityId": "Entity Id",
+      "type": "Type"
+    }
+  }
+}

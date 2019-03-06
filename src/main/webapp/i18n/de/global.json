@@ -10,6 +10,7 @@
         "auditCache": "Audit Cache",
         "autoMod": "Auto Mod",
         "guildSettings": "Guild Settings",
+        "ignored": "Ignored",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
