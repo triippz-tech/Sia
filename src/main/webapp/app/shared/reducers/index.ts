@@ -23,6 +23,10 @@ import guildSettings, {
 import ignored, {
   IgnoredState
 } from 'app/entities/ignored/ignored.reducer';
+// prettier-ignore
+import premium, {
+  PremiumState
+} from 'app/entities/premium/premium.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -35,6 +39,7 @@ export interface IRootState {
   readonly autoMod: AutoModState;
   readonly guildSettings: GuildSettingsState;
   readonly ignored: IgnoredState;
+  readonly premium: PremiumState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -49,6 +54,7 @@ const rootReducer = combineReducers<IRootState>({
   autoMod,
   guildSettings,
   ignored,
+  premium,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

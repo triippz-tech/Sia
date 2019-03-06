@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "premium": {
+      "home": {
+        "title": "Premiums",
+        "createLabel": "Créer un nouveau Premium",
+        "createOrEditLabel": "Créer ou éditer un Premium"
+      },
+      "created": "Un nouveau Premium a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Premium avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Premium avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Premium {{ id }} ?"
+      },
+      "detail": {
+        "title": "Premium"
+      },
+      "guildId": "Guild Id",
+      "until": "Until",
+      "level": "Level"
+    }
+  }
+}

@@ -31,7 +31,7 @@ public class Database
     public final PunishmentManager actions; // strike punishment settings
     public final TempMuteManager tempmutes;
     public final TempBanManager tempbans;
-    public final PremiumManager premium;
+//    public final PremiumManager premium;
 
     public Database(String host, String user, String pass) throws Exception
     {
@@ -44,7 +44,7 @@ public class Database
         actions = new PunishmentManager();
         tempmutes = new TempMuteManager();
         tempbans = new TempBanManager();
-        premium = new PremiumManager();
+//        premium = new PremiumManager();
 
     }
 }

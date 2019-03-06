@@ -8,6 +8,7 @@ import AuditCache from './audit-cache';
 import AutoMod from './auto-mod';
 import GuildSettings from './guild-settings';
 import Ignored from './ignored';
+import Premium from './premium';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -18,6 +19,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/auto-mod`} component={AutoMod} />
       <ErrorBoundaryRoute path={`${match.url}/guild-settings`} component={GuildSettings} />
       <ErrorBoundaryRoute path={`${match.url}/ignored`} component={Ignored} />
+      <ErrorBoundaryRoute path={`${match.url}/premium`} component={Premium} />
       {/* jhipster-needle-add-route-path - JHipster will routes here */}
     </Switch>
   </div>

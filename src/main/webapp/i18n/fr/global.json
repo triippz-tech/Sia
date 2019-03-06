@@ -11,6 +11,7 @@
         "autoMod": "Auto Mod",
         "guildSettings": "Guild Settings",
         "ignored": "Ignored",
+        "premium": "Premium",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
