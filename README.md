@@ -1,4 +1,6 @@
-# Sia
+#                                                       Sia
+
+<img src="https://github.com/Trievo/Sia/blob/master/.github/images/sia.png?raw=true" alt="sia"/>
 
 [![GitHub issues](https://img.shields.io/github/issues/Trievo/sia.svg)](https://github.com/Trievo/sia/issues)
 [![GitHub forks](https://img.shields.io/github/forks/Trievo/sia.svg)](https://github.com/Trievo/sia/network)
@@ -7,9 +9,11 @@
 ![Travis (.org)](https://img.shields.io/travis/Trievo/Sia.svg?logo=travis%20ci)
 [![Last Commit](https://img.shields.io/github/last-commit/trievo/sia.svg?style=popout)](https://github.com/Triippz/sia/commits/master)
 
+
 Sia is a robust Discord Bot, which was created to give Discord Users/Server Owners, the ability to easily manage their servers from either their Discord App or via any web browser. Inspired by [Jagrosh's Vortex Bot](https://github.com/jagrosh/Vortex), we have integrated many of his best moderation features, while adding many more entertaining and useful commands, allowing users to have a one-stop-shop for many of their needs.
 
 We believe in open source products, so we invite individuals who wish to help build this project, to tag along in its development, to make this bot great. Everyone is free to clone and modify this repository per the project's [LICENSE](https://github.com/Trievo/Sia/wiki/LICENSE). We do offer a premium membership to users, and those who provide meaningful contributions to this project will be able to increase gain and increase their Sia Pro level, as an appreciation for their work (Once we have fully deployed this project).
+
 
 ## [Sia Wiki](https://github.com/Trievo/Sia/wiki 'Sia Wiki')
 ℹ [About](https://github.com/Trievo/Sia/wiki/About 'About')
