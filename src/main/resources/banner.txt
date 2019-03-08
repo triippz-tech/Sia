@@ -1,10 +1,12 @@
 
-  ${AnsiColor.GREEN}      ██╗${AnsiColor.CYAN} ██╗   ██╗ ████████╗ ███████╗   ██████╗ ████████╗ ████████╗ ███████╗
-  ${AnsiColor.GREEN}      ██║${AnsiColor.CYAN} ██║   ██║ ╚══██╔══╝ ██╔═══██╗ ██╔════╝ ╚══██╔══╝ ██╔═════╝ ██╔═══██╗
-  ${AnsiColor.GREEN}      ██║${AnsiColor.CYAN} ████████║    ██║    ███████╔╝ ╚█████╗     ██║    ██████╗   ███████╔╝
-  ${AnsiColor.GREEN}██╗   ██║${AnsiColor.CYAN} ██╔═══██║    ██║    ██╔════╝   ╚═══██╗    ██║    ██╔═══╝   ██╔══██║
-  ${AnsiColor.GREEN}╚██████╔╝${AnsiColor.CYAN} ██║   ██║ ████████╗ ██║       ██████╔╝    ██║    ████████╗ ██║  ╚██╗
-  ${AnsiColor.GREEN} ╚═════╝ ${AnsiColor.CYAN} ╚═╝   ╚═╝ ╚═══════╝ ╚═╝       ╚═════╝     ╚═╝    ╚═══════╝ ╚═╝   ╚═╝
+  ${AnsiColor.GREEN} _______ _________ _______
+  ${AnsiColor.GREEN}(  ____ \\__   __/(  ___  )
+  ${AnsiColor.GREEN}| (    \/   ) (   | (   ) |
+  ${AnsiColor.GREEN}| (_____    | |   | (___) |
+  ${AnsiColor.GREEN}(_____  )   | |   |  ___  |
+  ${AnsiColor.GREEN}      ) |   | |   | (   ) |
+  ${AnsiColor.GREEN}/\____) |___) (___| )   ( |
+  ${AnsiColor.GREEN}\_______)\_______/|/     \|
 
-${AnsiColor.BRIGHT_BLUE}:: JHipster 🤓  :: Running Spring Boot ${spring-boot.version} ::
-:: https://www.jhipster.tech ::${AnsiColor.DEFAULT}
+${AnsiColor.BRIGHT_BLUE}:: Sia Discord Bot 🤓  :: Running Spring Boot ${spring-boot.version} ::
+:: https://www.github.com/Trievo/Sia ::${AnsiColor.DEFAULT}

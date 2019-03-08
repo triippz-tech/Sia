@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "strikes": {
+      "home": {
+        "title": "Strikes",
+        "createLabel": "Create a new Strikes",
+        "createOrEditLabel": "Create or edit a Strikes"
+      },
+      "created": "A new Strikes is created with identifier {{ param }}",
+      "updated": "A Strikes is updated with identifier {{ param }}",
+      "deleted": "A Strikes is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Strikes {{ id }}?"
+      },
+      "detail": {
+        "title": "Strikes"
+      },
+      "guildId": "Guild Id",
+      "userId": "User Id",
+      "strikes": "Strikes"
+    }
+  }
+}

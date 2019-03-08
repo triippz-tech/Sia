@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "tempMutes": {
+      "home": {
+        "title": "Temp Mutes",
+        "createLabel": "Temp Mutes erstellen",
+        "createOrEditLabel": "Temp Mutes erstellen oder bearbeiten"
+      },
+      "created": "Temp Mutes erstellt mit ID {{ param }}",
+      "updated": "Temp Mutes aktualisiert mit ID {{ param }}",
+      "deleted": "Temp Mutes gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Temp Mutes {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Temp Mutes"
+      },
+      "guildId": "Guild Id",
+      "userId": "User Id",
+      "finish": "Finish"
+    }
+  }
+}

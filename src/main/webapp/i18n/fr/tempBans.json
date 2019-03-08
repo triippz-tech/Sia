@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "tempBans": {
+      "home": {
+        "title": "TempBans",
+        "createLabel": "Créer un nouveau Temp Bans",
+        "createOrEditLabel": "Créer ou éditer un Temp Bans"
+      },
+      "created": "Un nouveau Temp Bans a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Temp Bans avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Temp Bans avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Temp Bans {{ id }} ?"
+      },
+      "detail": {
+        "title": "Temp Bans"
+      },
+      "guildId": "Guild Id",
+      "userId": "User Id",
+      "finish": "Finish"
+    }
+  }
+}

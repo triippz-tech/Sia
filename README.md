@@ -1,229 +1,59 @@
-# sia
+# Sia
 
-This application was generated using JHipster 5.8.2, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v5.8.2](https://www.jhipster.tech/documentation-archive/v5.8.2).
+[![GitHub issues](https://img.shields.io/github/issues/Trievo/sia.svg)](https://github.com/Trievo/sia/issues)
+[![GitHub forks](https://img.shields.io/github/forks/Trievo/sia.svg)](https://github.com/Trievo/sia/network)
+[![GitHub stars](https://img.shields.io/github/stars/Trievo/sia.svg)](https://github.com/Trievo/sia/stargazers)
+[![Discord Server](https://user-images.githubusercontent.com/7288322/34429152-141689f8-ecb9-11e7-8003-b5a10a5fcb29.png)](https://discord.gg/RadND2N)
+![Travis (.org)](https://img.shields.io/travis/Trievo/Sia.svg?logo=travis%20ci)
+[![Last Commit](https://img.shields.io/github/last-commit/trievo/sia.svg?style=popout)](https://github.com/Triippz/sia/commits/master)
+
+Sia is a robust Discord Bot, which was created to give Discord Users/Server Owners, the ability to easily manage their servers from either their Discord App or via any web browser. Inspired by [Jagrosh's Vortex Bot](https://github.com/jagrosh/Vortex), we have integrated many of his best moderation features, while adding many more entertaining and useful commands, allowing users to have a one-stop-shop for many of their needs.
+
+We believe in open source products, so we invite individuals who wish to help build this project, to tag along in its development, to make this bot great. Everyone is free to clone and modify this repository per the project's [LICENSE](https://github.com/Trievo/Sia/wiki/LICENSE). We do offer a premium membership to users, and those who provide meaningful contributions to this project will be able to increase gain and increase their Sia Pro level, as an appreciation for their work (Once we have fully deployed this project).
+
+##[Sia Wiki](https://github.com/Trievo/Sia/wiki 'Sia Wiki')
+ℹ [About](https://github.com/Trievo/Sia/wiki/About 'About')
+:tw-1f53a: [Getting Started](https://github.com/Trievo/Sia/wiki/Getting-Started 'Getting Started')
+🔨 [Moderation](https://github.com/Trievo/Sia/wiki/Moderation 'Moderation')
+🚩 [Strike System](https://github.com/Trievo/Sia/wiki/Strike-Systeem 'Strike System')
+🛡 [Auto-Moderation](https://github.com/Trievo/Sia/wiki/Auto-Moderation 'Auto-Moderation')
+🌟 [Sia Pro](https://github.com/Trievo/Sia/wiki/Sia-Pro 'Sia Pro')
+📜 [Command Reference Guide](https://github.com/Trievo/Sia/wiki/Commands 'Command Reference Guide')
+⚠ [Troubleshooting](https://github.com/Trievo/Sia/wiki/Troubleshooting 'Troubleshooting')
+📥 Support Server
 
 ## Development
 
-Before you can build this project, you must install and configure the following dependencies on your machine:
+Please refer to our wiki page(s) for our [Development Guide](https://github.com/Trievo/Sia/wiki/Development-Guide)
 
-1.  [Node.js][]: We use Node to run a development web server and build the project.
-    Depending on your system, you can install Node either from source or as a pre-packaged bundle.
+## Contributing
 
-After installing Node, you should be able to run the following command to install development tools.
-You will only need to run this command when dependencies change in [package.json](package.json).
+Interested in contributing to this project? Check out our [Contributing Guidelines](https://github.com/Trievo/Sia/wiki/Contributing)
 
-    npm install
+## Translations
 
-We use npm scripts and [Webpack][] as our build system.
+Help with the translations would be greatly appreciated. If you can help, please visit our [Translations](https://github.com/Trievo/Sia/wiki/Translations) Wiki page for info on how to help.
 
-Run the following commands in two separate terminals to create a blissful development experience where your browser
-auto-refreshes when files change on your hard drive.
+## Technologies Used
 
-    ./mvnw
-    npm start
+| Tech                                                              |
+| ----------------------------------------------------------------- |
+| [Java 8 (OpenJdk)](https://openjdk.java.net/ 'Java 8 (OpenJdk)')  |
+| [JHipster](https://www.jhipster.tech/)                            |
+| [Spring](https://spring.io/)                                      |
+| [Hibernate](http://hibernate.org/)                                |
+| [JDA](https://github.com/DV8FromTheWorld/JDA)                     |
+| [HazelCast](https://hazelcast.com/)                               |
+| [JHipster Registry](https://www.jhipster.tech/jhipster-registry/) |
+| [Key Cloak](https://www.keycloak.org/)                            |
+| [PostgreSQL](https://www.postgresql.org/)                         |
+| [ReactJS](https://reactjs.org/)                                   |
+| [Redux](https://redux.js.org/)                                    |
 
-Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
-specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
-Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
+and more!
 
-The `npm run` command will list all of the scripts available to run for this project.
+## Support Us
 
-## OAuth 2.0 / OpenID Connect
+Please consider joining our premium service (when available) or providing a donation to keep this project operational.
 
-Congratulations! You've selected an excellent way to secure your JHipster application. If you're not sure what OAuth and OpenID Connect (OIDC) are, please see [What the Heck is OAuth?](https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth)
-
-To log in to your app, you'll need to have [Keycloak](https://keycloak.org) up and running. The JHipster Team has created a Docker container for you that has the default users and roles. Start Keycloak using the following command.
-
-```
-docker-compose -f src/main/docker/keycloak.yml up
-```
-
-The security settings in `src/main/resources/application.yml` are configured for this image.
-
-```yaml
-security:
-    basic:
-        enabled: false
-    oauth2:
-        client:
-            accessTokenUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token
-            userAuthorizationUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth
-            clientId: web_app
-            clientSecret: web_app
-            scope: openid profile email
-        resource:
-            userInfoUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
-```
-
-### Okta
-
-If you'd like to use Okta instead of Keycloak, you'll need to change a few things. First, you'll need to create a free developer account at <https://developer.okta.com/signup/>. After doing so, you'll get your own Okta domain, that has a name like `https://dev-123456.oktapreview.com`.
-
-Modify `src/main/resources/application.yml` to use your Okta settings.
-
-```yaml
-security:
-    basic:
-        enabled: false
-    oauth2:
-        client:
-            accessTokenUri: https://{yourOktaDomain}.com/oauth2/default/v1/token
-            userAuthorizationUri: https://{yourOktaDomain}.com/oauth2/default/v1/authorize
-            clientId: {clientId}
-            clientSecret: {clientSecret}
-            scope: openid profile email
-        resource:
-            userInfoUri: https://{yourOktaDomain}.com/oauth2/default/v1/userinfo
-```
-
-Create an OIDC App in Okta to get a `{clientId}` and `{clientSecret}`. To do this, log in to your Okta Developer account and navigate to **Applications** > **Add Application**. Click **Web** and click the **Next** button. Give the app a name you’ll remember, specify `http://localhost:8080` as a Base URI, and `http://localhost:8080/login` as a Login Redirect URI. Click **Done** and copy the client ID and secret into your `application.yml` file.
-
-> **TIP:** If you want to use the [Ionic Module for JHipster](https://www.npmjs.com/package/generator-jhipster-ionic), you'll need to add `http://localhost:8100` as a **Login redirect URI** as well.
-
-Create a `ROLE_ADMIN` and `ROLE_USER` group and add users into them. Create a user (e.g., "admin@jhipster.org" with password "Java is hip in 2017!"). Modify e2e tests to use this account when running integration tests. You'll need to change credentials in `src/test/javascript/e2e/account/account.spec.ts` and `src/test/javascript/e2e/admin/administration.spec.ts`.
-
-Navigate to **API** > **Authorization Servers**, click the **Authorization Servers** tab and edit the default one. Click the **Claims** tab and **Add Claim**. Name it "roles", and include it in the ID Token. Set the value type to "Groups" and set the filter to be a Regex of `.*`.
-
-After making these changes, you should be good to go! If you have any issues, please post them to [Stack Overflow](https://stackoverflow.com/questions/tagged/jhipster). Make sure to tag your question with "jhipster" and "okta".
-
-### Service workers
-
-Service workers are commented by default, to enable them please uncomment the following code.
-
-- The service worker registering script in index.html
-
-```html
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker
-        .register('./service-worker.js')
-        .then(function() { console.log('Service Worker Registered'); });
-    }
-</script>
-```
-
-Note: workbox creates the respective service worker and dynamically generate the `service-worker.js`
-
-### Managing dependencies
-
-For example, to add [Leaflet][] library as a runtime dependency of your application, you would run following command:
-
-    npm install --save --save-exact leaflet
-
-To benefit from TypeScript type definitions from [DefinitelyTyped][] repository in development, you would run following command:
-
-    npm install --save-dev --save-exact @types/leaflet
-
-Then you would import the JS and CSS files specified in library's installation instructions so that [Webpack][] knows about them:
-Note: there are still few other things remaining to do for Leaflet that we won't detail here.
-
-For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
-
-### Doing API-First development using openapi-generator
-
-[OpenAPI-Generator]() is configured for this application. You can generate API code from the `src/main/resources/swagger/api.yml` definition file by running:
-
-```bash
-./mvnw generate-sources
-```
-
-Then implements the generated delegate classes with `@Service` classes.
-
-To edit the `api.yml` definition file, you can use a tool such as [Swagger-Editor](). Start a local instance of the swagger-editor using docker by running: `docker-compose -f src/main/docker/swagger-editor.yml up -d`. The editor will then be reachable at [http://localhost:7742](http://localhost:7742).
-
-Refer to [Doing API-First development][] for more details.
-
-## Building for production
-
-To optimize the sia application for production, run:
-
-    ./mvnw -Pprod clean package
-
-This will concatenate and minify the client CSS and JavaScript files. It will also modify `index.html` so it references these new files.
-To ensure everything worked, run:
-
-    java -jar target/*.war
-
-Then navigate to [http://localhost:8085](http://localhost:8085) in your browser.
-
-Refer to [Using JHipster in production][] for more details.
-
-## Testing
-
-To launch your application's tests, run:
-
-    ./mvnw clean test
-
-### Client tests
-
-Unit tests are run by [Jest][] and written with [Jasmine][]. They're located in [src/test/javascript/](src/test/javascript/) and can be run with:
-
-    npm test
-
-For more information, refer to the [Running tests page][].
-
-### Code quality
-
-Sonar is used to analyse code quality. You can start a local Sonar server (accessible on http://localhost:9001) with:
-
-```
-docker-compose -f src/main/docker/sonar.yml up -d
-```
-
-Then, run a Sonar analysis:
-
-```
-./mvnw -Pprod clean test sonar:sonar
-```
-
-For more information, refer to the [Code quality page][].
-
-## Using Docker to simplify development (optional)
-
-You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
-
-For example, to start a postgresql database in a docker container, run:
-
-    docker-compose -f src/main/docker/postgresql.yml up -d
-
-To stop it and remove the container, run:
-
-    docker-compose -f src/main/docker/postgresql.yml down
-
-You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
-
-    ./mvnw package -Pprod verify jib:dockerBuild
-
-Then run:
-
-    docker-compose -f src/main/docker/app.yml up -d
-
-For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
-
-## Continuous Integration (optional)
-
-To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
-
-[jhipster homepage and latest documentation]: https://www.jhipster.tech
-[jhipster 5.8.2 archive]: https://www.jhipster.tech/documentation-archive/v5.8.2
-[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v5.8.2/development/
-[service discovery and configuration with the jhipster-registry]: https://www.jhipster.tech/documentation-archive/v5.8.2/microservices-architecture/#jhipster-registry
-[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v5.8.2/docker-compose
-[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v5.8.2/production/
-[running tests page]: https://www.jhipster.tech/documentation-archive/v5.8.2/running-tests/
-[code quality page]: https://www.jhipster.tech/documentation-archive/v5.8.2/code-quality/
-[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v5.8.2/setting-up-ci/
-[node.js]: https://nodejs.org/
-[yarn]: https://yarnpkg.org/
-[webpack]: https://webpack.github.io/
-[angular cli]: https://cli.angular.io/
-[browsersync]: http://www.browsersync.io/
-[jest]: https://facebook.github.io/jest/
-[jasmine]: http://jasmine.github.io/2.0/introduction.html
-[protractor]: https://angular.github.io/protractor/
-[leaflet]: http://leafletjs.com/
-[definitelytyped]: http://definitelytyped.org/
-[openapi-generator]: https://openapi-generator.tech
-[swagger-editor]: http://editor.swagger.io
-[doing api-first development]: https://www.jhipster.tech/documentation-archive/v5.8.2/doing-api-first-development/
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/marktripoli)
