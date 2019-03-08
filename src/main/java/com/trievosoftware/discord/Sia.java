@@ -51,6 +51,8 @@ import net.dv8tion.jda.core.exceptions.PermissionException;
 import net.dv8tion.jda.core.utils.cache.CacheFlag;
 import net.dv8tion.jda.webhook.WebhookClient;
 import net.dv8tion.jda.webhook.WebhookClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.EnumSet;
 import java.util.concurrent.Executors;
@@ -63,9 +65,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sia
 {
+    private final Logger log = LoggerFactory.getLogger(Sia.class);
+
     private final EventWaiter waiter;
     private final ScheduledExecutorService threadpool;
-//    private final Database database;
     private final TextUploader uploader;
     private final ShardManager shards;
     private final ModLogger modlog;

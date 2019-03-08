@@ -23,6 +23,6 @@ public class SiaBotService {
         this.applicationProperties = applicationProperties;
 
         log.info("Launching Sia Bot . . .");
-        new Sia(databaseManagers, applicationProperties);
+        new Sia(this.databaseManagers, this.applicationProperties);
     }
 }
