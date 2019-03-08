@@ -11,16 +11,24 @@ Sia is a robust Discord Bot, which was created to give Discord Users/Server Owne
 
 We believe in open source products, so we invite individuals who wish to help build this project, to tag along in its development, to make this bot great. Everyone is free to clone and modify this repository per the project's [LICENSE](https://github.com/Trievo/Sia/wiki/LICENSE). We do offer a premium membership to users, and those who provide meaningful contributions to this project will be able to increase gain and increase their Sia Pro level, as an appreciation for their work (Once we have fully deployed this project).
 
-##[Sia Wiki](https://github.com/Trievo/Sia/wiki 'Sia Wiki')
+## [Sia Wiki](https://github.com/Trievo/Sia/wiki 'Sia Wiki')
 ℹ [About](https://github.com/Trievo/Sia/wiki/About 'About')
-:tw-1f53a: [Getting Started](https://github.com/Trievo/Sia/wiki/Getting-Started 'Getting Started')
+
+🔺 [Getting Started](https://github.com/Trievo/Sia/wiki/Getting-Started 'Getting Started')
+
 🔨 [Moderation](https://github.com/Trievo/Sia/wiki/Moderation 'Moderation')
+
 🚩 [Strike System](https://github.com/Trievo/Sia/wiki/Strike-Systeem 'Strike System')
+
 🛡 [Auto-Moderation](https://github.com/Trievo/Sia/wiki/Auto-Moderation 'Auto-Moderation')
+
 🌟 [Sia Pro](https://github.com/Trievo/Sia/wiki/Sia-Pro 'Sia Pro')
+
 📜 [Command Reference Guide](https://github.com/Trievo/Sia/wiki/Commands 'Command Reference Guide')
+
 ⚠ [Troubleshooting](https://github.com/Trievo/Sia/wiki/Troubleshooting 'Troubleshooting')
-📥 Support Server
+
+📥 [Support Server](https://discord.gg/hmCag8)
 
 ## Development
 
