@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 package com.trievosoftware.discord.commands.settings;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.Level;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.LogCommand;
-import com.trievosoftware.discord.database.managers.PremiumManager;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class AvatarlogCmd extends LogCommand
 {
@@ -38,7 +38,7 @@ public class AvatarlogCmd extends LogCommand
     @Override
     protected void showCurrentChannel(CommandEvent event)
     {
-        TextChannel tc = sia.getDatabase().settings.getSettings(event.getGuild()).getAvatarLogChannel(event.getGuild());
+        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getAvatarLogChannel(event.getGuild());
         if(tc==null)
             event.replyWarning("Avatar Logs are not currently enabled on the server. Please include a channel name.");
         else
@@ -49,9 +49,9 @@ public class AvatarlogCmd extends LogCommand
     @Override
     protected void setLogChannel(CommandEvent event, TextChannel tc)
     {
-        if(sia.getDatabase().premium.getPremiumInfo(event.getGuild()).level.isAtLeast(PremiumManager.Level.PRO))
+        if(sia.getDatabaseManagers().getPremiumService().getPremiumInfo(event.getGuild()).level.isAtLeast(Level.PRO))
         {
-            sia.getDatabase().settings.setAvatarLogChannel(event.getGuild(), tc);
+            sia.getDatabaseManagers().getGuildSettingsService().setAvatarLogChannel(event.getGuild(), tc);
             if(tc==null)
                 event.replySuccess("Avatar Logs will not be sent");
             else

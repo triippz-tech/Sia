@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import java.time.ZoneId;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class TimezoneCmd extends Command
 {
@@ -53,7 +53,7 @@ public class TimezoneCmd extends Command
         
         if(event.getArgs().equalsIgnoreCase("none"))
         {
-            sia.getDatabase().settings.setTimezone(event.getGuild(), null);
+            sia.getDatabaseManagers().getGuildSettingsService().setTimezone(event.getGuild(), null);
             event.replySuccess("The log timezone has been reset.");
             return;
         }
@@ -61,7 +61,7 @@ public class TimezoneCmd extends Command
         try
         {
             ZoneId newzone = ZoneId.of(event.getArgs());
-            sia.getDatabase().settings.setTimezone(event.getGuild(), newzone);
+            sia.getDatabaseManagers().getGuildSettingsService().setTimezone(event.getGuild(), newzone);
             event.replySuccess("The log timezone has been set to `"+newzone.getId()+"`");
         }
         catch(Exception ex)

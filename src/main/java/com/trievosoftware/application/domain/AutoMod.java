@@ -19,6 +19,9 @@ import java.util.Objects;
 public class AutoMod implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    public final static int MAX_STRIKES = 100;
+    public final static int MENTION_MINIMUM = 4;
+    public final static int ROLE_MENTION_MINIMUM = 2;
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
@@ -84,6 +87,26 @@ public class AutoMod implements Serializable {
     @NotNull
     @Column(name = "dehoist_char", nullable = false)
     private Integer dehoistChar;
+
+    public AutoMod() {}
+
+    public void setDefaults(Long guildId) {
+        this.guildId = guildId;
+        this.resolveUrls = false;
+        this.maxMentions = 0;
+        this.maxRoleMentions = 0;
+        this.maxLines = 0;
+        this.raidModeNumber = 0;
+        this.raidModeTime = 0;
+        this.inviteStrikes = 0;
+        this.refStrikes = 0;
+        this.copyPastaStrikes = 0;
+        this.everyoneStrikes = 0;
+        this.dupeStrikes = 0;
+        this.dupeDeleteThresh = 0;
+        this.dupeStrikesThresh = 0;
+        this.dehoistChar = 0;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

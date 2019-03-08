@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class ModroleCmd extends Command
 {
@@ -56,7 +56,7 @@ public class ModroleCmd extends Command
         
         else if(event.getArgs().equalsIgnoreCase("none") || event.getArgs().equalsIgnoreCase("off"))
         {
-            sia.getDatabase().settings.setModeratorRole(event.getGuild(), null);
+            sia.getDatabaseManagers().getGuildSettingsService().setModeratorRole(event.getGuild(), null);
             event.replySuccess("Moderation commands can now only be used by members that can perform the actions manually.");
             return;
         }
@@ -66,7 +66,7 @@ public class ModroleCmd extends Command
             event.replyError("No roles found called `"+event.getArgs()+"`");
         else if (roles.size()==1)
         {
-            sia.getDatabase().settings.setModeratorRole(event.getGuild(), roles.get(0));
+            sia.getDatabaseManagers().getGuildSettingsService().setModeratorRole(event.getGuild(), roles.get(0));
             event.replySuccess("Users with the `"+roles.get(0).getName()+"` role can now use all Moderation commands.");
         }
         else

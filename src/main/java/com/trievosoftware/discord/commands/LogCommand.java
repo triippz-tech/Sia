@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,12 +27,12 @@ import java.util.List;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public abstract class LogCommand extends Command
 {
-    public static Permission[] REQUIRED_PERMS = {Permission.MESSAGE_READ, Permission.MESSAGE_WRITE, Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_HISTORY};
-    public static String REQUIRED_ERROR = "I am missing the necessary permissions (Read Messages, Send Messages, Read Message History, and Embed Links) in %s!";
+    protected static Permission[] REQUIRED_PERMS = {Permission.MESSAGE_READ, Permission.MESSAGE_WRITE, Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_HISTORY};
+    protected static String REQUIRED_ERROR = "I am missing the necessary permissions (Read Messages, Send Messages, Read Message History, and Embed Links) in %s!";
     protected final Sia sia;
     
     public LogCommand(Sia sia)

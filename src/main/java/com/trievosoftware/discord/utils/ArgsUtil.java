@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,23 @@
  */
 package com.trievosoftware.discord.utils;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
+@SuppressWarnings("Duplicates")
 public class ArgsUtil
 {
     private final static Pattern MENTION = Pattern.compile("^<@!?(\\d{17,19})>");
@@ -146,6 +150,40 @@ public class ArgsUtil
         public boolean isEmpty()
         {
             return members.isEmpty() && users.isEmpty() && ids.isEmpty() && unresolved.isEmpty();
+        }
+    }
+
+    public static class CryptoArgs {
+
+        @Parameter(names = {"-coin", "-Coin"})
+        private List<String> coins;
+
+        @Parameter(names = {"-cur", "-Cur"})
+        private List<String> currencies;
+
+        @Parameter(names = "-p", description = "idk")
+        private String p;
+
+        public CryptoArgs(String[] args) {
+            JCommander jCommander = new JCommander(this);
+            jCommander.setCaseSensitiveOptions(false);
+            jCommander.parse(args);
+        }
+
+        public List<String> getCoins() {
+            return coins;
+        }
+
+        public void setCoins(List<String> coins) {
+            this.coins = coins;
+        }
+
+        public List<String> getCurrencies() {
+            return currencies;
+        }
+
+        public void setCurrencies(List<String> currencies) {
+            this.currencies = currencies;
         }
     }
 }

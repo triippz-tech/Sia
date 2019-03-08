@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@ package com.trievosoftware.discord.commands.automod;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.Level;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.database.managers.PremiumManager;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class ResolvelinksCmd extends Command
 {
@@ -47,9 +47,9 @@ public class ResolvelinksCmd extends Command
     {
         if(event.getArgs().equalsIgnoreCase("on") || event.getArgs().equalsIgnoreCase("off"))
         {
-            if(sia.getDatabase().premium.getPremiumInfo(event.getGuild()).level.isAtLeast(PremiumManager.Level.PRO))
+            if(sia.getDatabaseManagers().getPremiumService().getPremiumInfo(event.getGuild()).level.isAtLeast(Level.PRO))
             {
-                sia.getDatabase().automod.setResolveUrls(event.getGuild(), event.getArgs().equalsIgnoreCase("on"));
+                sia.getDatabaseManagers().getAutoModService().setResolveUrls(event.getGuild(), event.getArgs().equalsIgnoreCase("on"));
                 event.replySuccess("Link Resolving has been turned `"+event.getArgs().toUpperCase()+"`");
             }
             else

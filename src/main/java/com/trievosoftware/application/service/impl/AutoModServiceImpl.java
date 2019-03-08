@@ -96,7 +96,6 @@ public class AutoModServiceImpl implements AutoModService {
      * @return the entity
      */
     @Override
-    @Transactional(readOnly = true)
     public Optional<AutoMod> findByGuildId(Long guildId) {
         log.debug("Request to get AutoMod : {}", guildId);
         return autoModRepository.findByGuildId(guildId);
@@ -108,15 +107,23 @@ public class AutoModServiceImpl implements AutoModService {
      * @param guild Guild objeect
      * @return AutoMod settings
      */
-    private AutoMod getSettings(Guild guild)
+    @Override
+    public AutoMod getSettings(Guild guild)
     {
         if(autoModCache.contains(guild.getIdLong()))
             return autoModCache.get(guild.getIdLong());
-        AutoMod settings;
+
         Optional<AutoMod> tempSettings = findByGuildId(guild.getIdLong());
-        settings = tempSettings.orElseGet(AutoMod::new);
-        autoModCache.put(guild.getIdLong(), settings);
-        return settings;
+        if ( tempSettings.isPresent() ) {
+            autoModCache.put(guild.getIdLong(), tempSettings.get());
+            return tempSettings.get();
+        } else {
+            AutoMod settings = new AutoMod();
+            settings.setDefaults(guild.getIdLong());
+            autoModCache.put(guild.getIdLong(), settings);
+            save(settings);
+            return settings;
+        }
     }
 
     private void invalidateCache(Guild guild)
@@ -129,6 +136,7 @@ public class AutoModServiceImpl implements AutoModService {
         autoModCache.pull(guildId);
     }
 
+    @Override
     public boolean hasSettings(Guild guild)
     {
         return findByGuildId(guild.getIdLong()).isPresent();
@@ -214,7 +222,8 @@ public class AutoModServiceImpl implements AutoModService {
      * @param guildId the discord ID of the guild
      * @param value flag value to set
      */
-    private void setResolveUrls(long guildId, boolean value)
+    @Override
+    public void setResolveUrls(long guildId, boolean value)
     {
         invalidateCache(guildId);
         Optional<AutoMod> settings = findByGuildId(guildId);

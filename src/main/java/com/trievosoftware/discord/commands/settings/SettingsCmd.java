@@ -17,8 +17,8 @@ package com.trievosoftware.discord.commands.settings;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.PremiumInfo;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.database.managers.PremiumManager.PremiumInfo;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.Permission;
@@ -44,14 +44,15 @@ public class SettingsCmd extends Command
     @Override
     protected void execute(CommandEvent event)
     {
-        PremiumInfo pi = sia.getDatabase().premium.getPremiumInfo(event.getGuild());
-        event.getChannel().sendMessage(new MessageBuilder()
-                .append("**"+event.getSelfUser().getName()+"** settings on **"+event.getGuild().getName()+"**:")
+        PremiumInfo pi = sia.getDatabaseManagers().getPremiumService().getPremiumInfo(event.getGuild());
+        event.getChannel().sendMessage(new MessageBuilder().append("**")
+            .append(event.getSelfUser().getName()).append("** settings on **")
+            .append(event.getGuild().getName()).append("**:")
                 .setEmbed(new EmbedBuilder()
                         //.setThumbnail(event.getGuild().getIconId()==null ? event.getSelfUser().getEffectiveAvatarUrl() : event.getGuild().getIconUrl())
-                        .addField(sia.getDatabase().settings.getSettingsDisplay(event.getGuild()))
-                        .addField(sia.getDatabase().actions.getAllPunishmentsDisplay(event.getGuild()))
-                        .addField(sia.getDatabase().automod.getSettingsDisplay(event.getGuild()))
+                        .addField(sia.getDatabaseManagers().getGuildSettingsService().getSettingsDisplay(event.getGuild()))
+                        .addField(sia.getDatabaseManagers().getActionsService().getAllPunishmentsDisplay(event.getGuild()))
+                        .addField(sia.getDatabaseManagers().getAutoModService().getSettingsDisplay(event.getGuild()))
                         .setFooter(pi.getFooterString(), null)
                         .setTimestamp(pi.getTimestamp())
                         .setColor(event.getSelfMember().getColor())

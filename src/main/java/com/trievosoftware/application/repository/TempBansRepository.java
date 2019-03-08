@@ -4,6 +4,7 @@ import com.trievosoftware.application.domain.TempBans;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,5 +16,5 @@ import java.util.Optional;
 @Repository
 public interface TempBansRepository extends JpaRepository<TempBans, Long> {
     Optional<TempBans> findFirstByGuildIdAndUserId(Long guildId, Long userId);
-    List<TempBans> findAllByFinishIsLessThan(Long epochSeconds);
+    List<TempBans> findAllByFinishIsLessThan(Instant now);
 }

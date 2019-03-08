@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class InvitepruneCmd extends Command
 {
@@ -85,7 +85,8 @@ public class InvitepruneCmd extends Command
             event.replySuccess("Deleting `"+toPrune.size()+"` invites with `"+uses+"` or fewer uses.");
         });
     }
-    
+
+    @SuppressWarnings("Duplicates")
     private void waitForConfirmation(CommandEvent event, String message, Runnable confirm)
     {
         new ButtonMenu.Builder()

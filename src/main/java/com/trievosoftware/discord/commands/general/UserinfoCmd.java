@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class UserinfoCmd extends Command
 {
-    private final static String BOT_EMOJI = "<:botTag:230105988211015680>";
+    private final static String BOT_EMOJI = "<:sia:553207744673349650>";
     private final static String USER_EMOJI = "\uD83D\uDC64"; // 👤
     private final static String LINESTART = "\u25AB"; // ▫
     
@@ -132,13 +132,13 @@ public class UserinfoCmd extends Command
     private static String statusToEmote(OnlineStatus status, Game game)
     {
         if(game!=null && game.getType()==Game.GameType.STREAMING && game.getUrl()!=null && Game.isValidStreamingUrl(game.getUrl()))
-            return "<:streaming:313956277132853248>";
+            return "<a:streaming:553310023023853568>";
         switch(status) {
-            case ONLINE: return "<:online:313956277808005120>";
-            case IDLE: return "<:away:313956277220802560>";
-            case DO_NOT_DISTURB: return "<:dnd:313956276893646850>";
-            case INVISIBLE: return "<:invisible:313956277107556352>";
-            case OFFLINE: return "<:offline:313956277237710868>";
+            case ONLINE: return "<:online:553310288930144268>";
+            case IDLE: return "<:away:553310728300265522>";
+            case DO_NOT_DISTURB: return "<:dnd:553310941069049891>";
+            case INVISIBLE: return "<:invisible:553311100532424704>";
+            case OFFLINE: return "<:offline:553311260435808260>";
             default: return "";
         }
     }

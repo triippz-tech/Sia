@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class UnignoreCmd extends Command {
     
@@ -48,6 +48,7 @@ public class UnignoreCmd extends Command {
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     protected void execute(CommandEvent event) {
         if(event.getArgs().isEmpty())
         {
@@ -64,7 +65,7 @@ public class UnignoreCmd extends Command {
         }
         if(tc!=null)
         {
-            if(sia.getDatabase().ignores.unignore(tc))
+            if(sia.getDatabaseManagers().getIgnoredService().unignore(tc))
                 event.replySuccess("Automod is no longer ignoring channel <#"+tc.getId()+">");
             else
                 event.replyError("Automod was not already ignoring <#"+tc.getId()+">!");
@@ -76,7 +77,7 @@ public class UnignoreCmd extends Command {
             event.replyError("No roles or text channels found for `"+event.getArgs()+"`");
         else if (roles.size()==1)
         {
-            if(sia.getDatabase().ignores.unignore(roles.get(0)))
+            if(sia.getDatabaseManagers().getIgnoredService().unignore(roles.get(0)))
                 event.replySuccess("Automod is no longer ignoring role `"+roles.get(0).getName()+"`");
             else
                 event.replyError("Automod was not ignoring role `"+roles.get(0).getName()+"`"

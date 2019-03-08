@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class IgnoreCmd extends Command
 {
@@ -38,6 +38,7 @@ public class IgnoreCmd extends Command
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     protected void execute(CommandEvent event) {
         if(event.getArgs().isEmpty())
         {
@@ -45,9 +46,9 @@ public class IgnoreCmd extends Command
             ebuilder.setColor(event.getSelfMember().getColor());
             ebuilder.setTitle("Automod Ignores",null);
             StringBuilder builder = new StringBuilder();
-            List<Role> roles = sia.getDatabase().ignores.getIgnoredRoles(event.getGuild());
-            List<TextChannel> channels = sia.getDatabase().ignores.getIgnoredChannels(event.getGuild());
-            event.getGuild().getRoles().stream().forEach(r -> {
+            List<Role> roles = sia.getDatabaseManagers().getIgnoredService().getIgnoredRoles(event.getGuild());
+            List<TextChannel> channels = sia.getDatabaseManagers().getIgnoredService().getIgnoredChannels(event.getGuild());
+            event.getGuild().getRoles().forEach(r -> {
                 if(roles.contains(r))
                     builder.append("\n").append(r.getAsMention());
                 else if(!event.getSelfMember().canInteract(r))
@@ -74,7 +75,7 @@ public class IgnoreCmd extends Command
         }
         if(tc!=null)
         {
-            sia.getDatabase().ignores.ignore(tc);
+            sia.getDatabaseManagers().getIgnoredService().ignore(tc);
             event.replySuccess("Automod is now ignoring channel <#"+tc.getId()+">");
             return;
         }
@@ -84,7 +85,7 @@ public class IgnoreCmd extends Command
             event.replyError("No roles or text channels found for `"+event.getArgs()+"`");
         else if (roles.size()==1)
         {
-            sia.getDatabase().ignores.ignore(roles.get(0));
+            sia.getDatabaseManagers().getIgnoredService().ignore(roles.get(0));
             event.replySuccess("Automod is now ignoring role `"+roles.get(0).getName()+"`");
         }
         else

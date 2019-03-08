@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import java.util.Set;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class StrikeCmd extends ModCommand
 {
@@ -45,6 +45,7 @@ public class StrikeCmd extends ModCommand
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     protected void execute(CommandEvent event)
     {
         int numstrikes;
@@ -77,7 +78,7 @@ public class StrikeCmd extends ModCommand
             return;
         }
         StringBuilder builder = new StringBuilder();
-        Role modrole = sia.getDatabase().settings.getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
         
         args.members.forEach(m -> 
         {

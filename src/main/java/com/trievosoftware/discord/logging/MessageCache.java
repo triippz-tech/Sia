@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class MessageCache
 {

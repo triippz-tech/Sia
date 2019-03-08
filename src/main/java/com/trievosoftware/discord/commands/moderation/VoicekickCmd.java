@@ -48,6 +48,7 @@ public class VoicekickCmd extends ModCommand
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     protected void execute(CommandEvent event)
     {
         if(!event.getSelfMember().hasPermission(Permission.VOICE_MOVE_OTHERS, Permission.VOICE_CONNECT))
@@ -59,7 +60,7 @@ public class VoicekickCmd extends ModCommand
             return;
         }
         String reason = LogUtil.auditReasonFormat(event.getMember(), args.reason);
-        Role modrole = sia.getDatabase().settings.getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
         StringBuilder builder = new StringBuilder();
         List<Member> toKick = new LinkedList<>();
         

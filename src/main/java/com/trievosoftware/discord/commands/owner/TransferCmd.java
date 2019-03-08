@@ -58,9 +58,9 @@ public class TransferCmd extends Command
             {
                 if(!oldSettings.containsKey(g.getIdLong()))
                     continue;
-                if(sia.getDatabase().settings.hasSettings(g))
+                if(sia.getDatabaseManagers().getGuildSettingsService().hasSettings(g))
                     continue;
-                if(sia.getDatabase().automod.hasSettings(g))
+                if(sia.getDatabaseManagers().getGuildSettingsService().hasSettings(g))
                     continue;
                 String[] split = oldSettings.get(g.getIdLong());
                 int maxmentions = Integer.parseInt(split[4]);
@@ -72,22 +72,22 @@ public class TransferCmd extends Command
                 int inviteStrikes = "N".equalsIgnoreCase(split[1]) ? 0 : 1;
                 if(modlog!=null)
                 {
-                    sia.getDatabase().settings.setModLogChannel(g, modlog);
+                    sia.getDatabaseManagers().getGuildSettingsService().setModLogChannel(g, modlog);
                     mcount++;
                 }
-                if(maxmentions<7 && autoraid==false && spamLimit<=3 && inviteStrikes==0)
+                if(maxmentions<7 && !autoraid && spamLimit<=3 && inviteStrikes==0)
                     continue;
-                if(sia.getDatabase().actions.useDefaultSettings(g))
+                if(sia.getDatabaseManagers().getActionsService().useDefaultSettings(g))
                 {
                     count++;
                     if(autoraid)
-                        sia.getDatabase().automod.setAutoRaidMode(g, 10, 10);
+                        sia.getDatabaseManagers().getAutoModService().setAutoRaidMode(g, 10, 10);
                     if(maxmentions>=7)
-                        sia.getDatabase().automod.setMaxMentions(g, maxmentions);
+                        sia.getDatabaseManagers().getAutoModService().setMaxMentions(g, maxmentions);
                     if(inviteStrikes>0)
-                        sia.getDatabase().automod.setInviteStrikes(g, inviteStrikes);
+                        sia.getDatabaseManagers().getAutoModService().setInviteStrikes(g, inviteStrikes);
                     if(spamLimit>3)
-                        sia.getDatabase().automod.setDupeSettings(g, 1, 3, spamLimit);
+                        sia.getDatabaseManagers().getAutoModService().setDupeSettings(g, 1, 3, spamLimit);
                 }
             }
             event.replySuccess("Complete!\nLoaded: "+oldSettings.size()+"\nModlogs: "+mcount+"\nAutomod: "+count);

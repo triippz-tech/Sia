@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import java.util.List;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class CheckCmd extends ModCommand
 {
@@ -93,10 +93,10 @@ public class CheckCmd extends ModCommand
     
     private void check(CommandEvent event, User user, Ban ban)
     {
-        int strikes = sia.getDatabase().strikes.getStrikes(event.getGuild(), user.getIdLong());
-        int minutesMuted = sia.getDatabase().tempmutes.timeUntilUnmute(event.getGuild(), user.getIdLong());
-        Role mRole = sia.getDatabase().settings.getSettings(event.getGuild()).getMutedRole(event.getGuild());
-        int minutesBanned = sia.getDatabase().tempbans.timeUntilUnban(event.getGuild(), user.getIdLong());
+        int strikes = sia.getDatabaseManagers().getStrikesService().getStrikes(event.getGuild(), user.getIdLong());
+        int minutesMuted = sia.getDatabaseManagers().getTempMutesService().timeUntilUnmute(event.getGuild(), user.getIdLong());
+        Role mRole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
+        int minutesBanned = sia.getDatabaseManagers().getTempBansService().timeUntilUnban(event.getGuild(), user.getIdLong());
         String str = "Moderation Information for "+FormatUtil.formatFullUser(user)+":\n"
                 + Action.STRIKE.getEmoji() + " Strikes: **"+strikes+"**\n"
                 + Action.MUTE.getEmoji() + " Muted: **" + (event.getGuild().isMember(user) 

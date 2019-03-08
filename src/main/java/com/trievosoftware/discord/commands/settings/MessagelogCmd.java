@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class MessagelogCmd extends LogCommand
 {
@@ -36,7 +36,7 @@ public class MessagelogCmd extends LogCommand
     @Override
     protected void showCurrentChannel(CommandEvent event)
     {
-        TextChannel tc = sia.getDatabase().settings.getSettings(event.getGuild()).getMessageLogChannel(event.getGuild());
+        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getMessageLogChannel(event.getGuild());
         if(tc==null)
             event.replyWarning("Message Logs are not currently enabled on the server. Please include a channel name.");
         else
@@ -47,7 +47,7 @@ public class MessagelogCmd extends LogCommand
     @Override
     protected void setLogChannel(CommandEvent event, TextChannel tc)
     {
-        sia.getDatabase().settings.setMessageLogChannel(event.getGuild(), tc);
+        sia.getDatabaseManagers().getGuildSettingsService().setMessageLogChannel(event.getGuild(), tc);
         if(tc==null)
             event.replySuccess("Message Logs will not be sent");
         else

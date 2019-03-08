@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@ package com.trievosoftware.discord.commands.automod;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.AutoMod;
+import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.database.managers.AutomodManager;
-import com.trievosoftware.discord.database.managers.PunishmentManager;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class AnticopypastaCmd extends Command
 {
@@ -43,6 +43,7 @@ public class AnticopypastaCmd extends Command
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     protected void execute(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
@@ -65,13 +66,13 @@ public class AnticopypastaCmd extends Command
                 return;
             }
         }
-        if(numstrikes<0 || numstrikes>AutomodManager.MAX_STRIKES)
+        if(numstrikes<0 || numstrikes> AutoMod.MAX_STRIKES)
         {
-            event.replyError("The number of strikes must be between 0 and "+AutomodManager.MAX_STRIKES);
+            event.replyError("The number of strikes must be between 0 and "+AutoMod.MAX_STRIKES);
             return;
         }
-        sia.getDatabase().automod.setCopypastaStrikes(event.getGuild(), numstrikes);
-        boolean also = sia.getDatabase().actions.useDefaultSettings(event.getGuild());
-        event.replySuccess("Users will now receive `"+numstrikes+"` strikes for posting copypastas."+(also ? PunishmentManager.DEFAULT_SETUP_MESSAGE : ""));
+        sia.getDatabaseManagers().getAutoModService().setCopypastaStrikes(event.getGuild(), numstrikes);
+        boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
+        event.replySuccess("Users will now receive `"+numstrikes+"` strikes for posting copypastas."+(also ? Punishment.DEFAULT_SETUP_MESSAGE : ""));
     }
 }

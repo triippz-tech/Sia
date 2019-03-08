@@ -17,8 +17,6 @@ package com.trievosoftware.discord.automod;
 
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.database.managers.AutomodManager;
-import com.trievosoftware.discord.database.managers.AutomodManager.AutomodSettings;
 import com.trievosoftware.discord.logging.MessageCache.CachedMessage;
 import com.trievosoftware.discord.utils.FixedCache;
 import com.trievosoftware.discord.utils.OtherUtil;
@@ -69,7 +67,7 @@ public class AutoMod
     private final FixedCache<String,DupeStatus> spams = new FixedCache<>(3000);
     private final HashMap<Long,OffsetDateTime> latestGuildJoin = new HashMap<>();
     
-    public AutoMod(Sia sia, List<String> config)
+    public AutoMod(Sia sia)
     {
         this.sia = sia;
 //        urlResolver = new URLResolver(config.get(10), config.get(11));
@@ -94,7 +92,7 @@ public class AutoMod
     
     public void enableRaidMode(Guild guild, Member moderator, OffsetDateTime now, String reason)
     {
-        sia.getDatabase().settings.enableRaidMode(guild);
+        sia.getDatabaseManagers().getGuildSettingsService().enableRaidMode(guild);
         if(guild.getVerificationLevel().getKey()<VerificationLevel.HIGH.getKey())
         {
             try
@@ -107,7 +105,7 @@ public class AutoMod
     
     public void disableRaidMode(Guild guild, Member moderator, OffsetDateTime now, String reason)
     {
-        VerificationLevel last = sia.getDatabase().settings.disableRaidMode(guild);
+        VerificationLevel last = sia.getDatabaseManagers().getGuildSettingsService().disableRaidMode(guild);
         if(guild.getVerificationLevel()!=last)
         {
             try
@@ -124,8 +122,8 @@ public class AutoMod
         if(event.getMember().getUser().isBot())
             return;
         
-        boolean inRaidMode = sia.getDatabase().settings.getSettings(event.getGuild()).isInRaidMode();
-        AutomodSettings ams = sia.getDatabase().automod.getSettings(event.getGuild());
+        boolean inRaidMode = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).isInRaidMode();
+        com.trievosoftware.application.domain.AutoMod ams = sia.getDatabaseManagers().getAutoModService().getSettings(event.getGuild());
         OffsetDateTime now = OffsetDateTime.now();
         boolean kicking = false;
         
@@ -151,11 +149,12 @@ public class AutoMod
         else if(ams.useAutoRaidMode())
         {
             // find the time that we should be looking after, and count the number of people that joined after that
-            OffsetDateTime min = event.getMember().getJoinDate().minusSeconds(ams.raidmodeTime);
+            OffsetDateTime min = event.getMember().getJoinDate().minusSeconds(ams.getRaidModeTime());
             long recent = event.getGuild().getMemberCache().stream().filter(m -> !m.getUser().isBot() && m.getJoinDate().isAfter(min)).count();
-            if(recent>=ams.raidmodeNumber)
+            if(recent>=ams.getRaidModeNumber())
             {
-                enableRaidMode(event.getGuild(), event.getGuild().getSelfMember(), now, "Maximum join rate exceeded ("+ams.raidmodeNumber+"/"+ams.raidmodeTime+"s)");
+                enableRaidMode(event.getGuild(), event.getGuild().getSelfMember(), now,
+                    "Maximum join rate exceeded ("+ams.getRaidModeNumber()+"/"+ams.getRaidModeTime()+"s)");
                 kicking = true;
             }
         }
@@ -173,12 +172,13 @@ public class AutoMod
         }
         else
         {
-            if(sia.getDatabase().tempmutes.isMuted(event.getMember()))
+            if(sia.getDatabaseManagers().getTempMutesService().isMuted(event.getMember()))
             {
                 try
                 {
                     event.getGuild().getController()
-                            .addSingleRoleToMember(event.getMember(), sia.getDatabase().settings.getSettings(event.getGuild()).getMutedRole(event.getGuild()))
+                            .addSingleRoleToMember(event.getMember(), sia.getDatabaseManagers().getGuildSettingsService()
+                                .getSettings(event.getGuild()).getMutedRole(event.getGuild()))
                             .reason(RESTORE_MUTE_ROLE_AUDIT).queue();
                 } catch(Exception ignore){}
             }
@@ -220,13 +220,10 @@ public class AutoMod
             return false;
         
         // if a channel is specified, ignore users that can manage messages in that channel
-        if(channel!=null && (member.hasPermission(channel, Permission.MESSAGE_MANAGE) || sia.getDatabase().ignores.isIgnored(channel)))
+        if(channel!=null && (member.hasPermission(channel, Permission.MESSAGE_MANAGE) || sia.getDatabaseManagers().getIgnoredService().isIgnored(channel)))
             return false;
-        
-        if(sia.getDatabase().ignores.isIgnored(member))
-            return false;
-        
-        return true;
+
+        return !sia.getDatabaseManagers().getIgnoredService().isIgnored(member);
     }
     
     public void dehoist(Member member)
@@ -237,13 +234,13 @@ public class AutoMod
         if(!shouldPerformAutomod(member, null))
             return;
         
-        AutomodSettings settings = sia.getDatabase().automod.getSettings(member.getGuild());
-        if(settings==null || settings.dehoistChar==(char)0 || member.getEffectiveName().charAt(0)>settings.dehoistChar)
+        com.trievosoftware.application.domain.AutoMod settings = sia.getDatabaseManagers().getAutoModService().getSettings(member.getGuild());
+        if(settings==null || settings.getDehoistChar()==(char)0 || member.getEffectiveName().charAt(0)>settings.getDehoistChar())
             return;
         
         try
         {
-            OtherUtil.dehoist(member, settings.dehoistChar);
+            OtherUtil.dehoist(member, (char) settings.getDehoistChar().intValue() );
         }
         catch(Exception ignore) {}
     }
@@ -255,7 +252,8 @@ public class AutoMod
             return;
         
         //get the settings
-        AutomodSettings settings = sia.getDatabase().automod.getSettings(message.getGuild());
+        com.trievosoftware.application.domain.AutoMod settings =
+            sia.getDatabaseManagers().getAutoModService().getSettings(message.getGuild());
         if(settings==null)
             return;
         
@@ -283,66 +281,66 @@ public class AutoMod
                 OffsetDateTime now = latestTime(message);
                 int offenses = status.update(content, now);
                 
-                if(offenses==settings.dupeDeleteThresh)
+                if(offenses==settings.getDupeDeleteThresh())
                 {
                     shouldChannelMute = "Please stop spamming.";
                     purgeMessages(message.getGuild(), m -> m.getAuthorId()==message.getAuthor().getIdLong() && m.getCreationTime().plusMinutes(2).isAfter(now));
                 }
-                else if(offenses>settings.dupeDeleteThresh)
+                else if(offenses>settings.getDupeDeleteThresh())
                     shouldDelete = true;
                 
-                if(offenses >= settings.dupeStrikeThresh)
+                if(offenses >= settings.getDupeStrikesThresh())
                 {
-                    strikeTotal += settings.dupeStrikes;
+                    strikeTotal += settings.getDupeStrikes();
                     reason.append(", Duplicate messages");
                 }
             }
         }
         
         // anti-mention (users)
-        if(settings.maxMentions>=AutomodManager.MENTION_MINIMUM)
+        if(settings.getMaxMentions() >= com.trievosoftware.application.domain.AutoMod.MENTION_MINIMUM)
         {
             
             long mentions = message.getMentionedUsers().stream().filter(u -> !u.isBot() && !u.equals(message.getAuthor())).distinct().count();
-            if(mentions > settings.maxMentions)
+            if(mentions > settings.getMaxMentions())
             {
-                strikeTotal += (int)(mentions-settings.maxMentions);
+                strikeTotal += (int)(mentions-settings.getMaxMentions());
                 reason.append(", Mentioning ").append(mentions).append(" users");
                 shouldDelete = true;
             }
         }
         
         // max newlines
-        if(settings.maxLines>0 && preventSpam)
+        if(settings.getMaxLines() >0 && preventSpam)
         {
             int count = message.getContentRaw().split("\n").length;
-            if(count > settings.maxLines)
+            if(count > settings.getMaxLines())
             {
-                strikeTotal += Math.ceil((double)(count-settings.maxLines)/settings.maxLines);
+                strikeTotal += Math.ceil((double)(count-settings.getMaxLines())/settings.getMaxLines());
                 reason.append(", Message contained ").append(count).append(" newlines");
                 shouldDelete = true;
             }
         }
         
         // anti-mention (roles)
-        if(settings.maxRoleMentions >= AutomodManager.ROLE_MENTION_MINIMUM)
+        if(settings.getMaxRoleMentions() >= com.trievosoftware.application.domain.AutoMod.ROLE_MENTION_MINIMUM)
         {
             long mentions = message.getMentionedRoles().stream().distinct().count();
-            if(mentions > settings.maxRoleMentions)
+            if(mentions > settings.getMaxRoleMentions())
             {
-                strikeTotal += (int)(mentions-settings.maxRoleMentions);
+                strikeTotal += (int)(mentions-settings.getMaxRoleMentions());
                 reason.append(", Mentioning ").append(mentions).append(" roles");
                 shouldDelete = true;
             }
         }
         
         // prevent referral links
-        if(settings.refStrikes > 0)
+        if(settings.getRefStrikes() > 0)
         {
             Matcher m = REF.matcher(message.getContentRaw());
             if(m.find())
             {
-                strikeTotal += settings.refStrikes;
+                strikeTotal += settings.getRefStrikes();
                 reason.append(", Referral link");
                 shouldDelete = true;
             }
@@ -353,7 +351,7 @@ public class AutoMod
                 {
                     if(isReferralUrl(m.group(1)))
                     {
-                        strikeTotal += settings.refStrikes;
+                        strikeTotal += settings.getRefStrikes();
                         reason.append(", Referral link");
                         shouldDelete = true;
                         break;
@@ -363,31 +361,31 @@ public class AutoMod
         }
         
         // prevent copypastas
-        if(settings.copypastaStrikes > 0 && preventSpam)
+        if(settings.getCopyPastaStrikes() > 0 && preventSpam)
         {
             String copypastaName = copypastaResolver.getCopypasta(message.getContentRaw());
             if(copypastaName!=null)
             {
-                strikeTotal += settings.copypastaStrikes;
+                strikeTotal += settings.getCopyPastaStrikes();
                 reason.append(", ").append(copypastaName).append(" copypasta");
                 shouldDelete = true;
             }
         }
         
-        if(settings.everyoneStrikes > 0 && preventSpam && !message.getMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MENTION_EVERYONE))
+        if(settings.getEveryoneStrikes() > 0 && preventSpam && !message.getMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MENTION_EVERYONE))
         {
             String filtered = message.getContentRaw().replace("`@everyone`", "").replace("`@here`", "");
             if(filtered.contains("@everyone") || filtered.contains("@here")
                     || message.getMentionedRoles().stream().anyMatch(role -> role.getName().equalsIgnoreCase("everyone") || role.getName().equalsIgnoreCase("here")))
             {
-                strikeTotal += settings.everyoneStrikes;
+                strikeTotal += settings.getEveryoneStrikes();
                 reason.append(", ").append("Attempted @\u0435veryone/here"); // cyrillic e
                 shouldDelete = true;
             }
         }
         
         // anti-invite
-        if(settings.inviteStrikes > 0 && preventInvites)
+        if(settings.getInviteStrikes() > 0 && preventInvites)
         {
             List<String> invites = new ArrayList<>();
             Matcher m = INVITES.matcher(message.getContentRaw());
@@ -399,7 +397,7 @@ public class AutoMod
                 long gid = inviteResolver.resolve(message.getJDA(), inviteCode);
                 if(gid != message.getGuild().getIdLong())
                 {
-                    strikeTotal += settings.inviteStrikes;
+                    strikeTotal += settings.getInviteStrikes();
                     reason.append(", Advertising");
                     shouldDelete = true;
                     break;
@@ -418,7 +416,8 @@ public class AutoMod
         }
         
         // channel mute if applicable (prevent sending messages in that channel for a short time as a 'warning'
-        if(shouldChannelMute!=null && message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MANAGE_PERMISSIONS, Permission.MESSAGE_WRITE)) 
+        if(shouldChannelMute!=null && message.getGuild().getSelfMember().hasPermission(message.getTextChannel(),
+            Permission.MANAGE_PERMISSIONS, Permission.MESSAGE_WRITE))
         {
             message.getChannel().sendMessage(message.getAuthor().getAsMention() + Constants.WARNING + " " + shouldChannelMute).queue(m -> 
             {

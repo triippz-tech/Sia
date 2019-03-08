@@ -89,6 +89,10 @@ public class ApplicationProperties {
 
         private Integer schedulerPoolSize;
 
+        private String logWebookUrl;
+
+        private String categoryId;
+
 
         public String getToken() {
             return token;
@@ -148,6 +152,22 @@ public class ApplicationProperties {
 
         public void setSchedulerPoolSize(Integer schedulerPoolSize) {
             this.schedulerPoolSize = schedulerPoolSize;
+        }
+
+        public String getLogWebookUrl() {
+            return logWebookUrl;
+        }
+
+        public void setLogWebookUrl(String logWebookUrl) {
+            this.logWebookUrl = logWebookUrl;
+        }
+
+        public String getCategoryId() {
+            return categoryId;
+        }
+
+        public void setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
         }
     }
 

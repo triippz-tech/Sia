@@ -296,8 +296,9 @@ public class FormatUtil {
     public static String helpLinks(CommandEvent event)
     {
         return "\uD83D\uDD17 ["+event.getSelfUser().getName()+" Wiki]("+Constants.Wiki.WIKI_BASE+")\n" // 🔗
-                + "<:discord:314003252830011395> [Support Server]("+event.getClient().getServerInvite()+")\n"
+                + "<:discord:553202383774285825> [Support Server]("+event.getClient().getServerInvite()+")\n"
                 +  CMD_EMOJI + " [Full Command Reference]("+Constants.Wiki.COMMANDS+")\n"
-                + "<:patreon:417455429145329665> [Donations]("+Constants.DONATION_LINK+")";
+                + "<:PayPal:553201177467289600> [Donations]("+Constants.DONATION_LINK+")\n"
+                + "<:xlm:553201315795435521> [Donate XLM](" + Constants.XLM_DONATION_ADDR+")";
     }
 }

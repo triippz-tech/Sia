@@ -25,6 +25,8 @@ import java.util.Objects;
 public class GuildSettings implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    public final static int PREFIX_MAX_LENGTH = 40;
+    private static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("GMT-4");
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
@@ -74,6 +76,22 @@ public class GuildSettings implements Serializable {
     @NotNull
     @Column(name = "mute_role", nullable = false)
     private Long muteRole;
+
+    public GuildSettings () {}
+
+    public void setDefaults(Long guildId) {
+        this.guildId = guildId;
+        this.modRoleId = 0L;
+        this.modLogId = 0L;
+        this.muteRole = 0L;
+        this.serverLogId = 0L;
+        this.messageLogId = 0L;
+        this.voiceLogId = 0L;
+        this.avatarLogId = 0L;
+        this.prefix = null;
+        this.timezone = DEFAULT_TIMEZONE.toString();
+        this.raidMode = -2;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

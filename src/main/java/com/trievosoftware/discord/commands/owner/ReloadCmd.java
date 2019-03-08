@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import com.trievosoftware.discord.commands.CommandExceptionListener.CommandError
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class ReloadCmd extends Command
 {
@@ -48,10 +48,10 @@ public class ReloadCmd extends Command
                 sia.getAutoMod().loadReferralDomains();
                 event.replySuccess("Reloaded ref domains");
                 break;
-            case "safe":
-                sia.getAutoMod().loadSafeDomains();
-                event.replySuccess("Reloaded safe domains");
-                break;
+//            case "safe":
+//                sia.getAutoMod().loadSafeDomains();
+//                event.replySuccess("Reloaded safe domains");
+//                break;
             case "copy":
                 sia.getAutoMod().loadCopypastas();
                 event.replySuccess("Reloaded copypastas");

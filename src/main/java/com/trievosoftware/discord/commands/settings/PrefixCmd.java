@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,15 @@ package com.trievosoftware.discord.commands.settings;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.GuildSettings;
+import com.trievosoftware.application.exceptions.SetPrefixException;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.database.managers.GuildSettingsDataManager;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class PrefixCmd extends Command
 {
@@ -52,19 +53,30 @@ public class PrefixCmd extends Command
         
         if(event.getArgs().equalsIgnoreCase("none"))
         {
-            sia.getDatabase().settings.setPrefix(event.getGuild(), null);
-            event.replySuccess("The server prefix has been reset.");
+            try {
+                sia.getDatabaseManagers().getGuildSettingsService().setPrefix(event.getGuild(), null);
+                event.replySuccess("The server prefix has been reset.");
+            } catch (SetPrefixException e) {
+                e.printStackTrace();
+                event.replyError(e.getMessage());
+            }
             return;
         }
         
-        if(event.getArgs().length()>GuildSettingsDataManager.PREFIX_MAX_LENGTH)
+        if(event.getArgs().length()> GuildSettings.PREFIX_MAX_LENGTH)
         {
-            event.replySuccess("Prefixes cannot be longer than `"+GuildSettingsDataManager.PREFIX_MAX_LENGTH+"` characters.");
+            event.replySuccess("Prefixes cannot be longer than `"+GuildSettings.PREFIX_MAX_LENGTH+"` characters.");
             return;
         }
-        
-        sia.getDatabase().settings.setPrefix(event.getGuild(), event.getArgs());
-        event.replySuccess("The server prefix has been set to `"+event.getArgs()+"`\n"
+
+        try {
+            sia.getDatabaseManagers().getGuildSettingsService().setPrefix(event.getGuild(), event.getArgs());
+            event.replySuccess("The server prefix has been set to `"+event.getArgs()+"`\n"
                 + "Note that the default prefix (`"+Constants.PREFIX+"`) cannot be removed and will work in addition to the custom prefix.");
+        } catch (SetPrefixException e) {
+            e.printStackTrace();
+            event.replyError(e.getMessage());
+        }
+
     }
 }

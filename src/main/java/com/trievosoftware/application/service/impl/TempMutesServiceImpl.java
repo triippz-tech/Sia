@@ -107,20 +107,20 @@ public class TempMutesServiceImpl implements TempMutesService {
     @Override
     public Optional<TempMutes> findFirstByGuildIdAndUserIdAndFinishGreaterThan(Long guildId,
                                                                                     Long userId,
-                                                                                    Long epochSecond) {
+                                                                                    Instant now) {
         log.debug("Request to get TempMutes for User={} in Guild={}", userId, guildId);
-        return tempMutesRepository.findFirstByGuildIdAndUserIdAndFinishGreaterThan(guildId, userId, epochSecond);
+        return tempMutesRepository.findFirstByGuildIdAndUserIdAndFinishGreaterThan(guildId, userId, now);
     }
 
     /**
      *
-     * @param epochSecond The current time
+     * @param now The current time
      * @return
      */
     @Override
-    public List<TempMutes> findAllByFinishIsLessThan(Long epochSecond) {
+    public List<TempMutes> findAllByFinishIsLessThan(Instant now) {
         log.debug("Request to get all TempMutes before Current Time");
-        return tempMutesRepository.findAllByFinishIsLessThan(epochSecond);
+        return tempMutesRepository.findAllByFinishIsLessThan(now);
     }
 
     /**
@@ -132,7 +132,7 @@ public class TempMutesServiceImpl implements TempMutesService {
     public boolean isMuted(Member member)
     {
         Optional<TempMutes> tempMutesOptional = findFirstByGuildIdAndUserIdAndFinishGreaterThan(
-            member.getGuild().getIdLong(), member.getUser().getIdLong(), Instant.now().getEpochSecond()
+            member.getGuild().getIdLong(), member.getUser().getIdLong(), Instant.now()
         );
         return tempMutesOptional.isPresent();
     }
@@ -242,7 +242,7 @@ public class TempMutesServiceImpl implements TempMutesService {
     public void checkUnmutes(JDA jda, GuildSettingsService guildSettingsService)
     {
         log.debug("Request to check unmutes");
-        List<TempMutes> tempMutesList = findAllByFinishIsLessThan(Instant.now().getEpochSecond());
+        List<TempMutes> tempMutesList = findAllByFinishIsLessThan(Instant.now());
         for ( TempMutes tempMutes:  tempMutesList )
         {
             Guild g = jda.getGuildById(tempMutes.getGuildId());

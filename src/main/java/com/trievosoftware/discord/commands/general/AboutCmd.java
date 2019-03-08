@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import java.awt.*;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class AboutCmd extends Command
 {
@@ -47,11 +47,11 @@ public class AboutCmd extends Command
     {
         ShardManager sm = event.getJDA().asBot().getShardManager();
         event.reply(new MessageBuilder()
-                .setContent(Constants.VORTEX_EMOJI + " **All about Sia** " + Constants.VORTEX_EMOJI)
+                .setContent(Constants.SIA_EMOJII + " **All about Sia** " + Constants.SIA_EMOJII)
                 .setEmbed(new EmbedBuilder()
                         .setColor(event.getGuild()==null ? Color.GRAY : event.getSelfMember().getColor())
                         .setDescription("Hello, I am **Sia**#8540, a bot designed to keep your server safe and make moderating fast and easy!\n"
-                                + "I was written in Java by **jagrosh**#4824 using [JDA](" + JDAInfo.GITHUB + ") and [JDA-Utilities](" + JDAUtilitiesInfo.GITHUB + ")\n"
+                                + "I was written in Java by **triippz**#0689 using [JDA](" + JDAInfo.GITHUB + ") and [JDA-Utilities](" + JDAUtilitiesInfo.GITHUB + ")\n"
                                 + "Type `" + event.getClient().getPrefix() + event.getClient().getHelpWord() + "` for help and information.\n\n"
                                 + FormatUtil.helpLinks(event))
                         .addField("Stats", sm.getShardsTotal()+ " Shards\n" + sm.getGuildCache().size() + " Servers", true)

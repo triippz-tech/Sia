@@ -17,6 +17,5 @@ import java.util.Optional;
 public interface PremiumRepository extends JpaRepository<Premium, Long> {
     Optional<Premium> findByGuildId(Long guildId);
 
-
-    List<Premium> findAllByUntilIsLessThan(Long current);
+    List<Premium> findAllByUntilIsLessThan(Instant now);
 }

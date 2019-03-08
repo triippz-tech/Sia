@@ -2,6 +2,7 @@ package com.trievosoftware.application.service;
 
 import com.trievosoftware.application.domain.TempMutes;
 import com.trievosoftware.application.exceptions.UserNotMutedException;
+import io.swagger.models.auth.In;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -48,9 +49,9 @@ public interface TempMutesService {
 
     Optional<TempMutes> findFirstByGuildIdAndUserId(Long guildId, Long userId);
 
-    List<TempMutes> findAllByFinishIsLessThan(Long epochSecond);
+    List<TempMutes> findAllByFinishIsLessThan(Instant now);
 
-    Optional<TempMutes> findFirstByGuildIdAndUserIdAndFinishGreaterThan(Long guildId, Long userId, Long epochSecond);
+    Optional<TempMutes> findFirstByGuildIdAndUserIdAndFinishGreaterThan(Long guildId, Long userId, Instant now);
 
     boolean isMuted(Member member);
 

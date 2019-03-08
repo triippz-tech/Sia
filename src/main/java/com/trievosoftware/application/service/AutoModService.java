@@ -51,11 +51,17 @@ public interface AutoModService {
      */
     Optional<AutoMod> findByGuildId(Long guildId);
 
+    AutoMod getSettings(Guild guild);
+
+    boolean hasSettings(Guild guild);
+
     MessageEmbed.Field getSettingsDisplay(Guild guild);
 
     void disableMaxMentions(Guild guild);
 
     void setResolveUrls(Guild guild, boolean value);
+
+    void setResolveUrls(long guildId, boolean value);
 
     void setMaxMentions(Guild guild, int max);
 

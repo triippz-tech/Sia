@@ -23,7 +23,7 @@ import net.dv8tion.jda.core.Permission;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class RaidCmd extends ModCommand
 {
@@ -40,7 +40,7 @@ public class RaidCmd extends ModCommand
     @Override
     protected void execute(CommandEvent event)
     {
-        boolean active = sia.getDatabase().settings.getSettings(event.getGuild()).isInRaidMode();
+        boolean active = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).isInRaidMode();
         String[] parts = event.getArgs().split("\\s+", 2);
         if(parts[0].equalsIgnoreCase("off") || parts[0].equalsIgnoreCase("stop") || parts[0].equalsIgnoreCase("disable"))
         {

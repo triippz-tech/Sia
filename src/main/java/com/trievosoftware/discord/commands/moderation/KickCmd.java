@@ -45,6 +45,7 @@ public class KickCmd extends ModCommand
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     protected void execute(CommandEvent event)
     {
         ArgsUtil.ResolvedArgs args = ArgsUtil.resolve(event.getArgs(), event.getGuild());
@@ -54,7 +55,7 @@ public class KickCmd extends ModCommand
             return;
         }
         String reason = LogUtil.auditReasonFormat(event.getMember(), args.reason);
-        Role modrole = sia.getDatabase().settings.getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
         StringBuilder builder = new StringBuilder();
         List<Member> toKick = new LinkedList<>();
         

@@ -6,6 +6,7 @@ import com.trievosoftware.application.domain.PremiumInfo;
 import com.trievosoftware.application.exceptions.NoPremiumFoundException;
 import net.dv8tion.jda.core.entities.Guild;
 
+import java.time.Instant;
 import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,7 @@ public interface PremiumService {
 
     Optional<Premium> findByGuildId(Long guildId);
 
-    List<Premium> findAllByUntilIsLessThan(Long current);
+    List<Premium> findAllByUntilIsLessThan(Instant now);
 
     PremiumInfo getPremiumInfo(Guild guild);
 

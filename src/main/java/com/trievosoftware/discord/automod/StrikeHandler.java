@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,11 @@
  */
 package com.trievosoftware.discord.automod;
 
+import com.trievosoftware.application.domain.Punishment;
+import com.trievosoftware.application.exceptions.NoBanFoundExcetion;
 import com.trievosoftware.discord.Action;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.database.managers.PunishmentManager.Punishment;
 import com.trievosoftware.discord.utils.FormatUtil;
 import com.trievosoftware.discord.utils.LogUtil;
 import com.trievosoftware.discord.utils.OtherUtil;
@@ -36,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class StrikeHandler
 {
@@ -54,7 +55,7 @@ public class StrikeHandler
     
     public void pardonStrikes(Member moderator, OffsetDateTime nowo, long targetId, int number, String reason)
     {
-        int[] counts = sia.getDatabase().strikes.removeStrikes(moderator.getGuild(), targetId, number);
+        int[] counts = sia.getDatabaseManagers().getStrikesService().removeStrikes(moderator.getGuild(), targetId, number);
         User user = sia.getShardManager().getUserById(targetId);
         if(user==null)
         {
@@ -72,10 +73,11 @@ public class StrikeHandler
     {
         boolean isMember = moderator.getGuild().getMemberById(target.getIdLong())!=null;
         Instant now = nowo.toInstant();
-        int[] counts = sia.getDatabase().strikes.addStrikes(moderator.getGuild(), target.getIdLong(), number);
+        int[] counts = sia.getDatabaseManagers().getStrikesService().addStrikes(moderator.getGuild(), target.getIdLong(), number);
         if(counts[0]>110 && counts[1]>110)
             return;
-        List<Punishment> punishments = sia.getDatabase().actions.getPunishments(moderator.getGuild(), counts[0], counts[1]);
+        List<Punishment> punishments = sia.getDatabaseManagers().getActionsService()
+            .getPunishments(moderator.getGuild(), counts[0], counts[1]);
         String dmmsg = String.format(STRIKE_FORMAT, number, moderator.getGuild().getName(), reason);
         if(punishments.isEmpty())
         {
@@ -90,7 +92,11 @@ public class StrikeHandler
             {
                 OtherUtil.safeDM(target, dmmsg + punish(Action.BAN, moderator.getGuild()), isMember, 
                         () -> moderator.getGuild().getController().ban(target, 7, notimeaudit).queue());
-                sia.getDatabase().tempbans.clearBan(moderator.getGuild(), target.getIdLong());
+                try {
+                    sia.getDatabaseManagers().getTempBansService().clearBan(moderator.getGuild(), target.getIdLong());
+                } catch (NoBanFoundExcetion noBanFoundExcetion) {
+                    noBanFoundExcetion.printStackTrace();
+                }
                 return;
             }
             int muteDuration = 0;
@@ -108,10 +114,11 @@ public class StrikeHandler
             {
                 int finalBanDuration = banDuration;
                 OtherUtil.safeDM(target, dmmsg + punishTime(Action.TEMPBAN, moderator.getGuild(), banDuration), isMember, 
-                        () -> moderator.getGuild().getController().ban(target, 7, LogUtil.auditStrikeReasonFormat(moderator, finalBanDuration, counts[0], counts[1], reason)).queue());
-                sia.getDatabase().tempbans.setBan(moderator.getGuild(), target.getIdLong(), now.plus(banDuration, ChronoUnit.MINUTES));
+                        () -> moderator.getGuild().getController().ban(target, 7,
+                            LogUtil.auditStrikeReasonFormat(moderator, finalBanDuration, counts[0], counts[1], reason)).queue());
+                sia.getDatabaseManagers().getTempBansService().setBan(moderator.getGuild(), target.getIdLong(), now.plus(banDuration, ChronoUnit.MINUTES));
                 if(muteDuration>0)
-                    sia.getDatabase().tempmutes.setMute(moderator.getGuild(), target.getIdLong(), muteTime(now, muteDuration));
+                    sia.getDatabaseManagers().getTempMutesService().setMute(moderator.getGuild(), target.getIdLong(), muteTime(now, muteDuration));
                 return;
             }
             if(punishments.stream().anyMatch(p -> p.action==Action.SOFTBAN) && canBan)
@@ -120,7 +127,7 @@ public class StrikeHandler
                         () -> moderator.getGuild().getController().ban(target, 7, notimeaudit).queue(
                                 s -> moderator.getGuild().getController().unban(target).reason(notimeaudit).queueAfter(4, TimeUnit.SECONDS)));
                 if(muteDuration>0)
-                    sia.getDatabase().tempmutes.setMute(moderator.getGuild(), target.getIdLong(), muteTime(now, muteDuration));
+                    sia.getDatabaseManagers().getTempMutesService().setMute(moderator.getGuild(), target.getIdLong(), muteTime(now, muteDuration));
                 return;
             }
             boolean canKick = moderator.getGuild().getSelfMember().hasPermission(Permission.KICK_MEMBERS);
@@ -136,14 +143,14 @@ public class StrikeHandler
                     sia.getModLogger().postStrikeCase(moderator, nowo, number, counts[0], counts[1], target, reason);
                 }
                 if(muteDuration>0)
-                    sia.getDatabase().tempmutes.setMute(moderator.getGuild(), target.getIdLong(), muteTime(now, muteDuration));
+                    sia.getDatabaseManagers().getTempMutesService().setMute(moderator.getGuild(), target.getIdLong(), muteTime(now, muteDuration));
                 return;
             }
             boolean canMute = moderator.getGuild().getSelfMember().hasPermission(Permission.MANAGE_ROLES);
             if(muteDuration>0 && canMute)
             {
-                sia.getDatabase().tempmutes.setMute(moderator.getGuild(), target.getIdLong(), muteTime(now, muteDuration));
-                Role muted = sia.getDatabase().settings.getSettings(moderator.getGuild()).getMutedRole(moderator.getGuild());
+                sia.getDatabaseManagers().getTempMutesService().setMute(moderator.getGuild(), target.getIdLong(), muteTime(now, muteDuration));
+                Role muted = sia.getDatabaseManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getMutedRole(moderator.getGuild());
                 Member mem = moderator.getGuild().getMember(target);
                 if(muted==null || mem==null || !moderator.getGuild().getSelfMember().canInteract(muted))
                 {

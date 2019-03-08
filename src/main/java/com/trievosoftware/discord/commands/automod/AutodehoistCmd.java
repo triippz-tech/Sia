@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@ package com.trievosoftware.discord.commands.automod;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener;
-import com.trievosoftware.discord.database.managers.PunishmentManager;
 import com.trievosoftware.discord.utils.OtherUtil;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class AutodehoistCmd extends Command
 {
@@ -50,7 +50,7 @@ public class AutodehoistCmd extends Command
             throw new CommandExceptionListener.CommandErrorException("Please provide a valid dehoist character, or OFF");
         else if(event.getArgs().equalsIgnoreCase("none") || event.getArgs().equalsIgnoreCase("off"))
         {
-            sia.getDatabase().automod.setDehoistChar(event.getGuild(), (char)0);
+            sia.getDatabaseManagers().getAutoModService().setDehoistChar(event.getGuild(), (char)0);
             event.replySuccess("No action will be taken on name hoisting.");
             return;
         }
@@ -66,8 +66,9 @@ public class AutodehoistCmd extends Command
         if(!allowed)
             throw new CommandExceptionListener.CommandErrorException("Provided symbol must be one character of the following: "+OtherUtil.DEHOIST_JOINED);
         
-        sia.getDatabase().automod.setDehoistChar(event.getGuild(), symbol);
-        boolean also = sia.getDatabase().actions.useDefaultSettings(event.getGuild());
-        event.replySuccess("Users will now be dehoisted if their effective name starts with `"+symbol+"` or higher."+(also ? PunishmentManager.DEFAULT_SETUP_MESSAGE : ""));
+        sia.getDatabaseManagers().getAutoModService().setDehoistChar(event.getGuild(), symbol);
+        boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
+        event.replySuccess("Users will now be dehoisted if their effective name starts with `"+symbol+"` or higher."+
+            (also ? Punishment.DEFAULT_SETUP_MESSAGE : ""));
     }
 }

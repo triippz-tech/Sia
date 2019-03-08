@@ -99,13 +99,13 @@ public class TempBansServiceImpl implements TempBansService {
     /**
      *
      *
-     * @param epochSeconds
+     * @param now the current time
      * @return
      */
     @Override
-    public List<TempBans> findAllByFinishIsLessThan(Long epochSeconds) {
+    public List<TempBans> findAllByFinishIsLessThan(Instant now) {
         log.debug("Request to get All Expired TempBans");
-        return tempBansRepository.findAllByFinishIsLessThan(epochSeconds);
+        return tempBansRepository.findAllByFinishIsLessThan(now);
     }
 
     /**
@@ -150,7 +150,8 @@ public class TempBansServiceImpl implements TempBansService {
             delete(tempBansOptional.get().getId());
             log.info("Removed ban for User={} in Guild={}", userId, guild.getName());
         } else {
-            throw new NoBanFoundExcetion(String.format("User={} in Guild={}, is not currently banned.", userId, guild.getName()));
+            throw new NoBanFoundExcetion(String.format("User=%d in Guild=%s, is not currently banned.",
+                userId, guild.getName()));
         }
     }
 
@@ -187,7 +188,7 @@ public class TempBansServiceImpl implements TempBansService {
     public void checkUnbans(JDA jda)
     {
         log.debug("Request to check for expired bans for");
-        List<TempBans> tempBansOptional = findAllByFinishIsLessThan(Instant.now().getEpochSecond());
+        List<TempBans> tempBansOptional = findAllByFinishIsLessThan(Instant.now());
         for ( TempBans tempBans : tempBansOptional )
         {
             Guild g = jda.getGuildById(tempBans.getGuildId());

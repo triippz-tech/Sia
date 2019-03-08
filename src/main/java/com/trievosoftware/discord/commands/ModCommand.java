@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import net.dv8tion.jda.core.entities.Role;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public abstract class ModCommand extends Command
 {
@@ -39,7 +39,7 @@ public abstract class ModCommand extends Command
                 event.replyError("This command is not available in Direct Messages!");
                 return false;
             }
-            Role modrole = sia.getDatabase().settings.getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+            Role modrole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
             if(modrole!=null && event.getMember().getRoles().contains(modrole))
                 return true;
             

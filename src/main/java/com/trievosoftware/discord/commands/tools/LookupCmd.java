@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,11 +32,11 @@ import java.time.format.DateTimeFormatter;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class LookupCmd extends Command
 {
-    private final static String BOT_EMOJI = "<:botTag:230105988211015680>";
+    private final static String BOT_EMOJI = "<:sia:553207744673349650>";
     private final static String USER_EMOJI = "\uD83D\uDC64"; // 👤
     private final static String GUILD_EMOJI = "\uD83D\uDDA5"; // 🖥
     private final static String LINESTART = "\u25AB"; // ▫
@@ -82,7 +82,7 @@ public class LookupCmd extends Command
                     eb.setThumbnail(u.getEffectiveAvatarUrl());
                     String str = LINESTART+"Discord ID: **"+u.getId()+"**";
                     if(u.getAvatarId()!=null && u.getAvatarId().startsWith("a_"))
-                        str+= " <:nitro:314068430611415041>";
+                        str+= " <:nitro:553291702476210201>";
                     str+="\n"+LINESTART+"Account Creation: **"+MiscUtil.getDateTimeString(u.getCreationTime())+"**";
                     eb.setDescription(str);
                     event.reply(new MessageBuilder().append(text).setEmbed(eb.build()).build());

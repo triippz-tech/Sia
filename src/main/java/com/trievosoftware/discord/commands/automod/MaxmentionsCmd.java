@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@ package com.trievosoftware.discord.commands.automod;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.AutoMod;
+import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.database.managers.AutomodManager;
-import com.trievosoftware.discord.database.managers.PunishmentManager;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class MaxmentionsCmd extends Command
 {
@@ -49,7 +49,7 @@ public class MaxmentionsCmd extends Command
     {
         if(event.getArgs().equalsIgnoreCase("off") || event.getArgs().equalsIgnoreCase("none"))
         {
-            sia.getDatabase().automod.disableMaxMentions(event.getGuild());
+            sia.getDatabaseManagers().getAutoModService().disableMaxMentions(event.getGuild());
             event.replySuccess("Anti-Mention has been disabled.");
             return;
         }
@@ -61,21 +61,21 @@ public class MaxmentionsCmd extends Command
         try
         {
             short num = Short.parseShort(event.getArgs());
-            if(num<AutomodManager.MENTION_MINIMUM)
+            if(num< AutoMod.MENTION_MINIMUM)
             {
-                event.replyError("Maximum mentions must be at least `"+AutomodManager.MENTION_MINIMUM+"`");
+                event.replyError("Maximum mentions must be at least `"+AutoMod.MENTION_MINIMUM+"`");
                 return;
             }
-            sia.getDatabase().automod.setMaxMentions(event.getGuild(), num);
-            boolean also = sia.getDatabase().actions.useDefaultSettings(event.getGuild());
+            sia.getDatabaseManagers().getAutoModService().setMaxMentions(event.getGuild(), num);
+            boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
             event.replySuccess("Set the maximum allowed mentions to **"+num+"** users. Messages containing more than **"
                     +num+"** mentions will be deleted and the user will obtain 1 strike for every mention above the maximum."
                     + "\n\nTo set the maximum allowed role mentions, use `"+Constants.PREFIX+name+" "+children[0].getName()+" "+children[0].getArguments()+"`"
-                    + (also ? PunishmentManager.DEFAULT_SETUP_MESSAGE : ""));
+                    + (also ? Punishment.DEFAULT_SETUP_MESSAGE : ""));
         }
         catch(NumberFormatException e)
         {
-            event.replyError("`<maximum>` must be a valid integer at least `"+AutomodManager.MENTION_MINIMUM+"`");
+            event.replyError("`<maximum>` must be a valid integer at least `"+AutoMod.MENTION_MINIMUM+"`");
         }
     }
     
@@ -97,7 +97,7 @@ public class MaxmentionsCmd extends Command
         {
             if(event.getArgs().equalsIgnoreCase("off") || event.getArgs().equalsIgnoreCase("none"))
             {
-                sia.getDatabase().automod.setMaxRoleMentions(event.getGuild(), 0);
+                sia.getDatabaseManagers().getAutoModService().setMaxRoleMentions(event.getGuild(), 0);
                 event.replySuccess("Anti-Mention for Role mentions has been disabled.");
                 return;
             }
@@ -109,17 +109,17 @@ public class MaxmentionsCmd extends Command
             try
             {
                 short num = Short.parseShort(event.getArgs());
-                if(num<AutomodManager.ROLE_MENTION_MINIMUM)
+                if(num<AutoMod.ROLE_MENTION_MINIMUM)
                 {
-                    event.replyError("Maximum role mentions must be at least `"+AutomodManager.ROLE_MENTION_MINIMUM+"`");
+                    event.replyError("Maximum role mentions must be at least `"+AutoMod.ROLE_MENTION_MINIMUM+"`");
                     return;
                 }
-                sia.getDatabase().automod.setMaxRoleMentions(event.getGuild(), num);
+                sia.getDatabaseManagers().getAutoModService().setMaxRoleMentions(event.getGuild(), num);
                 event.replySuccess("Set the maximum allowed role mentions to **"+num+"** roles.");
             }
             catch(NumberFormatException e)
             {
-                event.replyError("`<maximum>` must be a valid integer at least `"+AutomodManager.ROLE_MENTION_MINIMUM+"`");
+                event.replyError("`<maximum>` must be a valid integer at least `"+AutoMod.ROLE_MENTION_MINIMUM+"`");
             }
         }
     }

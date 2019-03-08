@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (jagrosh).
+ * Copyright 2019 Mark Tripoli (triippz).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,23 @@ import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.jagrosh.jdautilities.examples.command.*;
+import com.trievosoftware.application.config.ApplicationProperties;
+import com.trievosoftware.application.service.DatabaseManagers;
 import com.trievosoftware.discord.automod.AutoMod;
 import com.trievosoftware.discord.automod.StrikeHandler;
 import com.trievosoftware.discord.commands.CommandExceptionListener;
 import com.trievosoftware.discord.commands.automod.*;
+import com.trievosoftware.discord.commands.entertainment.GiphyCommand;
 import com.trievosoftware.discord.commands.general.*;
+import com.trievosoftware.discord.commands.informational.crypto.CryptoAdminCommand;
+import com.trievosoftware.discord.commands.informational.crypto.CryptoCoinCommand;
+import com.trievosoftware.discord.commands.informational.crypto.CryptoInfoCommand;
+import com.trievosoftware.discord.commands.informational.crypto.CryptoNewsCommand;
 import com.trievosoftware.discord.commands.moderation.*;
 import com.trievosoftware.discord.commands.owner.*;
 import com.trievosoftware.discord.commands.settings.*;
 import com.trievosoftware.discord.commands.tools.*;
 import com.trievosoftware.discord.commands.tools.LookupCmd;
-import com.trievosoftware.discord.database.Database;
 import com.trievosoftware.discord.logging.BasicLogger;
 import com.trievosoftware.discord.logging.MessageCache;
 import com.trievosoftware.discord.logging.ModLogger;
@@ -46,10 +52,7 @@ import net.dv8tion.jda.core.utils.cache.CacheFlag;
 import net.dv8tion.jda.webhook.WebhookClient;
 import net.dv8tion.jda.webhook.WebhookClientBuilder;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -62,7 +65,7 @@ public class Sia
 {
     private final EventWaiter waiter;
     private final ScheduledExecutorService threadpool;
-    private final Database database;
+//    private final Database database;
     private final TextUploader uploader;
     private final ShardManager shards;
     private final ModLogger modlog;
@@ -71,45 +74,34 @@ public class Sia
     private final WebhookClient logwebhook;
     private final AutoMod automod;
     private final StrikeHandler strikehandler;
-    
-    public Sia() throws Exception
+    private final DatabaseManagers databaseManagers;
+
+    private final ApplicationProperties applicationProperties;
+
+    public Sia(DatabaseManagers databaseManagers, ApplicationProperties applicationProperties) throws Exception
     {
-        /**
-         * Tokens:
-         * 0  - bot token
-         * 1  - bots.discord.pw token
-         * 2  - other token 1 (unused)
-         * 3  - other token 2 (unused)
-         * 4  - database location
-         * 5  - database username
-         * 6  - database password
-         * 7  - log webhook url
-         * 8  - guild id : category id
-         * 9  - number of shards
-         * 10 - url resolver url
-         * 11 - url resolver secret
-         */
-        List<String> tokens = Files.readAllLines(Paths.get("config.txt"));
+        this.databaseManagers = databaseManagers;
+        this.applicationProperties = applicationProperties;
         waiter = new EventWaiter(Executors.newSingleThreadScheduledExecutor(), false);
         threadpool = Executors.newScheduledThreadPool(50);
-        database = new Database(tokens.get(4), tokens.get(5), tokens.get(6));
-        String[] split = tokens.get(8).split(":");
-        uploader = new TextUploader(this, Long.parseLong(split[0].trim()), Long.parseLong(split[1].trim()));
+        uploader = new TextUploader(this,
+            Long.parseLong(this.applicationProperties.getDiscord().getGuildId()),
+            Long.parseLong(this.applicationProperties.getDiscord().getCategoryId()));
         modlog = new ModLogger(this);
         basiclog = new BasicLogger(this);
         messages = new MessageCache();
-        logwebhook = new WebhookClientBuilder(tokens.get(7)).build();
-        automod = new AutoMod(this, tokens);
+        logwebhook = new WebhookClientBuilder(this.applicationProperties.getDiscord().getLogWebookUrl()).build();
+        automod = new AutoMod(this);
         strikehandler = new StrikeHandler(this);
         CommandClient client = new CommandClientBuilder()
-                        .setPrefix(Constants.PREFIX)
+                        .setPrefix(this.applicationProperties.getDiscord().getPrefix())
                         //.setGame(Game.watching("Type "+Constants.PREFIX+"help"))
                         .setGame(Game.playing(Constants.Wiki.SHORT_WIKI))
                         .setOwnerId(Constants.OWNER_ID)
                         .setServerInvite(Constants.SERVER_INVITE)
                         .setEmojis(Constants.SUCCESS, Constants.WARNING, Constants.ERROR)
                         .setLinkedCacheSize(0)
-                        .setGuildSettingsManager(database.settings)
+                        .setGuildSettingsManager(databaseManagers.getGuildSettingsServiceImpl())
                         .setListener(new CommandExceptionListener())
                         .setScheduleExecutor(threadpool)
 //                        .setShutdownAutomatically(false)
@@ -177,7 +169,16 @@ public class Sia
                             new EvalCmd(this),
                             new DebugCmd(this),
                             new ReloadCmd(this),
-                            new TransferCmd(this)
+                            new TransferCmd(this),
+
+                            // Informational
+                            new CryptoCoinCommand(this),
+                            new CryptoAdminCommand(this),
+                            new CryptoNewsCommand(this),
+                            new CryptoInfoCommand(this),
+
+                            // Entertainment
+                            new GiphyCommand(this)
                         )
                         .setHelpConsumer(event -> event.replyInDm(FormatUtil.formatHelp(event, this), m -> 
                         {
@@ -187,13 +188,13 @@ public class Sia
                                     event.getMessage().addReaction(Constants.HELP_REACTION).queue(s->{}, f->{});
                                 } catch(PermissionException ignore) {}
                         }, t -> event.replyWarning("Help cannot be sent because you are blocking Direct Messages.")))
-                        .setDiscordBotsKey(tokens.get(1))
+                        .setDiscordBotsKey(this.applicationProperties.getDiscord().getToken())
                         //.setCarbonitexKey(tokens.get(2))
                         //.setDiscordBotListKey(tokens.get(3))
                         .build();
         shards = new DefaultShardManagerBuilder()
-                .setShardsTotal(Integer.parseInt(tokens.get(9)))
-                .setToken(tokens.get(0))
+                .setShardsTotal(Integer.parseInt(this.applicationProperties.getDiscord().getShards()))
+                .setToken(this.applicationProperties.getDiscord().getToken())
                 .addEventListeners(new Listener(this), client, waiter)
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
                 .setGame(Game.playing("loading..."))
@@ -205,21 +206,16 @@ public class Sia
         
         modlog.start();
         
-        threadpool.scheduleWithFixedDelay(() -> cleanPremium(), 0, 2, TimeUnit.HOURS);
-        threadpool.scheduleWithFixedDelay(() -> leavePointlessGuilds(), 5, 30, TimeUnit.MINUTES);
-        threadpool.scheduleWithFixedDelay(() -> System.gc(), 12, 6, TimeUnit.HOURS);
+        threadpool.scheduleWithFixedDelay(this::cleanPremium, 0, 2, TimeUnit.HOURS);
+        threadpool.scheduleWithFixedDelay(this::leavePointlessGuilds, 5, 30, TimeUnit.MINUTES);
+        threadpool.scheduleWithFixedDelay(System::gc, 12, 6, TimeUnit.HOURS);
     }
     
     public EventWaiter getEventWaiter()
     {
         return waiter;
     }
-    
-    public Database getDatabase()
-    {
-        return database;
-    }
-    
+
     public ScheduledExecutorService getThreadpool()
     {
         return threadpool;
@@ -267,10 +263,10 @@ public class Sia
     
     public void cleanPremium()
     {
-        database.premium.cleanPremiumList().forEach((gid) ->
+        databaseManagers.getPremiumService().cleanPremiumList().forEach((gid) ->
         {
-            database.automod.setResolveUrls(gid, false);
-            database.settings.setAvatarLogChannel(gid, null);
+            databaseManagers.getAutoModService().setResolveUrls(gid, false);
+            databaseManagers.getGuildSettingsService().setAvatarLogChannel(gid, null);
         });
     }
     
@@ -283,22 +279,22 @@ public class Sia
             int botcount = (int)g.getMemberCache().stream().filter(m -> m.getUser().isBot()).count();
             if(g.getMemberCache().size()-botcount<15 || (botcount>20 && ((double)botcount/g.getMemberCache().size())>0.65))
             {
-                if(database.settings.hasSettings(g))
+                if(databaseManagers.getGuildSettingsService().hasSettings(g))
                     return false;
-                if(database.automod.hasSettings(g))
+                if(databaseManagers.getAutoModService().hasSettings(g))
                     return false;
                 return true;
             }
             return false;
         }).forEach(g -> g.leave().queue());
     }
-    
-//    /**
-//     * @param args the command line arguments
-//     * @throws Exception
-//     */
-//    public static void main(String[] args) throws Exception
-//    {
-//        new Sia();
-//    }
+
+    public DatabaseManagers getDatabaseManagers() {
+        return databaseManagers;
+    }
+
+    public ApplicationProperties getApplicationProperties() {
+        return applicationProperties;
+    }
+
 }

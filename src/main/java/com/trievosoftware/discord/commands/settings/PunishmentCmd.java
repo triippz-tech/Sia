@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,12 @@ package com.trievosoftware.discord.commands.settings;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.Punishment;
+import com.trievosoftware.application.exceptions.NoActionsExceptions;
 import com.trievosoftware.discord.Action;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener;
-import com.trievosoftware.discord.database.managers.PunishmentManager;
 import com.trievosoftware.discord.utils.FormatUtil;
 import com.trievosoftware.discord.utils.OtherUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -30,7 +31,7 @@ import net.dv8tion.jda.core.Permission;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class PunishmentCmd extends Command
 {
@@ -70,21 +71,30 @@ public class PunishmentCmd extends Command
             event.replyError("`"+parts[0]+"` is not a valid integer!"+SETTING_STRIKES);
             return;
         }
-        if(numstrikes<1 || numstrikes>PunishmentManager.MAX_STRIKES)
+        if(numstrikes<1 || numstrikes> Punishment.MAX_STRIKES)
         {
-            event.replyError("`<numstrikes>` must be between 1 and "+PunishmentManager.MAX_STRIKES+"!"+SETTING_STRIKES);
+            event.replyError("`<numstrikes>` must be between 1 and "+Punishment.MAX_STRIKES+"!"+SETTING_STRIKES);
             return;
         }
-        
-        if(!parts[1].equalsIgnoreCase("none") && sia.getDatabase().actions.getAllPunishments(event.getGuild()).size()>=PunishmentManager.MAX_SET)
-            throw new CommandExceptionListener.CommandErrorException("This server already has "+PunishmentManager.MAX_SET+" punishments set up; please remove some before adding more.");
-        
+
+        try {
+            if(!parts[1].equalsIgnoreCase("none") &&
+                sia.getDatabaseManagers().getActionsService().getAllPunishments(event.getGuild()).size()>=Punishment.MAX_SET)
+                throw new CommandExceptionListener.CommandErrorException("This server already has "+Punishment.MAX_SET+" punishments set up; please remove some before adding more.");
+        } catch (NoActionsExceptions noActionsExceptions) {
+            noActionsExceptions.printStackTrace();
+        }
+
         String successMessage;
         switch(parts[1].toLowerCase())
         {
             case "none":
             {
-                sia.getDatabase().actions.removeAction(event.getGuild(), numstrikes);
+                try {
+                    sia.getDatabaseManagers().getActionsService().removeAction(event.getGuild(), numstrikes);
+                } catch (NoActionsExceptions noActionsExceptions) {
+                    noActionsExceptions.printStackTrace();
+                }
                 successMessage = "No action will be taken on `"+numstrikes+"` strikes.";
                 break;
             }
@@ -98,21 +108,21 @@ public class PunishmentCmd extends Command
                     event.replyError("Temp-Mute time cannot be negative!");
                     return;
                 }
-                sia.getDatabase().actions.setAction(event.getGuild(), numstrikes, Action.MUTE, minutes);
+                sia.getDatabaseManagers().getActionsService().setAction(event.getGuild(), numstrikes, Action.MUTE, minutes);
                 successMessage = "Users will now be `muted` "+(minutes>0 ? "for "+FormatUtil.secondsToTime(minutes*60)+" " : "")+"upon reaching `"+numstrikes+"` strikes.";
-                if(sia.getDatabase().settings.getSettings(event.getGuild()).getMutedRole(event.getGuild())==null)
+                if(sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild())==null)
                     successMessage += event.getClient().getWarning()+" No muted role currently exists!";
                 break;
             }
             case "kick":
             {
-                sia.getDatabase().actions.setAction(event.getGuild(), numstrikes, Action.KICK);
+                sia.getDatabaseManagers().getActionsService().setAction(event.getGuild(), numstrikes, Action.KICK);
                 successMessage = "Users will now be `kicked` upon reaching `"+numstrikes+"` strikes.";
                 break;
             }
             case "softban":
             {
-                sia.getDatabase().actions.setAction(event.getGuild(), numstrikes, Action.SOFTBAN);
+                sia.getDatabaseManagers().getActionsService().setAction(event.getGuild(), numstrikes, Action.SOFTBAN);
                 successMessage = "Users will now be `softbanned` upon reaching `"+numstrikes+"` strikes.";
                 break;
             }
@@ -126,7 +136,7 @@ public class PunishmentCmd extends Command
                     event.replyError("Temp-Ban time cannot be negative!");
                     return;
                 }
-                sia.getDatabase().actions.setAction(event.getGuild(), numstrikes, Action.BAN, minutes);
+                sia.getDatabaseManagers().getActionsService().setAction(event.getGuild(), numstrikes, Action.BAN, minutes);
                 successMessage = "Users will now be `banned` "+(minutes>0 ? "for "+FormatUtil.secondsToTime(minutes*60)+" " : "")+"upon reaching `"+numstrikes+"` strikes.";
                 break;
             }
@@ -140,7 +150,7 @@ public class PunishmentCmd extends Command
                 .append(event.getClient().getSuccess())
                 .append(" ").append(FormatUtil.filterEveryone(successMessage))
                 .setEmbed(new EmbedBuilder().setColor(event.getSelfMember().getColor())
-                        .addField(sia.getDatabase().actions.getAllPunishmentsDisplay(event.getGuild()))
+                        .addField(sia.getDatabaseManagers().getActionsService().getAllPunishmentsDisplay(event.getGuild()))
                         .build())
                 .build());
     }

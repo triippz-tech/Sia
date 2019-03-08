@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@ package com.trievosoftware.discord.commands.automod;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.database.managers.PunishmentManager;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class MaxlinesCmd extends Command
 {
@@ -42,6 +42,7 @@ public class MaxlinesCmd extends Command
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     protected void execute(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
@@ -69,12 +70,12 @@ public class MaxlinesCmd extends Command
             event.replyError("The maximum number of lines must be a positive integer!");
             return;
         }
-        sia.getDatabase().automod.setMaxLines(event.getGuild(), maxlines);
-        boolean also = sia.getDatabase().actions.useDefaultSettings(event.getGuild());
+        sia.getDatabaseManagers().getAutoModService().setMaxLines(event.getGuild(), maxlines);
+        boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
         if(maxlines==0)
             event.replySuccess("There is now no maximum line limit.");
         else
             event.replySuccess("Messages longer than `"+maxlines+"` lines will now be automatically deleted, "
-                + "and users will receive strikes for every additional multiple of up to `"+maxlines+"` lines."+(also ? PunishmentManager.DEFAULT_SETUP_MESSAGE : ""));
+                + "and users will receive strikes for every additional multiple of up to `"+maxlines+"` lines."+(also ? Punishment.DEFAULT_SETUP_MESSAGE : ""));
     }
 }

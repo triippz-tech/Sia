@@ -47,7 +47,7 @@ public interface TempBansService {
 
     Optional<TempBans> findFirstByGuildIdAndUserId(Long guildId, Long userId);
 
-    List<TempBans> findAllByFinishIsLessThan(Long epochSeconds);
+    List<TempBans> findAllByFinishIsLessThan(Instant now);
 
     void setBan(Guild guild, long userId, Instant finish);
 

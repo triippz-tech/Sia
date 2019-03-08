@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import net.dv8tion.jda.core.Permission;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class AutoraidmodeCmd extends Command
 {
@@ -47,7 +47,7 @@ public class AutoraidmodeCmd extends Command
     {
         if(event.getArgs().equalsIgnoreCase("off"))
         {
-            sia.getDatabase().automod.setAutoRaidMode(event.getGuild(), 0, 0);
+            sia.getDatabaseManagers().getAutoModService().setAutoRaidMode(event.getGuild(), 0, 0);
             event.replySuccess("Auto-Anti-Raid mode has been disabled.");
             return;
         }
@@ -73,7 +73,7 @@ public class AutoraidmodeCmd extends Command
             joins = Integer.parseInt(parts[0]);
             seconds = Integer.parseInt(parts[1]);
         }
-        sia.getDatabase().automod.setAutoRaidMode(event.getGuild(), joins, seconds);
+        sia.getDatabaseManagers().getAutoModService().setAutoRaidMode(event.getGuild(), joins, seconds);
         event.replySuccess("Anti-Raid mode will be enabled automatically when there are `"+joins+"` joins in `"+seconds+"` seconds.");
     }
 }

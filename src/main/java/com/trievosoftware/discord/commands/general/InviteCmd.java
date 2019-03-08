@@ -35,7 +35,7 @@ public class InviteCmd extends Command
     @Override
     protected void execute(CommandEvent event) 
     {
-        event.reply("Hello. I am **"+event.getJDA().getSelfUser().getName()+"**, a simple moderation bot built by **jagrosh**#4824."
+        event.reply("Hello. I am **"+event.getJDA().getSelfUser().getName()+"**, a simple moderation bot built by **triippz**#0689."
                 + "\nYou can find out how to add me to your server with the link below:"
                 + "\n\n\uD83D\uDD17 **<"+Constants.Wiki.START+">**" // 🔗
                 + "\n\nFor assistance, check out the wiki: <"+Constants.Wiki.WIKI_BASE+">");

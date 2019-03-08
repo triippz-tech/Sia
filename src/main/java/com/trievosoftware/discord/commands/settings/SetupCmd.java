@@ -18,9 +18,9 @@ package com.trievosoftware.discord.commands.settings;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.menu.ButtonMenu;
+import com.trievosoftware.application.domain.AutoMod;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.database.managers.AutomodManager.AutomodSettings;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.PermissionOverride;
 import net.dv8tion.jda.core.entities.Role;
@@ -63,6 +63,7 @@ public class SetupCmd extends Command
     
     private class AutomodSetupCmd extends Command
     {
+        @SuppressWarnings("Duplicates")
         private AutomodSetupCmd()
         {
             this.name = "automod";
@@ -83,52 +84,52 @@ public class SetupCmd extends Command
             {
                 event.getChannel().sendTyping().queue();
                 StringBuilder sb = new StringBuilder("**Automod setup complete!**");
-                if(sia.getDatabase().actions.useDefaultSettings(event.getGuild()))
+                if(sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild()))
                     sb.append("\n").append(Constants.SUCCESS).append(" Set up default punishments");
-                AutomodSettings ams = sia.getDatabase().automod.getSettings(event.getGuild());
-                if(ams.inviteStrikes==0)
+                AutoMod ams = sia.getDatabaseManagers().getAutoModService().getSettings(event.getGuild());
+                if(ams.getInviteStrikes()==0)
                 {
-                    sia.getDatabase().automod.setInviteStrikes(event.getGuild(), 2);
+                    sia.getDatabaseManagers().getAutoModService().setInviteStrikes(event.getGuild(), 2);
                     sb.append("\n").append(Constants.SUCCESS).append(" Anti-invite set to `2` strikes");
                 }
-                if(ams.refStrikes==0)
+                if(ams.getRefStrikes()==0)
                 {
-                    sia.getDatabase().automod.setRefStrikes(event.getGuild(), 3);
+                    sia.getDatabaseManagers().getAutoModService().setRefStrikes(event.getGuild(), 3);
                     sb.append("\n").append(Constants.SUCCESS).append(" Anti-referral set to `3` strikes");
                 }
                 if(!ams.useAntiDuplicate())
                 {
-                    sia.getDatabase().automod.setDupeSettings(event.getGuild(), 1, 2, 4);
+                    sia.getDatabaseManagers().getAutoModService().setDupeSettings(event.getGuild(), 1, 2, 4);
                     sb.append("\n").append(Constants.SUCCESS).append(" Anti-duplicate will start deleting at duplicate `2`, and will assign `1` strike each duplicate starting at duplicate `4`");
                 }
-                if(ams.copypastaStrikes==0)
+                if(ams.getCopyPastaStrikes()==0)
                 {
-                    sia.getDatabase().automod.setCopypastaStrikes(event.getGuild(), 1);
+                    sia.getDatabaseManagers().getAutoModService().setCopypastaStrikes(event.getGuild(), 1);
                     sb.append("\n").append(Constants.SUCCESS).append(" Anti-copypasta set to `1` strikes");
                 }
-                if(ams.maxMentions==0)
+                if(ams.getMaxMentions()==0)
                 {
-                    sia.getDatabase().automod.setMaxMentions(event.getGuild(), 10);
+                    sia.getDatabaseManagers().getAutoModService().setMaxMentions(event.getGuild(), 10);
                     sb.append("\n").append(Constants.SUCCESS).append(" Maximum mentions set to `10` mentions");
                 }
-                if(ams.maxRoleMentions==0)
+                if(ams.getMaxRoleMentions()==0)
                 {
-                    sia.getDatabase().automod.setMaxRoleMentions(event.getGuild(), 4);
+                    sia.getDatabaseManagers().getAutoModService().setMaxRoleMentions(event.getGuild(), 4);
                     sb.append("\n").append(Constants.SUCCESS).append(" Maximum role mentions set to `4` mentions");
                 }
-                if(ams.maxLines==0)
+                if(ams.getMaxLines()==0)
                 {
-                    sia.getDatabase().automod.setMaxLines(event.getGuild(), 10);
+                    sia.getDatabaseManagers().getAutoModService().setMaxLines(event.getGuild(), 10);
                     sb.append("\n").append(Constants.SUCCESS).append(" Maximum lines set to `10` lines");
                 }
                 if(!ams.useAutoRaidMode())
                 {
-                    sia.getDatabase().automod.setAutoRaidMode(event.getGuild(), 10, 10);
+                    sia.getDatabaseManagers().getAutoModService().setAutoRaidMode(event.getGuild(), 10, 10);
                     sb.append("\n").append(Constants.SUCCESS).append(" Anti-Raid Mode will activate upon `10` joins in `10` seconds");
                 }
-                if(ams.dehoistChar==(char)0)
+                if(ams.getDehoistChar()==(char)0)
                 {
-                    sia.getDatabase().automod.setDehoistChar(event.getGuild(), '!');
+                    sia.getDatabaseManagers().getAutoModService().setDehoistChar(event.getGuild(), '!');
                     sb.append("\n").append(Constants.SUCCESS).append(" Names starting with `!` will be dehoisted");
                 }
                 sb.append("\n").append(Constants.WARNING).append(" Any settings not shown here were not set due to being already set. Please check the automod section of the wiki (<")
@@ -140,6 +141,7 @@ public class SetupCmd extends Command
     
     private class MuteSetupCmd extends Command
     {
+        @SuppressWarnings("Duplicates")
         private MuteSetupCmd()
         {
             this.name = "muterole";
@@ -156,7 +158,7 @@ public class SetupCmd extends Command
         @Override
         protected void execute(CommandEvent event)
         {
-            Role muted = sia.getDatabase().settings.getSettings(event.getGuild()).getMutedRole(event.getGuild());
+            Role muted = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
             String confirmation;
             if(muted!=null)
             {
@@ -234,7 +236,8 @@ public class SetupCmd extends Command
             }
         }));
     }
-    
+
+    @SuppressWarnings("Duplicates")
     private void waitForConfirmation(CommandEvent event, String message, Runnable confirm)
     {
         new ButtonMenu.Builder()

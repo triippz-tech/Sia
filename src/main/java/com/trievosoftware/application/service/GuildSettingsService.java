@@ -1,6 +1,7 @@
 package com.trievosoftware.application.service;
 
 import com.trievosoftware.application.domain.GuildSettings;
+import com.trievosoftware.application.exceptions.SetPrefixException;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
@@ -55,7 +56,7 @@ public interface GuildSettingsService {
      */
     MessageEmbed.Field getSettingsDisplay(Guild guild);
 
-    public GuildSettings getSettings(Guild guild);
+    GuildSettings getSettings(Guild guild);
 
     Optional<GuildSettings> findByGuildId(Long guildId);
 
@@ -73,7 +74,7 @@ public interface GuildSettingsService {
 
     void setModeratorRole(Guild guild, Role role);
 
-    void setPrefix(Guild guild, String prefix);
+    void setPrefix(Guild guild, String prefix) throws SetPrefixException;
 
     void setTimezone(Guild guild, ZoneId zone);
 

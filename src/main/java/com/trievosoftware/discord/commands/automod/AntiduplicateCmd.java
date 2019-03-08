@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@ package com.trievosoftware.discord.commands.automod;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.database.managers.PunishmentManager;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class AntiduplicateCmd extends Command
 {
@@ -56,7 +56,7 @@ public class AntiduplicateCmd extends Command
         }
         if(event.getArgs().equalsIgnoreCase("off"))
         {
-            sia.getDatabase().automod.setDupeSettings(event.getGuild(), 0, 0, 0);
+            sia.getDatabaseManagers().getAutoModService().setDupeSettings(event.getGuild(), 0, 0, 0);
             event.replySuccess("Anti-Duplicate has been disabled.");
             return;
         }
@@ -94,14 +94,14 @@ public class AntiduplicateCmd extends Command
         }
         if(strikeThreshold<=0 || deleteThreshold<=0 || strikes<=0)
         {
-            sia.getDatabase().automod.setDupeSettings(event.getGuild(), 0, 0, 0);
+            sia.getDatabaseManagers().getAutoModService().setDupeSettings(event.getGuild(), 0, 0, 0);
             event.replySuccess("Anti-Duplicate has been disabled.");
             return;
         }
-        sia.getDatabase().automod.setDupeSettings(event.getGuild(), strikes, deleteThreshold, strikeThreshold);
-        boolean also = sia.getDatabase().actions.useDefaultSettings(event.getGuild());
+        sia.getDatabaseManagers().getAutoModService().setDupeSettings(event.getGuild(), strikes, deleteThreshold, strikeThreshold);
+        boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
         event.replySuccess("Anti-Duplicate will now delete duplicates starting at duplicate **"+deleteThreshold
                 +"** and begin assigning **"+strikes+"** strikes for each duplicate starting at duplicate **"+strikeThreshold+"**."
-                +(also ? PunishmentManager.DEFAULT_SETUP_MESSAGE : ""));
+                +(also ? Punishment.DEFAULT_SETUP_MESSAGE : ""));
     }
 }

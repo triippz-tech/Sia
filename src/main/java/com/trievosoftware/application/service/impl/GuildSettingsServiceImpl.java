@@ -1,6 +1,7 @@
 package com.trievosoftware.application.service.impl;
 
 import com.jagrosh.jdautilities.command.GuildSettingsManager;
+import com.trievosoftware.application.exceptions.SetPrefixException;
 import com.trievosoftware.application.service.GuildSettingsService;
 import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.repository.GuildSettingsRepository;
@@ -34,7 +35,6 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
 
     public final static int PREFIX_MAX_LENGTH = 40;
     private static final String SETTINGS_TITLE = "\uD83D\uDCCA Server Settings"; // 📊
-    private static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("GMT-4");
     private final FixedCache<Long, GuildSettings> cache = new FixedCache<>(1000);
 
     public GuildSettingsServiceImpl(GuildSettingsRepository guildSettingsRepository) {
@@ -105,13 +105,24 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     @Override
     public GuildSettings getSettings(Guild guild)
     {
+        log.info("Request to get settings for Guild={}", guild.getName());
         if(cache.contains(guild.getIdLong()))
             return cache.get(guild.getIdLong());
-        GuildSettings settings;
         Optional<GuildSettings> tempSettings = findByGuildId(guild.getIdLong());
-        settings = tempSettings.orElseGet(GuildSettings::new);
-        cache.put(guild.getIdLong(), settings);
-        return settings;
+        if ( tempSettings.isPresent() )
+        {
+            log.info("Settings found for Guild={}", guild.getName());
+            cache.put(guild.getIdLong(), tempSettings.get());
+            return tempSettings.get();
+        } else {
+            log.info("No settings found for Guild={}, creating new. . .", guild.getName());
+            GuildSettings settings = new GuildSettings();
+            settings.setDefaults(guild.getIdLong());
+            save(settings);
+            cache.put(guild.getIdLong(), settings);
+            return settings;
+
+        }
     }
 
     private void invalidateCache(Guild guild)
@@ -121,18 +132,21 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
 
     private void invalidateCache(long guildId)
     {
+        log.debug("Request to pull Guild={} from cache", guildId);
         cache.pull(guildId);
     }
 
     @Override
     public boolean hasSettings(Guild guild)
     {
+        log.debug("Request to see if settings exist for Guild={}", guild.getName());
         return findByGuildId(guild.getIdLong()).isPresent();
     }
 
     @Override
     public MessageEmbed.Field getSettingsDisplay(Guild guild)
     {
+        log.debug("Request to get Settings Display Message for Guild={}", guild.getName());
         GuildSettings settings = getSettings(guild);
         TextChannel modlog = settings.getModLogChannel(guild);
         TextChannel serverlog = settings.getServerLogChannel(guild);
@@ -155,6 +169,7 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     @Override
     public void setModLogChannel(Guild guild, TextChannel tc)
     {
+        log.debug("Request to set ModLog Channel={} for Guild={}", tc.getName(), guild.getName());
         invalidateCache(guild);
         Optional<GuildSettings> settings = findByGuildId(guild.getIdLong());
         if ( settings.isPresent() ) {
@@ -168,6 +183,7 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     @Override
     public void setServerLogChannel(Guild guild, TextChannel tc)
     {
+        log.debug("Request to set ServerLog Channel={} for Guild={}", tc.getName(), guild.getName());
         invalidateCache(guild);
         Optional<GuildSettings> settings = findByGuildId(guild.getIdLong());
         if ( settings.isPresent() ) {
@@ -181,6 +197,7 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     @Override
     public void setMessageLogChannel(Guild guild, TextChannel tc)
     {
+        log.debug("Request to set MessageLog Channel={} for Guild={}", tc.getName(), guild.getName());
         invalidateCache(guild);
         Optional<GuildSettings> settings = findByGuildId(guild.getIdLong());
         if ( settings.isPresent() ) {
@@ -194,6 +211,7 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     @Override
     public void setVoiceLogChannel(Guild guild, TextChannel tc)
     {
+        log.debug("Request to set VoiceLog Channel={} for Guild={}", tc.getName(), guild.getName());
         invalidateCache(guild);
         Optional<GuildSettings> settings = findByGuildId(guild.getIdLong());
         if ( settings.isPresent() ) {
@@ -207,6 +225,7 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     @Override
     public void setAvatarLogChannel(Guild guild, TextChannel tc)
     {
+        log.debug("Request to set AvatarLog Channel={} for Guild={}", tc.getName(), guild.getName());
         setAvatarLogChannel(guild.getIdLong(), tc);
     }
 
@@ -226,6 +245,7 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     @Override
     public void setModeratorRole(Guild guild, Role role)
     {
+        log.debug("Request to set Moderator Role={} for Guild={}", role.getName(), guild.getName());
         invalidateCache(guild);
         Optional<GuildSettings> settings = findByGuildId(guild.getIdLong());
         if ( settings.isPresent() ) {
@@ -237,21 +257,25 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     }
 
     @Override
-    public void setPrefix(Guild guild, String prefix)
+    public void setPrefix(Guild guild, String prefix) throws SetPrefixException
     {
+        log.debug("Request to set Prefix={} for Guild={}", prefix, guild.getName());
         invalidateCache(guild);
         Optional<GuildSettings> settings = findByGuildId(guild.getIdLong());
         if ( settings.isPresent() ) {
             settings.get().setPrefix(prefix);
             save(settings.get());
         } else {
-            log.error("Unable to set prefix={} for guild = {}", prefix, guild.getIdLong());
+            log.error("Unable to set prefix={} for guild = {}", prefix, guild.getName());
+            throw new SetPrefixException(String.format("Unable to set prefix=%s for guild=%s",
+                prefix, guild.getName()));
         }
     }
 
     @Override
     public void setTimezone(Guild guild, ZoneId zone)
     {
+        log.debug("Request to set Timezone={} for Guild={}", zone.toString(), guild.getName());
         invalidateCache(guild);
         Optional<GuildSettings> settings = findByGuildId(guild.getIdLong());
         if ( settings.isPresent() ) {
@@ -265,6 +289,7 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     @Override
     public void enableRaidMode(Guild guild)
     {
+        log.debug("Request to ENABLE RaidMode for Guild={}", guild.getName());
         invalidateCache(guild);
         Optional<GuildSettings> settings = findByGuildId(guild.getIdLong());
         if ( settings.isPresent() ) {
@@ -278,6 +303,7 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     @Override
     public Guild.VerificationLevel disableRaidMode(Guild guild)
     {
+        log.debug("Request to DISABLE RaidMode for Guild={}", guild.getName());
         invalidateCache(guild);
         Optional<GuildSettings> settings = findByGuildId(guild.getIdLong());
         Guild.VerificationLevel old = null;

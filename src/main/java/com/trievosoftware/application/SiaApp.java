@@ -3,6 +3,7 @@ package com.trievosoftware.application;
 import com.trievosoftware.application.config.ApplicationProperties;
 import com.trievosoftware.application.config.DefaultProfileUtil;
 
+import com.trievosoftware.application.service.SiaBotService;
 import io.github.jhipster.config.JHipsterConstants;
 
 import org.apache.commons.lang3.StringUtils;
@@ -30,8 +31,11 @@ public class SiaApp {
 
     private final Environment env;
 
-    public SiaApp(Environment env) {
+    private final SiaBotService siaBotService;
+
+    public SiaApp(Environment env, SiaBotService siaBotService) {
         this.env = env;
+        this.siaBotService = siaBotService;
     }
 
     /**
@@ -59,11 +63,12 @@ public class SiaApp {
      *
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SpringApplication app = new SpringApplication(SiaApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         logApplicationStartup(env);
+
     }
 
     private static void logApplicationStartup(Environment env) {

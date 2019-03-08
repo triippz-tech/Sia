@@ -98,13 +98,13 @@ public class PremiumServiceImpl implements PremiumService {
     /**
      * Finds all Premium memberships before a particular time
      *
-     * @param current time
+     * @param now time
      * @return List of Premium guilds
      */
     @Override
-    public List<Premium> findAllByUntilIsLessThan(Long current) {
-        log.debug("Request to get all Premiums Before Current Time={}", current);
-        return premiumRepository.findAllByUntilIsLessThan(current);
+    public List<Premium> findAllByUntilIsLessThan(Instant now) {
+        log.debug("Request to get all Premiums Before Current Time={}", now);
+        return premiumRepository.findAllByUntilIsLessThan(now);
     }
 
     /**
@@ -202,7 +202,8 @@ public class PremiumServiceImpl implements PremiumService {
     @Override
     public List<Long> cleanPremiumList()
     {
-        List<Premium> premiumList = findAllByUntilIsLessThan(Instant.now().getEpochSecond());
+       log.info("Request to clean Premium expirations");
+        List<Premium> premiumList = findAllByUntilIsLessThan(Instant.now());
         List<Long> list = new LinkedList<>();
 
         if (!premiumList.isEmpty()) {

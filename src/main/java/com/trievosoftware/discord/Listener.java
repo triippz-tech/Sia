@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package com.trievosoftware.discord;
 
+import com.trievosoftware.application.exceptions.NoBanFoundExcetion;
+import com.trievosoftware.application.exceptions.UserNotMutedException;
 import com.trievosoftware.discord.logging.MessageCache.CachedMessage;
 import net.dv8tion.jda.core.JDA.ShardInfo;
 import net.dv8tion.jda.core.entities.Message;
@@ -44,7 +46,7 @@ import java.util.stream.Collectors;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class Listener implements EventListener
 {
@@ -136,7 +138,11 @@ public class Listener implements EventListener
         {
             GuildUnbanEvent gue = (GuildUnbanEvent) event;
             // Signal the modlogger because someone was unbanned
-            sia.getDatabase().tempbans.clearBan(gue.getGuild(), gue.getUser().getIdLong());
+            try {
+                sia.getDatabaseManagers().getTempBansService().clearBan(gue.getGuild(), gue.getUser().getIdLong());
+            } catch (NoBanFoundExcetion noBanFoundExcetion) {
+                noBanFoundExcetion.printStackTrace();
+            }
             sia.getModLogger().setNeedUpdate((gue).getGuild());
         }
         else if (event instanceof GuildMemberRoleAddEvent)
@@ -144,7 +150,7 @@ public class Listener implements EventListener
             GuildMemberRoleAddEvent gmrae = (GuildMemberRoleAddEvent) event;
             
             // Signal the modlogger if someone was muted
-            Role mRole = sia.getDatabase().settings.getSettings(gmrae.getGuild()).getMutedRole(gmrae.getGuild());
+            Role mRole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(gmrae.getGuild()).getMutedRole(gmrae.getGuild());
             if(gmrae.getRoles().contains(mRole))
                 sia.getModLogger().setNeedUpdate(gmrae.getGuild());
         }
@@ -153,10 +159,14 @@ public class Listener implements EventListener
             GuildMemberRoleRemoveEvent gmrre = (GuildMemberRoleRemoveEvent) event;
             
             // Signal the modlogger if someone was unmuted
-            Role mRole = sia.getDatabase().settings.getSettings(gmrre.getGuild()).getMutedRole(gmrre.getGuild());
+            Role mRole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(gmrre.getGuild()).getMutedRole(gmrre.getGuild());
             if(gmrre.getRoles().contains(mRole))
             {
-                sia.getDatabase().tempmutes.removeMute(gmrre.getGuild(), gmrre.getUser().getIdLong());
+                try {
+                    sia.getDatabaseManagers().getTempMutesService().removeMute(gmrre.getGuild(), gmrre.getUser().getIdLong());
+                } catch (UserNotMutedException e) {
+                    e.printStackTrace();
+                }
                 sia.getModLogger().setNeedUpdate(gmrre.getGuild());
             }
         }
@@ -175,14 +185,14 @@ public class Listener implements EventListener
         {
             sia.getAutoMod().dehoist(((GuildMemberNickChangeEvent) event).getMember());
         }
-        else if (event instanceof UserUpdateAvatarEvent)
-        {
-            UserUpdateAvatarEvent uaue = (UserUpdateAvatarEvent)event;
-            
-            // Log the avatar change
-            if(!uaue.getUser().isBot())
-                sia.getBasicLogger().logAvatarChange(uaue);
-        }
+//        else if (event instanceof UserUpdateAvatarEvent)
+//        {
+//            UserUpdateAvatarEvent uaue = (UserUpdateAvatarEvent)event;
+//
+//            // Log the avatar change
+//            if(!uaue.getUser().isBot())
+//                sia.getBasicLogger().logAvatarChange(uaue);
+//        }
         else if (event instanceof GuildVoiceJoinEvent)
         {
             GuildVoiceJoinEvent gevent = (GuildVoiceJoinEvent)event;
@@ -213,10 +223,12 @@ public class Listener implements EventListener
             ShardInfo si = event.getJDA().getShardInfo();
             String shardinfo = si==null ? "1/1" : (si.getShardId()+1)+"/"+si.getShardTotal();
             LOG.info("Shard "+shardinfo+" is ready.");
-            sia.getLogWebhook().send("\uD83C\uDF00 Shard `"+shardinfo+"` has connected. Guilds: `" // 🌀
+            sia.getLogWebhook().send("\uD83D\uDD3A Shard `"+shardinfo+"` has connected. Guilds: `" // 🔺
                     +event.getJDA().getGuildCache().size()+"` Users: `"+event.getJDA().getUserCache().size()+"`");
-            sia.getThreadpool().scheduleWithFixedDelay(() -> sia.getDatabase().tempbans.checkUnbans(event.getJDA()), 0, 2, TimeUnit.MINUTES);
-            sia.getThreadpool().scheduleWithFixedDelay(() -> sia.getDatabase().tempmutes.checkUnmutes(event.getJDA(), sia.getDatabase().settings), 0, 45, TimeUnit.SECONDS);
+            sia.getThreadpool().scheduleWithFixedDelay(() ->
+                sia.getDatabaseManagers().getTempBansService().checkUnbans(event.getJDA()), 0, 2, TimeUnit.MINUTES);
+            sia.getThreadpool().scheduleWithFixedDelay(() ->
+                sia.getDatabaseManagers().getTempMutesService().checkUnmutes(event.getJDA(), sia.getDatabaseManagers().getGuildSettingsService()), 0, 45, TimeUnit.SECONDS);
         }
     }
 }

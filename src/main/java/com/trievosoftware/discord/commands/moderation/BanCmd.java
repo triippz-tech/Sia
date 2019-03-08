@@ -16,6 +16,7 @@
 package com.trievosoftware.discord.commands.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.exceptions.NoBanFoundExcetion;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandErrorException;
 import com.trievosoftware.discord.commands.ModCommand;
@@ -49,6 +50,7 @@ public class BanCmd extends ModCommand
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     protected void execute(CommandEvent event)
     {
         ResolvedArgs args = ArgsUtil.resolve(event.getArgs(), true, event.getGuild());
@@ -67,7 +69,7 @@ public class BanCmd extends ModCommand
         else
             minutes = 1;
         String reason = LogUtil.auditReasonFormat(event.getMember(), minutes, args.reason);
-        Role modrole = sia.getDatabase().settings.getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
         StringBuilder builder = new StringBuilder();
         List<Long> ids = new ArrayList<>(args.ids);
         
@@ -107,9 +109,14 @@ public class BanCmd extends ModCommand
             {
                 builder.append("\n").append(event.getClient().getSuccess()).append(" Successfully banned <@").append(id).append(">").append(time);
                 if(minutes>0)
-                    sia.getDatabase().tempbans.setBan(event.getGuild(), uid, unbanTime);
-                else
-                    sia.getDatabase().tempbans.clearBan(event.getGuild(), uid);
+                    sia.getDatabaseManagers().getTempBansService().setBan(event.getGuild(), uid, unbanTime);
+                else {
+                    try {
+                        sia.getDatabaseManagers().getTempBansService().clearBan(event.getGuild(), uid);
+                    } catch (NoBanFoundExcetion noBanFoundExcetion) {
+                        noBanFoundExcetion.printStackTrace();
+                    }
+                }
                 if(last)
                     event.reply(builder.toString());
             }, failure -> 

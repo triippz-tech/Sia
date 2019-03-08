@@ -82,7 +82,7 @@ public class CleanCmd extends ModCommand
     {
         if(event.getArgs().isEmpty() || event.getArgs().equalsIgnoreCase("help"))
             throw new CommandWarningException(noparams);
-        TextChannel modlog = sia.getDatabase().settings.getSettings(event.getGuild()).getModLogChannel(event.getGuild());
+        TextChannel modlog = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModLogChannel(event.getGuild());
         if(modlog!=null && event.getChannel().getIdLong()==modlog.getIdLong())
             throw new CommandWarningException("This command cannot be used in the modlog!");
         int num = -1;
@@ -217,7 +217,7 @@ public class CleanCmd extends ModCommand
             }
             event.replySuccess("Cleaned **"+del.size()+"** messages."+(week2?week2limit:""));
             event.getClient().applyCooldown(getCooldownKey(event), 1);
-            if(sia.getDatabase().settings.getSettings(event.getGuild()).getModLogChannel(event.getGuild())==null)
+            if(sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModLogChannel(event.getGuild())==null)
                 return;
             final String params;
             if(!all)
@@ -235,22 +235,18 @@ public class CleanCmd extends ModCommand
             else
                 params = "all";
             sia.getTextUploader().upload(LogUtil.logMessagesBackwards("Cleaned Messages", del), "CleanedMessages", (view, download) ->
-            {
                 sia.getModLogger().postCleanCase(event.getMember(), event.getMessage().getCreationTime(), del.size(),
                         event.getTextChannel(), params, null, new EmbedBuilder().setColor(event.getSelfMember().getColor())
-                                .appendDescription("[`"+VIEW+" View`]("+view+")  |  [`"+DOWNLOAD+" Download`]("+download+")").build());
-            });
+                                .appendDescription("[`"+VIEW+" View`]("+view+")  |  [`"+DOWNLOAD+" Download`]("+download+")").build()));
         });
     }
     
     private static boolean hasImage(Message message)
     {
-        if(message.getAttachments().stream().anyMatch(a -> a.isImage()))
+        if(message.getAttachments().stream().anyMatch(Message.Attachment::isImage))
             return true;
         if(message.getEmbeds().stream().anyMatch(e -> e.getType()==EmbedType.IMAGE))
             return true;
-        if(message.getEmbeds().stream().anyMatch(e -> e.getImage()!=null || e.getVideoInfo()!=null))
-            return true;
-        return false;
+        return message.getEmbeds().stream().anyMatch(e -> e.getImage() != null || e.getVideoInfo() != null);
     }
 }

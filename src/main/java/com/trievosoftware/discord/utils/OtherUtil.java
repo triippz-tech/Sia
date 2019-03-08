@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class OtherUtil
 {
@@ -41,7 +43,7 @@ public class OtherUtil
         '\u214B', '\u2018', '\u2768', '\u2769', '\u2217', '\u2722', '\u201A', '\u2013', '\uFBB3', '\u2044'}; // similar
     public final static String DEHOIST_JOINED = "`"+FormatUtil.join("`, `", DEHOIST_ORIGINAL)+"`";
     
-    public final static boolean dehoist(Member m, char symbol)
+    public static boolean dehoist(Member m, char symbol)
     {
         if(!m.getGuild().getSelfMember().canInteract(m))
             return false;
@@ -111,7 +113,8 @@ public class OtherUtil
     {
         try
         {
-            List<String> values = Files.readAllLines(Paths.get("lists" + File.separator + filename + ".txt")).stream()
+            String resourceLLoc = OtherUtil.class.getClassLoader().getResource("lists" + File.separator + filename + ".txt").getPath();
+            List<String> values = Files.readAllLines(Paths.get(resourceLLoc)).stream()
                     .map(str -> str.replace("\uFEFF", "").trim()).filter(str -> !str.isEmpty() && !str.startsWith("//")).collect(Collectors.toList());
             String[] list = new String[values.size()];
             for(int i=0; i<list.length; i++)
@@ -119,9 +122,13 @@ public class OtherUtil
             LOG.info("Successfully read "+list.length+" entries from '"+filename+"'");
             return list;
         }
-        catch(Exception ex)
+        catch(NoSuchFileException | NullPointerException ex)
         {
-            LOG.error("Failed to read '"+filename+"':"+ ex);
+
+            LOG.error("File does not exists: '"+filename+"':"+ ex);
+            return new String[0];
+        } catch (IOException e) {
+            LOG.error("Failed to read: '"+filename+"':"+ e);
             return new String[0];
         }
     }

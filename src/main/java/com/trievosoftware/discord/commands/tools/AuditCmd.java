@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (john.a.grosh@gmail.com).
+ * Copyright 2018 Mark Tripoli (mark.tripoli@trievosoftware.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import java.util.List;
 
 /**
  *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 public class AuditCmd extends Command
 {
@@ -195,43 +195,43 @@ public class AuditCmd extends Command
     {
         switch(type)
         {
-            case BAN:                     return "<:Ban:274789152304660481>";
-            case KICK:                    return "<:DeleteUser:274789150920671232>";
-            case UNBAN:                   return "<:Unban:274789150689984513>";
-            case PRUNE:                   return "<:removeMember:417574812718858250>";
+            case BAN:                     return "<:Ban:274789152304660481>";//good
+            case KICK:                    return "<a:kick:553298448015687697>"; //good
+            case UNBAN:                   return "<a:unban:553298725829738497>"; //good
+            case PRUNE:                   return "<:remove:553301402768900116>"; //good
             
-            case CHANNEL_CREATE:          return "<:addChannel:417574812425125888>";
-            case CHANNEL_DELETE:          return "<:deleteChannel:417574812622258186>";
-            case CHANNEL_UPDATE:          return "<:updateChannel:417574812240576514>";
+            case CHANNEL_CREATE:          return "<:addChannel:553302942573395968>"; //good
+            case CHANNEL_DELETE:          return "<:delete:553362471008731149>"; // good
+            case CHANNEL_UPDATE:          return "<:update:553302939385593866>"; //good
             
-            case CHANNEL_OVERRIDE_CREATE: return "<:addChannel:417574812425125888>";
-            case CHANNEL_OVERRIDE_DELETE: return "<:deleteChannel:417574812622258186>";
-            case CHANNEL_OVERRIDE_UPDATE: return "<:updateChannel:417574812240576514>";
+            case CHANNEL_OVERRIDE_CREATE: return "<:addChannel:553302942573395968>"; //good
+            case CHANNEL_OVERRIDE_DELETE: return "<:delete:553362471008731149>"; //good
+            case CHANNEL_OVERRIDE_UPDATE: return "<:update:553302939385593866>"; //good
             
-            case EMOTE_CREATE:            return "<:createEmoji:417574812689498112>";
-            case EMOTE_DELETE:            return "<:deleteEmoji:417574812521725962>";
-            case EMOTE_UPDATE:            return "<:updateEmoji:417574812601548800>";
+            case EMOTE_CREATE:            return "<:createEmoji:553360873469640715>"; //good
+            case EMOTE_DELETE:            return "<:delete:553362471008731149>";
+            case EMOTE_UPDATE:            return "<:update:553302939385593866>";
             
-            case GUILD_UPDATE:            return "<:updateServer:417574812534177793>";
+            case GUILD_UPDATE:            return "<:update:553302939385593866>";
             
-            case INVITE_CREATE:           return "<:addInvite:417574812517662721>";
-            case INVITE_DELETE:           return "<:deleteInvite:417574812521725953>";
-            case INVITE_UPDATE:           return "<:updateInvite:417574812429320192>";
+            case INVITE_CREATE:           return "<:messageCreate:553361460206501921>";//good
+            case INVITE_DELETE:           return "<:delete:553362471008731149>";
+            case INVITE_UPDATE:           return "<:update:553302939385593866>";
             
             case MEMBER_ROLE_UPDATE:      return "<:updateMember:417574812504948736>";
-            case MEMBER_UPDATE:           return "<:updateMember:417574812504948736>";
+            case MEMBER_UPDATE:           return "<:update:553302939385593866>";
             
-            case MESSAGE_CREATE:          return "<:createMessage:446853279926845452>";
-            case MESSAGE_DELETE:          return "<:deleteMessage:417574812399960065>";
-            case MESSAGE_UPDATE:          return "<:updateMessage:446853280308396032>";
+            case MESSAGE_CREATE:          return "<:messageCreate:553361460206501921>"; //good
+            case MESSAGE_DELETE:          return "<:delete:553362471008731149>";
+            case MESSAGE_UPDATE:          return "<:update:553302939385593866>";
             
-            case ROLE_CREATE:             return "<:createRole:417574812399960075>";
-            case ROLE_DELETE:             return "<:deleteRole:417574812463136769>";
-            case ROLE_UPDATE:             return "<:updateRole:417574812165210126>";
+            case ROLE_CREATE:             return "<:role:553362127356690434>";
+            case ROLE_DELETE:             return "<:delete:553362471008731149>";
+            case ROLE_UPDATE:             return "<:update:553302939385593866>";
             
-            case WEBHOOK_CREATE:          return "<:createWebhook:417574812714532864>";
-            case WEBHOOK_REMOVE:          return "<:deleteWebhook:417574812098101250>";
-            case WEBHOOK_UPDATE:          return "<:updateWebhook:417574812534439946>";
+            case WEBHOOK_CREATE:          return "<:webhook:553361786317963264>";
+            case WEBHOOK_REMOVE:          return "<:delete:553362471008731149>";
+            case WEBHOOK_UPDATE:          return "<:update:553302939385593866>";
             
             case UNKNOWN:                 return "\u2753"; // ❓
             default:                      return "\u2753"; // ❓
