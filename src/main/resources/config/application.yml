@@ -190,16 +190,21 @@ jhipster:
 
 #application:
 #    api:
-#        openweathermap: null
-#        google: null
-#        youtube: null
-#        giphy:  # will need a production key
-#        cryptoCompare: nope
+#        openweathermap:
+#        # GOOGLE API KEY INCLUDES
+#        # - Youtube Public API (free)
+#        # - Places API (free)
+#        # - Cloud Speech-to-Text API (free + paid)
+#        # - Custom Search API (free)
+#        google: none
+#        giphy:  nonee # will need a production key
+#        cryptoCompare:
+#        nasa: none
 #    discord:
-#        token: nope
+#        token: none
 #        authorId: 110926644876689408
 #        prefix: /
-#        alternatePrefix: +
+#        alternatePrefix: <
 #        shards: 1
 #        guildId: 484462646763061249 #Trievo Server ID
 #        categoryId: 547415713418182665

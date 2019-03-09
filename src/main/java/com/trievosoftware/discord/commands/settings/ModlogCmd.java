@@ -38,7 +38,7 @@ public class ModlogCmd extends LogCommand
     @Override
     protected void showCurrentChannel(CommandEvent event)
     {
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModLogChannel(event.getGuild());
         if(tc==null)
             event.replyWarning("Moderation Logs are not currently enabled on the server. Please include a channel name.");
         else
@@ -49,7 +49,7 @@ public class ModlogCmd extends LogCommand
     @Override
     protected void setLogChannel(CommandEvent event, TextChannel tc)
     {
-        sia.getDatabaseManagers().getGuildSettingsService().setModLogChannel(event.getGuild(), tc);
+        sia.getServiceManagers().getGuildSettingsService().setModLogChannel(event.getGuild(), tc);
         sia.getModLogger().setNeedUpdate(event.getGuild());
         if(tc==null)
             event.replySuccess("Moderation Logs will not be sent");

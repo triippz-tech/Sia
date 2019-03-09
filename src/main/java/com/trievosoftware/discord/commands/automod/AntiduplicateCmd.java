@@ -56,7 +56,7 @@ public class AntiduplicateCmd extends Command
         }
         if(event.getArgs().equalsIgnoreCase("off"))
         {
-            sia.getDatabaseManagers().getAutoModService().setDupeSettings(event.getGuild(), 0, 0, 0);
+            sia.getServiceManagers().getAutoModService().setDupeSettings(event.getGuild(), 0, 0, 0);
             event.replySuccess("Anti-Duplicate has been disabled.");
             return;
         }
@@ -94,12 +94,12 @@ public class AntiduplicateCmd extends Command
         }
         if(strikeThreshold<=0 || deleteThreshold<=0 || strikes<=0)
         {
-            sia.getDatabaseManagers().getAutoModService().setDupeSettings(event.getGuild(), 0, 0, 0);
+            sia.getServiceManagers().getAutoModService().setDupeSettings(event.getGuild(), 0, 0, 0);
             event.replySuccess("Anti-Duplicate has been disabled.");
             return;
         }
-        sia.getDatabaseManagers().getAutoModService().setDupeSettings(event.getGuild(), strikes, deleteThreshold, strikeThreshold);
-        boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
+        sia.getServiceManagers().getAutoModService().setDupeSettings(event.getGuild(), strikes, deleteThreshold, strikeThreshold);
+        boolean also = sia.getServiceManagers().getActionsService().useDefaultSettings(event.getGuild());
         event.replySuccess("Anti-Duplicate will now delete duplicates starting at duplicate **"+deleteThreshold
                 +"** and begin assigning **"+strikes+"** strikes for each duplicate starting at duplicate **"+strikeThreshold+"**."
                 +(also ? Punishment.DEFAULT_SETUP_MESSAGE : ""));

@@ -71,8 +71,8 @@ public class AntirefCmd extends Command
             event.replyError("The number of strikes must be between 0 and "+AutoMod.MAX_STRIKES);
             return;
         }
-        sia.getDatabaseManagers().getAutoModService().setRefStrikes(event.getGuild(), numstrikes);
-        boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
+        sia.getServiceManagers().getAutoModService().setRefStrikes(event.getGuild(), numstrikes);
+        boolean also = sia.getServiceManagers().getActionsService().useDefaultSettings(event.getGuild());
         event.replySuccess("Users will now receive `"+numstrikes+"` strikes for posting referral links or other malicious links."+
             (also ? Punishment.DEFAULT_SETUP_MESSAGE : ""));
     }

@@ -71,8 +71,8 @@ public class AntieveryoneCmd extends Command
             event.replyError("The number of strikes must be between 0 and "+AutoMod.MAX_STRIKES);
             return;
         }
-        sia.getDatabaseManagers().getAutoModService().setEveryoneStrikes(event.getGuild(), numstrikes);
-        boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
+        sia.getServiceManagers().getAutoModService().setEveryoneStrikes(event.getGuild(), numstrikes);
+        boolean also = sia.getServiceManagers().getActionsService().useDefaultSettings(event.getGuild());
         event.replySuccess("Users will now receive `"+numstrikes+"` strikes for attempting to ping @\u0435veryone/here. " // cyrillic e
                 + "This also considers pingable roles called 'everyone' and 'here'. This will not affect users that actually "
                 + "have permission to ping everyone."+(also ? Punishment.DEFAULT_SETUP_MESSAGE : ""));

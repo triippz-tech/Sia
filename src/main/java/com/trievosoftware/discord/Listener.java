@@ -33,7 +33,6 @@ import net.dv8tion.jda.core.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageUpdateEvent;
-import net.dv8tion.jda.core.events.user.update.UserUpdateAvatarEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateDiscriminatorEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateNameEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
@@ -139,7 +138,7 @@ public class Listener implements EventListener
             GuildUnbanEvent gue = (GuildUnbanEvent) event;
             // Signal the modlogger because someone was unbanned
             try {
-                sia.getDatabaseManagers().getTempBansService().clearBan(gue.getGuild(), gue.getUser().getIdLong());
+                sia.getServiceManagers().getTempBansService().clearBan(gue.getGuild(), gue.getUser().getIdLong());
             } catch (NoBanFoundExcetion noBanFoundExcetion) {
                 noBanFoundExcetion.printStackTrace();
             }
@@ -150,7 +149,7 @@ public class Listener implements EventListener
             GuildMemberRoleAddEvent gmrae = (GuildMemberRoleAddEvent) event;
             
             // Signal the modlogger if someone was muted
-            Role mRole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(gmrae.getGuild()).getMutedRole(gmrae.getGuild());
+            Role mRole = sia.getServiceManagers().getGuildSettingsService().getSettings(gmrae.getGuild()).getMutedRole(gmrae.getGuild());
             if(gmrae.getRoles().contains(mRole))
                 sia.getModLogger().setNeedUpdate(gmrae.getGuild());
         }
@@ -159,11 +158,11 @@ public class Listener implements EventListener
             GuildMemberRoleRemoveEvent gmrre = (GuildMemberRoleRemoveEvent) event;
             
             // Signal the modlogger if someone was unmuted
-            Role mRole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(gmrre.getGuild()).getMutedRole(gmrre.getGuild());
+            Role mRole = sia.getServiceManagers().getGuildSettingsService().getSettings(gmrre.getGuild()).getMutedRole(gmrre.getGuild());
             if(gmrre.getRoles().contains(mRole))
             {
                 try {
-                    sia.getDatabaseManagers().getTempMutesService().removeMute(gmrre.getGuild(), gmrre.getUser().getIdLong());
+                    sia.getServiceManagers().getTempMutesService().removeMute(gmrre.getGuild(), gmrre.getUser().getIdLong());
                 } catch (UserNotMutedException e) {
                     e.printStackTrace();
                 }
@@ -226,9 +225,9 @@ public class Listener implements EventListener
             sia.getLogWebhook().send("\uD83D\uDD3A Shard `"+shardinfo+"` has connected. Guilds: `" // 🔺
                     +event.getJDA().getGuildCache().size()+"` Users: `"+event.getJDA().getUserCache().size()+"`");
             sia.getThreadpool().scheduleWithFixedDelay(() ->
-                sia.getDatabaseManagers().getTempBansService().checkUnbans(event.getJDA()), 0, 2, TimeUnit.MINUTES);
+                sia.getServiceManagers().getTempBansService().checkUnbans(event.getJDA()), 0, 2, TimeUnit.MINUTES);
             sia.getThreadpool().scheduleWithFixedDelay(() ->
-                sia.getDatabaseManagers().getTempMutesService().checkUnmutes(event.getJDA(), sia.getDatabaseManagers().getGuildSettingsService()), 0, 45, TimeUnit.SECONDS);
+                sia.getServiceManagers().getTempMutesService().checkUnmutes(event.getJDA(), sia.getServiceManagers().getGuildSettingsService()), 0, 45, TimeUnit.SECONDS);
         }
     }
 }

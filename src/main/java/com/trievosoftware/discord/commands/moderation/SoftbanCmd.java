@@ -56,7 +56,7 @@ public class SoftbanCmd extends ModCommand
             return;
         }
         String reason = LogUtil.auditReasonFormat(event.getMember(), args.reason);
-        Role modrole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
         String unbanreason = LogUtil.auditReasonFormat(event.getMember(), "Softban Unban");
         StringBuilder builder = new StringBuilder();
         List<Member> toSoftban = new LinkedList<>();

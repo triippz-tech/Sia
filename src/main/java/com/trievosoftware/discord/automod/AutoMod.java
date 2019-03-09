@@ -92,7 +92,7 @@ public class AutoMod
     
     public void enableRaidMode(Guild guild, Member moderator, OffsetDateTime now, String reason)
     {
-        sia.getDatabaseManagers().getGuildSettingsService().enableRaidMode(guild);
+        sia.getServiceManagers().getGuildSettingsService().enableRaidMode(guild);
         if(guild.getVerificationLevel().getKey()<VerificationLevel.HIGH.getKey())
         {
             try
@@ -105,7 +105,7 @@ public class AutoMod
     
     public void disableRaidMode(Guild guild, Member moderator, OffsetDateTime now, String reason)
     {
-        VerificationLevel last = sia.getDatabaseManagers().getGuildSettingsService().disableRaidMode(guild);
+        VerificationLevel last = sia.getServiceManagers().getGuildSettingsService().disableRaidMode(guild);
         if(guild.getVerificationLevel()!=last)
         {
             try
@@ -122,8 +122,8 @@ public class AutoMod
         if(event.getMember().getUser().isBot())
             return;
         
-        boolean inRaidMode = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).isInRaidMode();
-        com.trievosoftware.application.domain.AutoMod ams = sia.getDatabaseManagers().getAutoModService().getSettings(event.getGuild());
+        boolean inRaidMode = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).isInRaidMode();
+        com.trievosoftware.application.domain.AutoMod ams = sia.getServiceManagers().getAutoModService().getSettings(event.getGuild());
         OffsetDateTime now = OffsetDateTime.now();
         boolean kicking = false;
         
@@ -172,12 +172,12 @@ public class AutoMod
         }
         else
         {
-            if(sia.getDatabaseManagers().getTempMutesService().isMuted(event.getMember()))
+            if(sia.getServiceManagers().getTempMutesService().isMuted(event.getMember()))
             {
                 try
                 {
                     event.getGuild().getController()
-                            .addSingleRoleToMember(event.getMember(), sia.getDatabaseManagers().getGuildSettingsService()
+                            .addSingleRoleToMember(event.getMember(), sia.getServiceManagers().getGuildSettingsService()
                                 .getSettings(event.getGuild()).getMutedRole(event.getGuild()))
                             .reason(RESTORE_MUTE_ROLE_AUDIT).queue();
                 } catch(Exception ignore){}
@@ -220,10 +220,10 @@ public class AutoMod
             return false;
         
         // if a channel is specified, ignore users that can manage messages in that channel
-        if(channel!=null && (member.hasPermission(channel, Permission.MESSAGE_MANAGE) || sia.getDatabaseManagers().getIgnoredService().isIgnored(channel)))
+        if(channel!=null && (member.hasPermission(channel, Permission.MESSAGE_MANAGE) || sia.getServiceManagers().getIgnoredService().isIgnored(channel)))
             return false;
 
-        return !sia.getDatabaseManagers().getIgnoredService().isIgnored(member);
+        return !sia.getServiceManagers().getIgnoredService().isIgnored(member);
     }
     
     public void dehoist(Member member)
@@ -234,7 +234,7 @@ public class AutoMod
         if(!shouldPerformAutomod(member, null))
             return;
         
-        com.trievosoftware.application.domain.AutoMod settings = sia.getDatabaseManagers().getAutoModService().getSettings(member.getGuild());
+        com.trievosoftware.application.domain.AutoMod settings = sia.getServiceManagers().getAutoModService().getSettings(member.getGuild());
         if(settings==null || settings.getDehoistChar()==(char)0 || member.getEffectiveName().charAt(0)>settings.getDehoistChar())
             return;
         
@@ -253,7 +253,7 @@ public class AutoMod
         
         //get the settings
         com.trievosoftware.application.domain.AutoMod settings =
-            sia.getDatabaseManagers().getAutoModService().getSettings(message.getGuild());
+            sia.getServiceManagers().getAutoModService().getSettings(message.getGuild());
         if(settings==null)
             return;
         

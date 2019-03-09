@@ -48,7 +48,7 @@ public class UnmuteCmd extends ModCommand
     @SuppressWarnings("Duplicates")
     protected void execute(CommandEvent event)
     {
-        Role muteRole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
+        Role muteRole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
         if(muteRole == null)
         {
             event.replyError("No Muted role exists!");

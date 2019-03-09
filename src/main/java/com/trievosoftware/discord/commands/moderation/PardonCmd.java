@@ -95,7 +95,7 @@ public class PardonCmd extends ModCommand
         args.ids.forEach(id -> 
         {
             String user = event.getJDA().getUserById(id)==null ? "<@"+id+">" : FormatUtil.formatUser(event.getJDA().getUserById(id));
-            int strikes = sia.getDatabaseManagers().getStrikesService().getStrikes(event.getGuild(), id);
+            int strikes = sia.getServiceManagers().getStrikesService().getStrikes(event.getGuild(), id);
             if(strikes==0)
                 builder.append("\n").append(event.getClient().getWarning()).append(" ").append(user).append(" has no strikes.");
             else

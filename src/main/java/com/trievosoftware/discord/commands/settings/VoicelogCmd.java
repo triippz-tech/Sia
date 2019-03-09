@@ -36,7 +36,7 @@ public class VoicelogCmd extends LogCommand
     @Override
     protected void showCurrentChannel(CommandEvent event)
     {
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getVoiceLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getVoiceLogChannel(event.getGuild());
         if(tc==null)
             event.replyWarning("Voice Logs are not currently enabled on the server. Please include a channel name.");
         else
@@ -47,7 +47,7 @@ public class VoicelogCmd extends LogCommand
     @Override
     protected void setLogChannel(CommandEvent event, TextChannel tc)
     {
-        sia.getDatabaseManagers().getGuildSettingsService().setVoiceLogChannel(event.getGuild(), tc);
+        sia.getServiceManagers().getGuildSettingsService().setVoiceLogChannel(event.getGuild(), tc);
         if(tc==null)
             event.replySuccess("Voice Logs will not be sent");
         else

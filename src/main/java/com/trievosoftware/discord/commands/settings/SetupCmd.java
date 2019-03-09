@@ -84,52 +84,52 @@ public class SetupCmd extends Command
             {
                 event.getChannel().sendTyping().queue();
                 StringBuilder sb = new StringBuilder("**Automod setup complete!**");
-                if(sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild()))
+                if(sia.getServiceManagers().getActionsService().useDefaultSettings(event.getGuild()))
                     sb.append("\n").append(Constants.SUCCESS).append(" Set up default punishments");
-                AutoMod ams = sia.getDatabaseManagers().getAutoModService().getSettings(event.getGuild());
+                AutoMod ams = sia.getServiceManagers().getAutoModService().getSettings(event.getGuild());
                 if(ams.getInviteStrikes()==0)
                 {
-                    sia.getDatabaseManagers().getAutoModService().setInviteStrikes(event.getGuild(), 2);
+                    sia.getServiceManagers().getAutoModService().setInviteStrikes(event.getGuild(), 2);
                     sb.append("\n").append(Constants.SUCCESS).append(" Anti-invite set to `2` strikes");
                 }
                 if(ams.getRefStrikes()==0)
                 {
-                    sia.getDatabaseManagers().getAutoModService().setRefStrikes(event.getGuild(), 3);
+                    sia.getServiceManagers().getAutoModService().setRefStrikes(event.getGuild(), 3);
                     sb.append("\n").append(Constants.SUCCESS).append(" Anti-referral set to `3` strikes");
                 }
                 if(!ams.useAntiDuplicate())
                 {
-                    sia.getDatabaseManagers().getAutoModService().setDupeSettings(event.getGuild(), 1, 2, 4);
+                    sia.getServiceManagers().getAutoModService().setDupeSettings(event.getGuild(), 1, 2, 4);
                     sb.append("\n").append(Constants.SUCCESS).append(" Anti-duplicate will start deleting at duplicate `2`, and will assign `1` strike each duplicate starting at duplicate `4`");
                 }
                 if(ams.getCopyPastaStrikes()==0)
                 {
-                    sia.getDatabaseManagers().getAutoModService().setCopypastaStrikes(event.getGuild(), 1);
+                    sia.getServiceManagers().getAutoModService().setCopypastaStrikes(event.getGuild(), 1);
                     sb.append("\n").append(Constants.SUCCESS).append(" Anti-copypasta set to `1` strikes");
                 }
                 if(ams.getMaxMentions()==0)
                 {
-                    sia.getDatabaseManagers().getAutoModService().setMaxMentions(event.getGuild(), 10);
+                    sia.getServiceManagers().getAutoModService().setMaxMentions(event.getGuild(), 10);
                     sb.append("\n").append(Constants.SUCCESS).append(" Maximum mentions set to `10` mentions");
                 }
                 if(ams.getMaxRoleMentions()==0)
                 {
-                    sia.getDatabaseManagers().getAutoModService().setMaxRoleMentions(event.getGuild(), 4);
+                    sia.getServiceManagers().getAutoModService().setMaxRoleMentions(event.getGuild(), 4);
                     sb.append("\n").append(Constants.SUCCESS).append(" Maximum role mentions set to `4` mentions");
                 }
                 if(ams.getMaxLines()==0)
                 {
-                    sia.getDatabaseManagers().getAutoModService().setMaxLines(event.getGuild(), 10);
+                    sia.getServiceManagers().getAutoModService().setMaxLines(event.getGuild(), 10);
                     sb.append("\n").append(Constants.SUCCESS).append(" Maximum lines set to `10` lines");
                 }
                 if(!ams.useAutoRaidMode())
                 {
-                    sia.getDatabaseManagers().getAutoModService().setAutoRaidMode(event.getGuild(), 10, 10);
+                    sia.getServiceManagers().getAutoModService().setAutoRaidMode(event.getGuild(), 10, 10);
                     sb.append("\n").append(Constants.SUCCESS).append(" Anti-Raid Mode will activate upon `10` joins in `10` seconds");
                 }
                 if(ams.getDehoistChar()==(char)0)
                 {
-                    sia.getDatabaseManagers().getAutoModService().setDehoistChar(event.getGuild(), '!');
+                    sia.getServiceManagers().getAutoModService().setDehoistChar(event.getGuild(), '!');
                     sb.append("\n").append(Constants.SUCCESS).append(" Names starting with `!` will be dehoisted");
                 }
                 sb.append("\n").append(Constants.WARNING).append(" Any settings not shown here were not set due to being already set. Please check the automod section of the wiki (<")
@@ -158,7 +158,7 @@ public class SetupCmd extends Command
         @Override
         protected void execute(CommandEvent event)
         {
-            Role muted = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
+            Role muted = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
             String confirmation;
             if(muted!=null)
             {

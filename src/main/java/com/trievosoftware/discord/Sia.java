@@ -77,13 +77,13 @@ public class Sia
     private final WebhookClient logwebhook;
     private final AutoMod automod;
     private final StrikeHandler strikehandler;
-    private final ServiceManagers databaseManagers;
+    private final ServiceManagers serviceManagers;
 
     private final ApplicationProperties applicationProperties;
 
     public Sia(ServiceManagers databaseManagers, ApplicationProperties applicationProperties) throws Exception
     {
-        this.databaseManagers = databaseManagers;
+        this.serviceManagers = databaseManagers;
         this.applicationProperties = applicationProperties;
         waiter = new EventWaiter(Executors.newSingleThreadScheduledExecutor(), false);
         threadpool = Executors.newScheduledThreadPool(50);
@@ -266,10 +266,10 @@ public class Sia
     
     public void cleanPremium()
     {
-        databaseManagers.getPremiumService().cleanPremiumList().forEach((gid) ->
+        serviceManagers.getPremiumService().cleanPremiumList().forEach((gid) ->
         {
-            databaseManagers.getAutoModService().setResolveUrls(gid, false);
-            databaseManagers.getGuildSettingsService().setAvatarLogChannel(gid, null);
+            serviceManagers.getAutoModService().setResolveUrls(gid, false);
+            serviceManagers.getGuildSettingsService().setAvatarLogChannel(gid, null);
         });
     }
     
@@ -282,9 +282,9 @@ public class Sia
             int botcount = (int)g.getMemberCache().stream().filter(m -> m.getUser().isBot()).count();
             if(g.getMemberCache().size()-botcount<15 || (botcount>20 && ((double)botcount/g.getMemberCache().size())>0.65))
             {
-                if(databaseManagers.getGuildSettingsService().hasSettings(g))
+                if(serviceManagers.getGuildSettingsService().hasSettings(g))
                     return false;
-                if(databaseManagers.getAutoModService().hasSettings(g))
+                if(serviceManagers.getAutoModService().hasSettings(g))
                     return false;
                 return true;
             }
@@ -292,8 +292,8 @@ public class Sia
         }).forEach(g -> g.leave().queue());
     }
 
-    public ServiceManagers getDatabaseManagers() {
-        return databaseManagers;
+    public ServiceManagers getServiceManagers() {
+        return serviceManagers;
     }
 
     public ApplicationProperties getApplicationProperties() {

@@ -47,7 +47,7 @@ public class AutoraidmodeCmd extends Command
     {
         if(event.getArgs().equalsIgnoreCase("off"))
         {
-            sia.getDatabaseManagers().getAutoModService().setAutoRaidMode(event.getGuild(), 0, 0);
+            sia.getServiceManagers().getAutoModService().setAutoRaidMode(event.getGuild(), 0, 0);
             event.replySuccess("Auto-Anti-Raid mode has been disabled.");
             return;
         }
@@ -73,7 +73,7 @@ public class AutoraidmodeCmd extends Command
             joins = Integer.parseInt(parts[0]);
             seconds = Integer.parseInt(parts[1]);
         }
-        sia.getDatabaseManagers().getAutoModService().setAutoRaidMode(event.getGuild(), joins, seconds);
+        sia.getServiceManagers().getAutoModService().setAutoRaidMode(event.getGuild(), joins, seconds);
         event.replySuccess("Anti-Raid mode will be enabled automatically when there are `"+joins+"` joins in `"+seconds+"` seconds.");
     }
 }

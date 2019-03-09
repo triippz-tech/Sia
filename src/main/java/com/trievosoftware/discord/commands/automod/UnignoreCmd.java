@@ -65,7 +65,7 @@ public class UnignoreCmd extends Command {
         }
         if(tc!=null)
         {
-            if(sia.getDatabaseManagers().getIgnoredService().unignore(tc))
+            if(sia.getServiceManagers().getIgnoredService().unignore(tc))
                 event.replySuccess("Automod is no longer ignoring channel <#"+tc.getId()+">");
             else
                 event.replyError("Automod was not already ignoring <#"+tc.getId()+">!");
@@ -77,7 +77,7 @@ public class UnignoreCmd extends Command {
             event.replyError("No roles or text channels found for `"+event.getArgs()+"`");
         else if (roles.size()==1)
         {
-            if(sia.getDatabaseManagers().getIgnoredService().unignore(roles.get(0)))
+            if(sia.getServiceManagers().getIgnoredService().unignore(roles.get(0)))
                 event.replySuccess("Automod is no longer ignoring role `"+roles.get(0).getName()+"`");
             else
                 event.replyError("Automod was not ignoring role `"+roles.get(0).getName()+"`"

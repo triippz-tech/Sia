@@ -51,7 +51,7 @@ public class MuteCmd extends ModCommand
     @SuppressWarnings("Duplicates")
     protected void execute(CommandEvent event)
     {
-        Role muteRole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
+        Role muteRole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
         if(muteRole == null)
         {
             event.replyError("No Muted role exists!");
@@ -84,7 +84,7 @@ public class MuteCmd extends ModCommand
         else
             minutes = 1;
         String reason = LogUtil.auditReasonFormat(event.getMember(), minutes, args.reason);
-        Role modrole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
         StringBuilder builder = new StringBuilder();
         List<Member> toMute = new LinkedList<>();
         
@@ -127,9 +127,9 @@ public class MuteCmd extends ModCommand
             {
                 builder.append("\n").append(event.getClient().getSuccess()).append(" Successfully muted ").append(FormatUtil.formatUser(m.getUser())).append(time);
                 if(minutes>0)
-                    sia.getDatabaseManagers().getTempMutesService().overrideMute(event.getGuild(), m.getUser().getIdLong(), unmuteTime);
+                    sia.getServiceManagers().getTempMutesService().overrideMute(event.getGuild(), m.getUser().getIdLong(), unmuteTime);
                 else
-                    sia.getDatabaseManagers().getTempMutesService().overrideMute(event.getGuild(), m.getUser().getIdLong(), Instant.MAX);
+                    sia.getServiceManagers().getTempMutesService().overrideMute(event.getGuild(), m.getUser().getIdLong(), Instant.MAX);
                 if(last)
                     event.reply(builder.toString());
             }, failure -> 

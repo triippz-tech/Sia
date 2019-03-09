@@ -39,7 +39,7 @@ public abstract class ModCommand extends Command
                 event.replyError("This command is not available in Direct Messages!");
                 return false;
             }
-            Role modrole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+            Role modrole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
             if(modrole!=null && event.getMember().getRoles().contains(modrole))
                 return true;
             

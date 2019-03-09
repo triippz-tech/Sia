@@ -78,7 +78,7 @@ public class StrikeCmd extends ModCommand
             return;
         }
         StringBuilder builder = new StringBuilder();
-        Role modrole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
         
         args.members.forEach(m -> 
         {

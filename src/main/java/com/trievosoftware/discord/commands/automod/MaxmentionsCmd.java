@@ -49,7 +49,7 @@ public class MaxmentionsCmd extends Command
     {
         if(event.getArgs().equalsIgnoreCase("off") || event.getArgs().equalsIgnoreCase("none"))
         {
-            sia.getDatabaseManagers().getAutoModService().disableMaxMentions(event.getGuild());
+            sia.getServiceManagers().getAutoModService().disableMaxMentions(event.getGuild());
             event.replySuccess("Anti-Mention has been disabled.");
             return;
         }
@@ -66,8 +66,8 @@ public class MaxmentionsCmd extends Command
                 event.replyError("Maximum mentions must be at least `"+AutoMod.MENTION_MINIMUM+"`");
                 return;
             }
-            sia.getDatabaseManagers().getAutoModService().setMaxMentions(event.getGuild(), num);
-            boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
+            sia.getServiceManagers().getAutoModService().setMaxMentions(event.getGuild(), num);
+            boolean also = sia.getServiceManagers().getActionsService().useDefaultSettings(event.getGuild());
             event.replySuccess("Set the maximum allowed mentions to **"+num+"** users. Messages containing more than **"
                     +num+"** mentions will be deleted and the user will obtain 1 strike for every mention above the maximum."
                     + "\n\nTo set the maximum allowed role mentions, use `"+Constants.PREFIX+name+" "+children[0].getName()+" "+children[0].getArguments()+"`"
@@ -97,7 +97,7 @@ public class MaxmentionsCmd extends Command
         {
             if(event.getArgs().equalsIgnoreCase("off") || event.getArgs().equalsIgnoreCase("none"))
             {
-                sia.getDatabaseManagers().getAutoModService().setMaxRoleMentions(event.getGuild(), 0);
+                sia.getServiceManagers().getAutoModService().setMaxRoleMentions(event.getGuild(), 0);
                 event.replySuccess("Anti-Mention for Role mentions has been disabled.");
                 return;
             }
@@ -114,7 +114,7 @@ public class MaxmentionsCmd extends Command
                     event.replyError("Maximum role mentions must be at least `"+AutoMod.ROLE_MENTION_MINIMUM+"`");
                     return;
                 }
-                sia.getDatabaseManagers().getAutoModService().setMaxRoleMentions(event.getGuild(), num);
+                sia.getServiceManagers().getAutoModService().setMaxRoleMentions(event.getGuild(), num);
                 event.replySuccess("Set the maximum allowed role mentions to **"+num+"** roles.");
             }
             catch(NumberFormatException e)

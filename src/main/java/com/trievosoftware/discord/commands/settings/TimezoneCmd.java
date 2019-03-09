@@ -53,7 +53,7 @@ public class TimezoneCmd extends Command
         
         if(event.getArgs().equalsIgnoreCase("none"))
         {
-            sia.getDatabaseManagers().getGuildSettingsService().setTimezone(event.getGuild(), null);
+            sia.getServiceManagers().getGuildSettingsService().setTimezone(event.getGuild(), null);
             event.replySuccess("The log timezone has been reset.");
             return;
         }
@@ -61,7 +61,7 @@ public class TimezoneCmd extends Command
         try
         {
             ZoneId newzone = ZoneId.of(event.getArgs());
-            sia.getDatabaseManagers().getGuildSettingsService().setTimezone(event.getGuild(), newzone);
+            sia.getServiceManagers().getGuildSettingsService().setTimezone(event.getGuild(), newzone);
             event.replySuccess("The log timezone has been set to `"+newzone.getId()+"`");
         }
         catch(Exception ex)
