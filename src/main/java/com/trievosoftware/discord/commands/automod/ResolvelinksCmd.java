@@ -47,9 +47,9 @@ public class ResolvelinksCmd extends Command
     {
         if(event.getArgs().equalsIgnoreCase("on") || event.getArgs().equalsIgnoreCase("off"))
         {
-            if(sia.getDatabaseManagers().getPremiumService().getPremiumInfo(event.getGuild()).level.isAtLeast(Level.PRO))
+            if(sia.getServiceManagers().getPremiumService().getPremiumInfo(event.getGuild()).level.isAtLeast(Level.PRO))
             {
-                sia.getDatabaseManagers().getAutoModService().setResolveUrls(event.getGuild(), event.getArgs().equalsIgnoreCase("on"));
+                sia.getServiceManagers().getAutoModService().setResolveUrls(event.getGuild(), event.getArgs().equalsIgnoreCase("on"));
                 event.replySuccess("Link Resolving has been turned `"+event.getArgs().toUpperCase()+"`");
             }
             else

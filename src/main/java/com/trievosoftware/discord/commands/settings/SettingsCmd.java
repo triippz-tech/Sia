@@ -44,15 +44,15 @@ public class SettingsCmd extends Command
     @Override
     protected void execute(CommandEvent event)
     {
-        PremiumInfo pi = sia.getDatabaseManagers().getPremiumService().getPremiumInfo(event.getGuild());
+        PremiumInfo pi = sia.getServiceManagers().getPremiumService().getPremiumInfo(event.getGuild());
         event.getChannel().sendMessage(new MessageBuilder().append("**")
             .append(event.getSelfUser().getName()).append("** settings on **")
             .append(event.getGuild().getName()).append("**:")
                 .setEmbed(new EmbedBuilder()
                         //.setThumbnail(event.getGuild().getIconId()==null ? event.getSelfUser().getEffectiveAvatarUrl() : event.getGuild().getIconUrl())
-                        .addField(sia.getDatabaseManagers().getGuildSettingsService().getSettingsDisplay(event.getGuild()))
-                        .addField(sia.getDatabaseManagers().getActionsService().getAllPunishmentsDisplay(event.getGuild()))
-                        .addField(sia.getDatabaseManagers().getAutoModService().getSettingsDisplay(event.getGuild()))
+                        .addField(sia.getServiceManagers().getGuildSettingsService().getSettingsDisplay(event.getGuild()))
+                        .addField(sia.getServiceManagers().getActionsService().getAllPunishmentsDisplay(event.getGuild()))
+                        .addField(sia.getServiceManagers().getAutoModService().getSettingsDisplay(event.getGuild()))
                         .setFooter(pi.getFooterString(), null)
                         .setTimestamp(pi.getTimestamp())
                         .setColor(event.getSelfMember().getColor())

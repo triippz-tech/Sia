@@ -60,7 +60,7 @@ public class VoicekickCmd extends ModCommand
             return;
         }
         String reason = LogUtil.auditReasonFormat(event.getMember(), args.reason);
-        Role modrole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
         StringBuilder builder = new StringBuilder();
         List<Member> toKick = new LinkedList<>();
         

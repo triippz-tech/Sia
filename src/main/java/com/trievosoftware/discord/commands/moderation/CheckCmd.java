@@ -93,10 +93,10 @@ public class CheckCmd extends ModCommand
     
     private void check(CommandEvent event, User user, Ban ban)
     {
-        int strikes = sia.getDatabaseManagers().getStrikesService().getStrikes(event.getGuild(), user.getIdLong());
-        int minutesMuted = sia.getDatabaseManagers().getTempMutesService().timeUntilUnmute(event.getGuild(), user.getIdLong());
-        Role mRole = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
-        int minutesBanned = sia.getDatabaseManagers().getTempBansService().timeUntilUnban(event.getGuild(), user.getIdLong());
+        int strikes = sia.getServiceManagers().getStrikesService().getStrikes(event.getGuild(), user.getIdLong());
+        int minutesMuted = sia.getServiceManagers().getTempMutesService().timeUntilUnmute(event.getGuild(), user.getIdLong());
+        Role mRole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
+        int minutesBanned = sia.getServiceManagers().getTempBansService().timeUntilUnban(event.getGuild(), user.getIdLong());
         String str = "Moderation Information for "+FormatUtil.formatFullUser(user)+":\n"
                 + Action.STRIKE.getEmoji() + " Strikes: **"+strikes+"**\n"
                 + Action.MUTE.getEmoji() + " Muted: **" + (event.getGuild().isMember(user) 

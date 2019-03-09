@@ -54,7 +54,7 @@ public class PrefixCmd extends Command
         if(event.getArgs().equalsIgnoreCase("none"))
         {
             try {
-                sia.getDatabaseManagers().getGuildSettingsService().setPrefix(event.getGuild(), null);
+                sia.getServiceManagers().getGuildSettingsService().setPrefix(event.getGuild(), null);
                 event.replySuccess("The server prefix has been reset.");
             } catch (SetPrefixException e) {
                 e.printStackTrace();
@@ -70,7 +70,7 @@ public class PrefixCmd extends Command
         }
 
         try {
-            sia.getDatabaseManagers().getGuildSettingsService().setPrefix(event.getGuild(), event.getArgs());
+            sia.getServiceManagers().getGuildSettingsService().setPrefix(event.getGuild(), event.getArgs());
             event.replySuccess("The server prefix has been set to `"+event.getArgs()+"`\n"
                 + "Note that the default prefix (`"+Constants.PREFIX+"`) cannot be removed and will work in addition to the custom prefix.");
         } catch (SetPrefixException e) {

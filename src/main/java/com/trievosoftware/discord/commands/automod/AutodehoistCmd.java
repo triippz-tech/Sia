@@ -50,7 +50,7 @@ public class AutodehoistCmd extends Command
             throw new CommandExceptionListener.CommandErrorException("Please provide a valid dehoist character, or OFF");
         else if(event.getArgs().equalsIgnoreCase("none") || event.getArgs().equalsIgnoreCase("off"))
         {
-            sia.getDatabaseManagers().getAutoModService().setDehoistChar(event.getGuild(), (char)0);
+            sia.getServiceManagers().getAutoModService().setDehoistChar(event.getGuild(), (char)0);
             event.replySuccess("No action will be taken on name hoisting.");
             return;
         }
@@ -66,8 +66,8 @@ public class AutodehoistCmd extends Command
         if(!allowed)
             throw new CommandExceptionListener.CommandErrorException("Provided symbol must be one character of the following: "+OtherUtil.DEHOIST_JOINED);
         
-        sia.getDatabaseManagers().getAutoModService().setDehoistChar(event.getGuild(), symbol);
-        boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
+        sia.getServiceManagers().getAutoModService().setDehoistChar(event.getGuild(), symbol);
+        boolean also = sia.getServiceManagers().getActionsService().useDefaultSettings(event.getGuild());
         event.replySuccess("Users will now be dehoisted if their effective name starts with `"+symbol+"` or higher."+
             (also ? Punishment.DEFAULT_SETUP_MESSAGE : ""));
     }

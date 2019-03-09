@@ -14,11 +14,11 @@ public class SiaBotService {
 
     private final Logger log = LoggerFactory.getLogger(SiaBotService.class);
 
-    private final DatabaseManagers databaseManagers;
+    private final ServiceManagers databaseManagers;
 
     private final ApplicationProperties applicationProperties;
 
-    public SiaBotService(DatabaseManagers databaseManagers, ApplicationProperties applicationProperties) throws Exception {
+    public SiaBotService(ServiceManagers databaseManagers, ApplicationProperties applicationProperties) throws Exception {
         this.databaseManagers = databaseManagers;
         this.applicationProperties = applicationProperties;
 

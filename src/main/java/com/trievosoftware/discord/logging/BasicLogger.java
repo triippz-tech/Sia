@@ -29,7 +29,6 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
-import net.dv8tion.jda.core.events.user.update.UserUpdateAvatarEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateDiscriminatorEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateNameEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -39,7 +38,6 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -74,7 +72,7 @@ public class BasicLogger
         {
             tc.sendMessage(new MessageBuilder()
                 .append(FormatUtil.filterEveryone(LogUtil.basiclogFormat(now,
-                    sia.getDatabaseManagers().getGuildSettingsService().getSettings(tc.getGuild()).getTimezone(), emote, message)))
+                    sia.getServiceManagers().getGuildSettingsService().getSettings(tc.getGuild()).getTimezone(), emote, message)))
                 .setEmbed(embed)
                 .build()).queue();
         }
@@ -87,7 +85,7 @@ public class BasicLogger
         {
             tc.sendFile(file, filename, new MessageBuilder()
                 .append(FormatUtil.filterEveryone(LogUtil.basiclogFormat(now,
-                    sia.getDatabaseManagers().getGuildSettingsService().getSettings(tc.getGuild()).getTimezone(), emote, message)))
+                    sia.getServiceManagers().getGuildSettingsService().getSettings(tc.getGuild()).getTimezone(), emote, message)))
                 .build()).queue();
         }
         catch(PermissionException ignore) {}
@@ -103,7 +101,7 @@ public class BasicLogger
         PermissionOverride po = mtc.getPermissionOverride(mtc.getGuild().getSelfMember());
         if(po!=null && po.getDenied().contains(Permission.MESSAGE_HISTORY))
             return;
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(newMessage.getGuild()).getMessageLogChannel(newMessage.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(newMessage.getGuild()).getMessageLogChannel(newMessage.getGuild());
         if(tc==null)
             return;
         if(newMessage.getContentRaw().equals(oldMessage.getContentRaw()))
@@ -132,7 +130,7 @@ public class BasicLogger
         PermissionOverride po = mtc.getPermissionOverride(guild.getSelfMember());
         if(po!=null && po.getDenied().contains(Permission.MESSAGE_HISTORY))
             return;
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(guild).getMessageLogChannel(guild);
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(guild).getMessageLogChannel(guild);
         if(tc==null)
             return;
         String formatted = FormatUtil.formatMessage(oldMessage);
@@ -150,7 +148,7 @@ public class BasicLogger
     {
         if(count==0)
             return;
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(text.getGuild()).getMessageLogChannel(text.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(text.getGuild()).getMessageLogChannel(text.getGuild());
         if(tc==null)
             return;
         if(messages.isEmpty())
@@ -185,7 +183,7 @@ public class BasicLogger
     
     public void logRedirectPath(Message message, String link, List<String> redirects)
     {
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(message.getGuild()).getMessageLogChannel(message.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(message.getGuild()).getMessageLogChannel(message.getGuild());
         if(tc==null)
             return;
         StringBuilder sb = new StringBuilder(REDIR_END+" **"+link+"**");
@@ -203,7 +201,7 @@ public class BasicLogger
     {
         OffsetDateTime now = OffsetDateTime.now();
         event.getUser().getMutualGuilds().stream()
-            .map(guild -> sia.getDatabaseManagers().getGuildSettingsService().getSettings(guild).getServerLogChannel(guild))
+            .map(guild -> sia.getServiceManagers().getGuildSettingsService().getSettings(guild).getServerLogChannel(guild))
             .filter(tc -> tc!=null)
             .forEachOrdered(tc ->
             {
@@ -216,7 +214,7 @@ public class BasicLogger
     {
         OffsetDateTime now = OffsetDateTime.now();
         event.getUser().getMutualGuilds().stream()
-            .map(guild -> sia.getDatabaseManagers().getGuildSettingsService().getSettings(guild).getServerLogChannel(guild))
+            .map(guild -> sia.getServiceManagers().getGuildSettingsService().getSettings(guild).getServerLogChannel(guild))
             .filter(tc -> tc!=null)
             .forEachOrdered(tc ->
             {
@@ -227,7 +225,7 @@ public class BasicLogger
     
     public void logGuildJoin(GuildMemberJoinEvent event)
     {
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getServerLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getServerLogChannel(event.getGuild());
         if(tc==null)
             return;
         OffsetDateTime now = OffsetDateTime.now();
@@ -239,7 +237,7 @@ public class BasicLogger
     
     public void logGuildLeave(GuildMemberLeaveEvent event)
     {
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getServerLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getServerLogChannel(event.getGuild());
         if(tc==null)
             return;
         OffsetDateTime now = OffsetDateTime.now();
@@ -264,7 +262,7 @@ public class BasicLogger
     
     public void logVoiceJoin(GuildVoiceJoinEvent event)
     {
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getVoiceLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getVoiceLogChannel(event.getGuild());
         if(tc==null)
             return;
         log(OffsetDateTime.now(), tc, "<:microphone:>", FormatUtil.formatFullUser(event.getMember().getUser())
@@ -273,7 +271,7 @@ public class BasicLogger
     
     public void logVoiceMove(GuildVoiceMoveEvent event)
     {
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getVoiceLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getVoiceLogChannel(event.getGuild());
         if(tc==null)
             return;
         log(OffsetDateTime.now(), tc, "<:microphone:>", FormatUtil.formatFullUser(event.getMember().getUser())
@@ -282,7 +280,7 @@ public class BasicLogger
     
     public void logVoiceLeave(GuildVoiceLeaveEvent event)
     {
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getVoiceLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getVoiceLogChannel(event.getGuild());
         if(tc==null)
             return;
         log(OffsetDateTime.now(), tc, "<:microphone:>", FormatUtil.formatFullUser(event.getMember().getUser())
@@ -295,7 +293,7 @@ public class BasicLogger
 //    public void logAvatarChange(UserUpdateAvatarEvent event)
 //    {
 //        List<TextChannel> logs = event.getUser().getMutualGuilds().stream()
-//            .map(guild -> sia.getDatabaseManagers().getGuildSettingsService().getSettings(guild).getAvatarLogChannel(guild))
+//            .map(guild -> sia.getServiceManagers().getGuildSettingsService().getSettings(guild).getAvatarLogChannel(guild))
 //            .filter(tc -> tc!=null)
 //            .collect(Collectors.toList());
 //        if(logs.isEmpty())

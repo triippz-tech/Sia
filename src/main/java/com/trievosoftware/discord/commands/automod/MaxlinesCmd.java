@@ -70,8 +70,8 @@ public class MaxlinesCmd extends Command
             event.replyError("The maximum number of lines must be a positive integer!");
             return;
         }
-        sia.getDatabaseManagers().getAutoModService().setMaxLines(event.getGuild(), maxlines);
-        boolean also = sia.getDatabaseManagers().getActionsService().useDefaultSettings(event.getGuild());
+        sia.getServiceManagers().getAutoModService().setMaxLines(event.getGuild(), maxlines);
+        boolean also = sia.getServiceManagers().getActionsService().useDefaultSettings(event.getGuild());
         if(maxlines==0)
             event.replySuccess("There is now no maximum line limit.");
         else

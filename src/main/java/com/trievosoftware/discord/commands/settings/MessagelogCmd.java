@@ -36,7 +36,7 @@ public class MessagelogCmd extends LogCommand
     @Override
     protected void showCurrentChannel(CommandEvent event)
     {
-        TextChannel tc = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getMessageLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMessageLogChannel(event.getGuild());
         if(tc==null)
             event.replyWarning("Message Logs are not currently enabled on the server. Please include a channel name.");
         else
@@ -47,7 +47,7 @@ public class MessagelogCmd extends LogCommand
     @Override
     protected void setLogChannel(CommandEvent event, TextChannel tc)
     {
-        sia.getDatabaseManagers().getGuildSettingsService().setMessageLogChannel(event.getGuild(), tc);
+        sia.getServiceManagers().getGuildSettingsService().setMessageLogChannel(event.getGuild(), tc);
         if(tc==null)
             event.replySuccess("Message Logs will not be sent");
         else

@@ -56,7 +56,7 @@ public class ModroleCmd extends Command
         
         else if(event.getArgs().equalsIgnoreCase("none") || event.getArgs().equalsIgnoreCase("off"))
         {
-            sia.getDatabaseManagers().getGuildSettingsService().setModeratorRole(event.getGuild(), null);
+            sia.getServiceManagers().getGuildSettingsService().setModeratorRole(event.getGuild(), null);
             event.replySuccess("Moderation commands can now only be used by members that can perform the actions manually.");
             return;
         }
@@ -66,7 +66,7 @@ public class ModroleCmd extends Command
             event.replyError("No roles found called `"+event.getArgs()+"`");
         else if (roles.size()==1)
         {
-            sia.getDatabaseManagers().getGuildSettingsService().setModeratorRole(event.getGuild(), roles.get(0));
+            sia.getServiceManagers().getGuildSettingsService().setModeratorRole(event.getGuild(), roles.get(0));
             event.replySuccess("Users with the `"+roles.get(0).getName()+"` role can now use all Moderation commands.");
         }
         else

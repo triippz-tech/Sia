@@ -40,7 +40,7 @@ public class RaidCmd extends ModCommand
     @Override
     protected void execute(CommandEvent event)
     {
-        boolean active = sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).isInRaidMode();
+        boolean active = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).isInRaidMode();
         String[] parts = event.getArgs().split("\\s+", 2);
         if(parts[0].equalsIgnoreCase("off") || parts[0].equalsIgnoreCase("stop") || parts[0].equalsIgnoreCase("disable"))
         {

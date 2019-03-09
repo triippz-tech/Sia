@@ -1,3 +1,19 @@
+/*
+ *    Copyright 2019 Mark Tripoli
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.trievosoftware.application.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -26,9 +42,14 @@ public class ApplicationProperties {
     public static class Api {
         private String openweathermap;
         private String google;
-        private String youtube;
         private String giphy;
         private String cryptoCompare;
+        private String nasa;
+
+
+        public String getNasa() { return nasa; }
+
+        public void setNasa(String nasa) { this.nasa = nasa; }
 
         public String getOpenweathermap() {
             return openweathermap;
@@ -44,14 +65,6 @@ public class ApplicationProperties {
 
         public void setGoogle(String google) {
             this.google = google;
-        }
-
-        public String getYoutube() {
-            return youtube;
-        }
-
-        public void setYoutube(String youtube) {
-            this.youtube = youtube;
         }
 
         public String getGiphy() {
@@ -80,7 +93,6 @@ public class ApplicationProperties {
         @NotBlank
         private String prefix;
 
-        @NotBlank
         private String alternatePrefix;
 
         private String shards;

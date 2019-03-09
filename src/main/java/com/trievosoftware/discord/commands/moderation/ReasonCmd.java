@@ -85,7 +85,7 @@ public class ReasonCmd extends ModCommand
                     break;
                 default:
                     event.replySuccess("Updated case **"+result+"** in "+
-                        sia.getDatabaseManagers().getGuildSettingsService().getSettings(event.getGuild()).getModLogChannel(event.getGuild()).getAsMention());
+                        sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModLogChannel(event.getGuild()).getAsMention());
                     break;
             }
         });

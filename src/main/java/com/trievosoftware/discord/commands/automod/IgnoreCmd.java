@@ -46,8 +46,8 @@ public class IgnoreCmd extends Command
             ebuilder.setColor(event.getSelfMember().getColor());
             ebuilder.setTitle("Automod Ignores",null);
             StringBuilder builder = new StringBuilder();
-            List<Role> roles = sia.getDatabaseManagers().getIgnoredService().getIgnoredRoles(event.getGuild());
-            List<TextChannel> channels = sia.getDatabaseManagers().getIgnoredService().getIgnoredChannels(event.getGuild());
+            List<Role> roles = sia.getServiceManagers().getIgnoredService().getIgnoredRoles(event.getGuild());
+            List<TextChannel> channels = sia.getServiceManagers().getIgnoredService().getIgnoredChannels(event.getGuild());
             event.getGuild().getRoles().forEach(r -> {
                 if(roles.contains(r))
                     builder.append("\n").append(r.getAsMention());
@@ -75,7 +75,7 @@ public class IgnoreCmd extends Command
         }
         if(tc!=null)
         {
-            sia.getDatabaseManagers().getIgnoredService().ignore(tc);
+            sia.getServiceManagers().getIgnoredService().ignore(tc);
             event.replySuccess("Automod is now ignoring channel <#"+tc.getId()+">");
             return;
         }
@@ -85,7 +85,7 @@ public class IgnoreCmd extends Command
             event.replyError("No roles or text channels found for `"+event.getArgs()+"`");
         else if (roles.size()==1)
         {
-            sia.getDatabaseManagers().getIgnoredService().ignore(roles.get(0));
+            sia.getServiceManagers().getIgnoredService().ignore(roles.get(0));
             event.replySuccess("Automod is now ignoring role `"+roles.get(0).getName()+"`");
         }
         else
