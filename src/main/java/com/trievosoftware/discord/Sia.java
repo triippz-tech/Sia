@@ -20,7 +20,7 @@ import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.jagrosh.jdautilities.examples.command.*;
 import com.trievosoftware.application.config.ApplicationProperties;
-import com.trievosoftware.application.service.DatabaseManagers;
+import com.trievosoftware.application.service.ServiceManagers;
 import com.trievosoftware.discord.automod.AutoMod;
 import com.trievosoftware.discord.automod.StrikeHandler;
 import com.trievosoftware.discord.commands.CommandExceptionListener;
@@ -77,11 +77,11 @@ public class Sia
     private final WebhookClient logwebhook;
     private final AutoMod automod;
     private final StrikeHandler strikehandler;
-    private final DatabaseManagers databaseManagers;
+    private final ServiceManagers databaseManagers;
 
     private final ApplicationProperties applicationProperties;
 
-    public Sia(DatabaseManagers databaseManagers, ApplicationProperties applicationProperties) throws Exception
+    public Sia(ServiceManagers databaseManagers, ApplicationProperties applicationProperties) throws Exception
     {
         this.databaseManagers = databaseManagers;
         this.applicationProperties = applicationProperties;
@@ -292,7 +292,7 @@ public class Sia
         }).forEach(g -> g.leave().queue());
     }
 
-    public DatabaseManagers getDatabaseManagers() {
+    public ServiceManagers getDatabaseManagers() {
         return databaseManagers;
     }
 
