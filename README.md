@@ -5,6 +5,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/Trievo/sia.svg)](https://github.com/Trievo/sia/issues)
 [![GitHub forks](https://img.shields.io/github/forks/Trievo/sia.svg)](https://github.com/Trievo/sia/network)
 [![GitHub stars](https://img.shields.io/github/stars/Trievo/sia.svg)](https://github.com/Trievo/sia/stargazers)
+![Hits](https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Ftrievo%2Fsia)
 [![Discord Server](https://user-images.githubusercontent.com/7288322/34429152-141689f8-ecb9-11e7-8003-b5a10a5fcb29.png)](https://discord.gg/RadND2N)
 ![Travis (.org)](https://img.shields.io/travis/Trievo/Sia.svg?logo=travis%20ci)
 [![Last Commit](https://img.shields.io/github/last-commit/trievo/sia.svg?style=popout)](https://github.com/Triippz/sia/commits/master)
