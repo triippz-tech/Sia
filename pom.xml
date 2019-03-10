@@ -95,7 +95,9 @@
         <jcommander.version>1.71</jcommander.version>
         <jsoup.version>1.11.3</jsoup.version>
         <jda.version>3.8.3_460</jda.version>
-
+        <own.version>2.5.2.3</own.version>
+        <json-simple.version>1.1.1</json-simple.version>
+        <httpclient.version>4.5.3</httpclient.version>
 
 
         <!-- Sonar properties -->
@@ -406,12 +408,17 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.3</version>
+            <version>${httpclient.version}</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
+            <version>${json-simple.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.aksingh</groupId>
+            <artifactId>owm-japis</artifactId>
+            <version>${own.version}</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>

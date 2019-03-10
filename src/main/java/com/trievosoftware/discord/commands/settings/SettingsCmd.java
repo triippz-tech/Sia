@@ -56,7 +56,9 @@ public class SettingsCmd extends Command
                         .setFooter(pi.getFooterString(), null)
                         .setTimestamp(pi.getTimestamp())
                         .setColor(event.getSelfMember().getColor())
-                        .build()).build()).queue();
+                        .build()
+                ).build()
+        ).queue();
     }
     
 }

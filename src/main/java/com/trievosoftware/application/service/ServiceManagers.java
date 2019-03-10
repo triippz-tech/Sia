@@ -31,6 +31,7 @@ public class ServiceManagers {
     private TempBansService tempBansService;
     private TempMutesService tempMutesService;
     private NasaService nasaService;
+    private OpenWeatherService openWeatherService;
 
     private GuildSettingsServiceImpl guildSettingsServiceImpl;
 
@@ -38,7 +39,8 @@ public class ServiceManagers {
                            AutoModService autoModService, GuildSettingsService guildSettingsService,
                            IgnoredService ignoredService, PremiumService premiumService, StrikesService strikesService,
                            TempBansService tempBansService, TempMutesService tempMutesService,
-                           GuildSettingsServiceImpl guildSettingsServiceImpl, NasaService nasaService) {
+                           GuildSettingsServiceImpl guildSettingsServiceImpl, NasaService nasaService,
+                           OpenWeatherService openWeatherService) {
         this.actionsService = actionsService;
         this.auditCacheService = auditCacheService;
         this.autoModService = autoModService;
@@ -50,6 +52,7 @@ public class ServiceManagers {
         this.tempMutesService = tempMutesService;
         this.guildSettingsServiceImpl = guildSettingsServiceImpl;
         this.nasaService = nasaService;
+        this.openWeatherService = openWeatherService;
     }
 
     public ActionsService getActionsService() {
@@ -95,4 +98,6 @@ public class ServiceManagers {
     public NasaService getNasaService() {
         return nasaService;
     }
+
+    public OpenWeatherService getOpenWeatherService() { return openWeatherService; }
 }
