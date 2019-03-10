@@ -116,16 +116,16 @@ jhipster:
 
 application:
     api:
-        openweathermap:
+        openweathermap: test
         # GOOGLE API KEY INCLUDES
         # - Youtube Public API (free)
         # - Places API (free)
         # - Cloud Speech-to-Text API (free + paid)
         # - Custom Search API (free)
-        google:
-        giphy:  # will need a production key
-        cryptoCompare:
-        nasa: sdfsdfs
+        google: test
+        giphy: test # will need a production key
+        cryptoCompare: test
+        nasa: test
     discord:
         token: NTUzNDAwNDE4MzA3Mjc2ODEx.D2Nh1A.-SA8XbsvT3VJ6RbdZFJWwRm1RGI #No Permissions Token. Needed for testing
         authorId: 110926644876689408

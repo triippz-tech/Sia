@@ -31,6 +31,7 @@ import com.trievosoftware.discord.commands.informational.crypto.CryptoAdminComma
 import com.trievosoftware.discord.commands.informational.crypto.CryptoCoinCommand;
 import com.trievosoftware.discord.commands.informational.crypto.CryptoInfoCommand;
 import com.trievosoftware.discord.commands.informational.crypto.CryptoNewsCommand;
+import com.trievosoftware.discord.commands.informational.weather.WeatherCommand;
 import com.trievosoftware.discord.commands.moderation.*;
 import com.trievosoftware.discord.commands.owner.*;
 import com.trievosoftware.discord.commands.settings.*;
@@ -179,6 +180,7 @@ public class Sia
                             new CryptoAdminCommand(this),
                             new CryptoNewsCommand(this),
                             new CryptoInfoCommand(this),
+                            new WeatherCommand(this),
 
                             // Entertainment
                             new GiphyCommand(this)
