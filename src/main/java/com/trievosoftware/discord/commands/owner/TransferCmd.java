@@ -18,6 +18,7 @@ package com.trievosoftware.discord.commands.owner;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractOwnerCommand;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -30,18 +31,13 @@ import java.util.List;
  *
  * @author John Grosh (jagrosh)
  */
-public class TransferCmd extends Command
+public class TransferCmd extends AbstractOwnerCommand
 {
-    private final Sia sia;
-    
     public TransferCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "transfer";
         this.help = "transfers old settings";
-        this.ownerCommand = true;
-        this.guildOnly = false;
-        this.hidden = true;
     }
     
     @Override

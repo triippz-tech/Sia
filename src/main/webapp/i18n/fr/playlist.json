@@ -1,0 +1,25 @@
+{
+  "siaApp": {
+    "playlist": {
+      "home": {
+        "title": "Playlists",
+        "createLabel": "Créer un nouveau Playlist",
+        "createOrEditLabel": "Créer ou éditer un Playlist"
+      },
+      "created": "Un nouveau Playlist a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Playlist avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Playlist avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Playlist {{ id }} ?"
+      },
+      "detail": {
+        "title": "Playlist"
+      },
+      "guildId": "Guild Id",
+      "userId": "User Id",
+      "playlistName": "Playlist Name",
+      "song": "Song",
+      "guildmusicsettings": "Guildmusicsettings"
+    }
+  }
+}

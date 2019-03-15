@@ -33,6 +33,10 @@ import com.trievosoftware.discord.commands.informational.crypto.CryptoInfoComman
 import com.trievosoftware.discord.commands.informational.crypto.CryptoNewsCommand;
 import com.trievosoftware.discord.commands.informational.weather.WeatherCommand;
 import com.trievosoftware.discord.commands.moderation.*;
+import com.trievosoftware.discord.commands.music.dj.*;
+import com.trievosoftware.discord.commands.music.generic.*;
+import com.trievosoftware.discord.commands.music.moderator.MusicSettingsCommand;
+import com.trievosoftware.discord.commands.music.moderator.*;
 import com.trievosoftware.discord.commands.owner.*;
 import com.trievosoftware.discord.commands.settings.*;
 import com.trievosoftware.discord.commands.tools.*;
@@ -41,13 +45,18 @@ import com.trievosoftware.discord.logging.BasicLogger;
 import com.trievosoftware.discord.logging.MessageCache;
 import com.trievosoftware.discord.logging.ModLogger;
 import com.trievosoftware.discord.logging.TextUploader;
+import com.trievosoftware.discord.music.audio.NowplayingHandler;
+import com.trievosoftware.discord.music.audio.PlayerManager;
+import com.trievosoftware.discord.music.playlist.PlaylistLoader;
 import com.trievosoftware.discord.utils.BlockingSessionController;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.bot.sharding.ShardManager;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import net.dv8tion.jda.core.utils.cache.CacheFlag;
 import net.dv8tion.jda.webhook.WebhookClient;
@@ -79,13 +88,20 @@ public class Sia
     private final AutoMod automod;
     private final StrikeHandler strikehandler;
     private final ServiceManagers serviceManagers;
-
     private final ApplicationProperties applicationProperties;
+    private final PlayerManager players;
+    private final PlaylistLoader playlists;
+    private final NowplayingHandler nowplaying;
+
 
     public Sia(ServiceManagers databaseManagers, ApplicationProperties applicationProperties) throws Exception
     {
         this.serviceManagers = databaseManagers;
         this.applicationProperties = applicationProperties;
+        this.playlists = new PlaylistLoader(this);
+        this.players = new PlayerManager(this);
+        this.nowplaying = new NowplayingHandler(this);
+
         waiter = new EventWaiter(Executors.newSingleThreadScheduledExecutor(), false);
         threadpool = Executors.newScheduledThreadPool(50);
         uploader = new TextUploader(this,
@@ -97,6 +113,10 @@ public class Sia
         logwebhook = new WebhookClientBuilder(this.applicationProperties.getDiscord().getLogWebookUrl()).build();
         automod = new AutoMod(this);
         strikehandler = new StrikeHandler(this);
+
+        this.players.init();
+        this.nowplaying.init();
+
         CommandClient client = new CommandClientBuilder()
                         .setPrefix(this.applicationProperties.getDiscord().getPrefix())
                         //.setGame(Game.watching("Type "+Constants.PREFIX+"help"))
@@ -134,6 +154,8 @@ public class Sia
                             new PardonCmd(this),
                             new CheckCmd(this),
                             new ReasonCmd(this),
+                            new SetGameCommand(this),
+
 
                             // Settings
                             new SetupCmd(this),
@@ -174,6 +196,8 @@ public class Sia
                             new DebugCmd(this),
                             new ReloadCmd(this),
                             new TransferCmd(this),
+                            new SendGuildNotification(this),
+                            new SetBotStatus(this),
 
                             // Informational
                             new CryptoCoinCommand(this),
@@ -183,7 +207,36 @@ public class Sia
                             new WeatherCommand(this),
 
                             // Entertainment
-                            new GiphyCommand(this)
+                            new GiphyCommand(this),
+
+                            // MUSIC Moderation
+                            new MusicSettingsCommand(this),
+                            new DjRoleCommand(this),
+                            new GuildPlaylistCommand(this),
+                            new SetMusicVcCommand(this),
+                            new SetMusicTcCommand(this),
+                            new SetupMusicCommand(this),
+
+                            // MUSIC DJ Commands
+                            new StopCommand(this),
+                            new VolumeCommand(this),
+                            new PauseCommand(this),
+                            new SkipToCommand(this),
+                            new ForceSkipCommand(this),
+                            new PlayNextCommand(this, Constants.LOADING),
+                            new RepeatCommand(this),
+
+                            // MUSIC Generic
+                            new UserPlaylistCommand(this, Constants.LOADING),
+                            new NowPlayingCommand(this),
+                            new UserPlayCommand(this, Constants.LOADING),
+                            new QueueCommand(this),
+                            new RemoveCommand(this),
+                            new SearchCommand(this, Constants.SEARCHING),
+                            new SCSearchCommand(this, Constants.SEARCHING),
+                            new ShuffleCommand(this),
+                            new LyricsCommand(this),
+                            new SkipCommand(this)
                         )
                         .setHelpConsumer(event -> event.replyInDm(FormatUtil.formatHelp(event, this), m -> 
                         {
@@ -302,4 +355,24 @@ public class Sia
         return applicationProperties;
     }
 
+    public void closeAudioConnection(long guildId)
+    {
+        Guild guild = shards.getGuildById(guildId);
+        if(guild!=null)
+            threadpool.submit(() -> guild.getAudioManager().closeAudioConnection());
+    }
+
+    public JDA getJDA(Long guildId) { return shards.getGuildById(guildId).getJDA(); }
+
+    public PlayerManager getPlayerManager() {
+        return players;
+    }
+
+    public PlaylistLoader getPlaylistLoader() {
+        return playlists;
+    }
+
+    public NowplayingHandler getNowplayingHandler() {
+        return nowplaying;
+    }
 }

@@ -19,24 +19,20 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandErrorException;
+import com.trievosoftware.discord.commands.meta.AbstractOwnerCommand;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class ReloadCmd extends Command
+public class ReloadCmd extends AbstractOwnerCommand
 {
-    private final Sia sia;
-    
     public ReloadCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "reload";
         this.arguments = "<ref|safe|copy>";
         this.help = "reloads a file";
-        this.ownerCommand = true;
-        this.guildOnly = false;
-        this.hidden = true;
     }
 
     @Override

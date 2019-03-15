@@ -15,15 +15,21 @@
  */
 package com.trievosoftware.discord;
 
+import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.exceptions.NoBanFoundExcetion;
 import com.trievosoftware.application.exceptions.UserNotMutedException;
 import com.trievosoftware.discord.logging.MessageCache.CachedMessage;
+import com.trievosoftware.discord.utils.FormatUtil;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA.ShardInfo;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.guild.GuildBanEvent;
+import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildUnbanEvent;
 import net.dv8tion.jda.core.events.guild.member.*;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
@@ -215,6 +221,22 @@ public class Listener implements EventListener
             // Log the voice leave
             if(!gevent.getMember().getUser().isBot()) // ignore bots
                 sia.getBasicLogger().logVoiceLeave(gevent);
+        }
+        else if (event instanceof GuildJoinEvent)
+        {
+            TextChannel defaultChannel = ((GuildJoinEvent) event).getGuild().getDefaultChannel();
+            String message =
+                "Type `" + sia.getApplicationProperties().getDiscord().getPrefix() +
+                "help" +
+                "` for help and information.\n\n" + FormatUtil.helpLinksJoin((GuildJoinEvent) event);
+            defaultChannel.sendMessage(new MessageBuilder()
+                .setContent(Constants.SIA_EMOJII + "Hi, I am Sia! I was developed by **triippz**#0689" + Constants.SIA_EMOJII)
+                .setEmbed(new EmbedBuilder()
+                    .setDescription(message)
+                    .build()
+                ).build()
+            ).queue();
+
         }
         else if (event instanceof ReadyEvent)
         {

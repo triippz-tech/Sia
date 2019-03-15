@@ -18,6 +18,7 @@ package com.trievosoftware.discord.commands.owner;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractOwnerCommand;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -26,18 +27,16 @@ import javax.script.ScriptEngineManager;
  *
  * @author John Grosh (jagrosh)
  */
-public class EvalCmd extends Command
+public class EvalCmd extends AbstractOwnerCommand
 {
     private final Sia sia;
     
     public EvalCmd(Sia sia)
     {
+        super(sia);
         this.sia = sia;
         this.name = "eval";
         this.help = "evaluates nashorn code";
-        this.ownerCommand = true;
-        this.guildOnly = false;
-        this.hidden = true;
     }
     
     @Override

@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "songs": {
+      "home": {
+        "title": "Songs",
+        "createLabel": "Create a new Songs",
+        "createOrEditLabel": "Create or edit a Songs"
+      },
+      "created": "A new Songs is created with identifier {{ param }}",
+      "updated": "A Songs is updated with identifier {{ param }}",
+      "deleted": "A Songs is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Songs {{ id }}?"
+      },
+      "detail": {
+        "title": "Songs"
+      },
+      "songName": "Song Name",
+      "songQuery": "Song Query",
+      "playlist": "Playlist"
+    }
+  }
+}

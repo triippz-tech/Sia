@@ -42,7 +42,7 @@ public class GiphyCommand extends Command {
         this.name = "gif";
         this.aliases = new String[]{"gifs","giphy","meme"};
         this.help = "Searches for a gif based on a query parameter";
-        this.arguments = "[search query]";
+        this.arguments = "<search query>";
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 

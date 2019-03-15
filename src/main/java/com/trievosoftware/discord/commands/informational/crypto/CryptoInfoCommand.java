@@ -56,7 +56,7 @@ public class CryptoInfoCommand extends Command {
         this.name = "cryptoinfo";
         this.aliases = new String[]{"coininfo", "ci", "cinfo"};
         this.help = "Searches for information for a particular coin";
-        this.arguments = "[Coin_Ticker]";
+        this.arguments = "<Coin_Ticker>";
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 

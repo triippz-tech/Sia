@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author John Grosh (jagrosh)
  */
+@SuppressWarnings("Duplicates")
 public class SetupCmd extends Command
 {
     private final String CANCEL = "\u274C"; // ❌
