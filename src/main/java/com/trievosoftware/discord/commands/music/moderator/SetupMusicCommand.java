@@ -156,6 +156,9 @@ public class SetupMusicCommand extends AbstractDjCommand {
             catch(Exception ex)
             {
                 m.editMessage(sb + Constants.ERROR+" An error occurred setting up the DJ role. Please check that I have the Administrator permission and that the DJ role is below my roles.").queue();
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), ex.getMessage()));
             }
         }));
     }

@@ -80,6 +80,9 @@ public class CheckCmd extends ModCommand
         catch(Exception ex)
         {
             event.replyError("Could not find a user `"+event.getArgs()+"`");
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), ex.getMessage()));
         }
     }
     

@@ -124,6 +124,9 @@ public class StrikeCmd extends ModCommand
                     catch(Exception ex)
                     {
                         builder.append("\n").append(event.getClient().getError()).append(" `").append(id).append("` is not a valid user ID.");
+                        if ( sia.isDebugMode() )
+                            sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                                event.getGuild().getName(), event.getGuild().getIdLong(), ex.getMessage()));
                     }
                 });
                 strikeAll(args.users, fnumstrikes, args.reason, builder, event);

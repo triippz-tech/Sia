@@ -72,6 +72,9 @@ public class IgnoreCmd extends Command
             tc = event.getGuild().getTextChannelById(id);
         } catch(Exception e) {
             tc = null;
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
         }
         if(tc!=null)
         {

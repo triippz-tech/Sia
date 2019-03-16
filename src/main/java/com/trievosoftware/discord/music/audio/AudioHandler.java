@@ -160,6 +160,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
             return true;
 
         } catch (NoPlaylistFoundException e) {
+
             return false;
         }
     }

@@ -113,8 +113,10 @@ public class BanCmd extends ModCommand
                 else {
                     try {
                         sia.getServiceManagers().getTempBansService().clearBan(event.getGuild(), uid);
-                    } catch (NoBanFoundExcetion noBanFoundExcetion) {
-                        noBanFoundExcetion.printStackTrace();
+                    } catch (NoBanFoundExcetion e) {
+                        if ( sia.isDebugMode() )
+                            sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                                event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                     }
                 }
                 if(last)

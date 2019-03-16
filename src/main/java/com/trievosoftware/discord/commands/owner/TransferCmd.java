@@ -91,7 +91,9 @@ public class TransferCmd extends AbstractOwnerCommand
         catch(Exception ex)
         {
             event.replyError("Error: "+ex+"\nat "+ex.getStackTrace()[0]);
-            
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), ex.getMessage()));
         }
     }
 }

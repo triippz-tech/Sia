@@ -60,6 +60,9 @@ public class RepeatCommand extends AbstractDjCommand {
             sia.getServiceManagers().getGuildMusicSettingsService().setRepeat(event.getGuild(), value);
         } catch (NoMusicSettingsException e) {
             event.replyError(e.getMessage());
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
         }
         event.replySuccess("Repeat mode is now `"+(value ? "ON" : "OFF")+"`");
     }

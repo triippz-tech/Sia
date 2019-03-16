@@ -136,6 +136,8 @@ public class SetupCmd extends Command
                 sb.append("\n").append(Constants.WARNING).append(" Any settings not shown here were not set due to being already set. Please check the automod section of the wiki (<")
                         .append(Constants.Wiki.AUTOMOD).append(">) for more information about the automod.");
                 event.replySuccess(sb.toString());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("GuildSettings set for Guild=%s/%d", event.getGuild(), event.getGuild().getIdLong()));
             });
         }
     }
@@ -233,6 +235,9 @@ public class SetupCmd extends Command
             }
             catch(Exception ex)
             {
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), ex.getMessage()));
                 m.editMessage(sb + Constants.ERROR+" An error occurred setting up the Muted role. Please check that I have the Administrator permission and that the Muted role is below my roles.").queue();
             }
         }));

@@ -154,6 +154,9 @@ public class UserPlaylistCommand extends AbstractMusicCommand
                 event.replySuccess("Successfully deleted playlist!");
             } catch (NoPlaylistFoundException e) {
                 event.replyError(e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
     }

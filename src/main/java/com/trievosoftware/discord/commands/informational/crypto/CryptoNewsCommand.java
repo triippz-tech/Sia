@@ -40,6 +40,7 @@ public class CryptoNewsCommand extends Command {
 
     private final Logger log = LoggerFactory.getLogger(CryptoNewsCommand.class);
 
+    private Sia sia;
     private CryptoCompareAPI cryptoCompare;
     private static final String BASE_URL = "https://www.cryptocompare.com";
     private static final String HELP = "Crypto Currency news!\n" +
@@ -55,6 +56,7 @@ public class CryptoNewsCommand extends Command {
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
+        this.sia = sia;
         this.cryptoCompare = new CryptoCompareAPI(sia.getApplicationProperties().getApi().getCryptoCompare());
     }
 
@@ -105,6 +107,9 @@ public class CryptoNewsCommand extends Command {
             builder.setDescription("Looks like we have reach our maximum call requests for this month.");
             builder.setColor(Color.red);
             event.reply(builder.build());
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
         }
     }
 }

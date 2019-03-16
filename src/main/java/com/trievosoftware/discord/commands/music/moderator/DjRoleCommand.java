@@ -42,6 +42,7 @@ import net.dv8tion.jda.core.entities.Role;
 
 import java.util.List;
 
+@SuppressWarnings("Duplicates")
 public class DjRoleCommand extends AbstractDjCommand {
 
     public DjRoleCommand(Sia sia) {
@@ -64,6 +65,9 @@ public class DjRoleCommand extends AbstractDjCommand {
                 sia.getServiceManagers().getGuildMusicSettingsService().setDjRole(event.getGuild(), null);
             } catch (NoMusicSettingsException e) {
                 event.replyError(e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
             event.replySuccess("DJ role cleared. Now only moderators may use DJ commands.");
             return;
@@ -77,6 +81,9 @@ public class DjRoleCommand extends AbstractDjCommand {
                 sia.getServiceManagers().getGuildMusicSettingsService().setDjRole(event.getGuild(), roles.get(0));
             } catch (NoMusicSettingsException e) {
                 event.replyError(e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
             event.replySuccess("Users with the `" + roles.get(0).getName() + "` role can now use all DJ commands.");
         } else

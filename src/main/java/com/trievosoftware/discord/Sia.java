@@ -76,6 +76,7 @@ import java.util.concurrent.TimeUnit;
 public class Sia
 {
     private final Logger log = LoggerFactory.getLogger(Sia.class);
+    private boolean debugMode = false;
 
     private final EventWaiter waiter;
     private final ScheduledExecutorService threadpool;
@@ -190,6 +191,7 @@ public class Sia
                             new DehoistCmd(),
                             new InvitepruneCmd(this),
                             new LookupCmd(this),
+                            new EnableDebugCommand(this),
 
                             // Owner
                             new EvalCmd(this),
@@ -374,5 +376,13 @@ public class Sia
 
     public NowplayingHandler getNowplayingHandler() {
         return nowplaying;
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 }

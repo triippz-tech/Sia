@@ -36,6 +36,7 @@ public class CryptoAdminCommand extends Command {
 
     private final Logger log = LoggerFactory.getLogger(CryptoAdminCommand.class);
     private final static String LINESTART = "\u25AB"; // ▫
+    private Sia sia;
 
     private CryptoCompareAPI cryptoCompare;
 
@@ -48,6 +49,7 @@ public class CryptoAdminCommand extends Command {
         this.hidden = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
+        this.sia = sia;
         this.cryptoCompare = new CryptoCompareAPI(sia.getApplicationProperties().getApi().getCryptoCompare());
     }
 
@@ -82,8 +84,10 @@ public class CryptoAdminCommand extends Command {
 
             log.error("Calls Left: {}\nCalls Made: {}\n", callsLeft.getInterval(IntervalTypes.HOUR), callsMade.getInterval(IntervalTypes.HOUR));
         } catch (IOException e) {
-            e.printStackTrace();
-            log.error("Error getting CryptoCompare API information");
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
+            log.error("Error getting CryptoCompare API information. {}", e.getMessage());
             event.reply("Sorry, I experienced an error attempting to query for data. Please check logs for more info");
         }
     }

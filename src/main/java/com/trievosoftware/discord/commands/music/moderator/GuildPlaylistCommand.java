@@ -91,6 +91,9 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
                     event.reply(event.getClient().getSuccess() + " Successfully created playlist `" + pname + "`!");
                 } catch (NoMusicSettingsException e1) {
                     event.reply(event.getClient().getError() + " I was unable to create the playlist: " + e1.getMessage());
+                    if ( sia.isDebugMode() )
+                        sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                            event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                 }
             }
         }
@@ -119,6 +122,9 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
                 event.reply(event.getClient().getSuccess() + " Successfully deleted playlist!");
             } catch (NoPlaylistFoundException e) {
                 event.replyError(e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
     }
@@ -147,12 +153,18 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
                         sia.getServiceManagers().getSongService().deleteSongByNameAndPlaylist(songName, playlist);
                     } catch (NoSongException e) {
                         event.replyError(e.getMessage());
+                        if ( sia.isDebugMode() )
+                            sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                                event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                     }
                     event.reply(event.getClient().getSuccess() + " Successfully deleted Song `" + songName
                         + "` From Playlist: `"+ playlist.getPlaylistName() +"`!");
                 }
             } catch (NoPlaylistFoundException e) {
                 event.replyError(e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
             event.getMessage().delete().queue();
         }
@@ -180,6 +192,9 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
                     sia.getServiceManagers().getSongService().deleteSongByNameAndPlaylist(songName, playlist);
                 } catch (NoSongException e) {
                     event.replyError(e.getMessage());
+                    if ( sia.isDebugMode() )
+                        sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                            event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                     return;
                 }
                 event.reply(event.getClient().getSuccess() + " Successfully deleted Song `" + songName
@@ -189,6 +204,9 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
             }
             catch (NoPlaylistFoundException e) {
                 event.replyError(e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
     }
@@ -234,6 +252,9 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
 
             } catch (NoPlaylistFoundException e) {
                 event.replyError(e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
     }
@@ -286,6 +307,9 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
                 event.getMessage().delete().queue();
             } catch (NoPlaylistFoundException e) {
                 event.replyError(e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
             event.getMessage().delete().queue();
         }

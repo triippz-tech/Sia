@@ -81,8 +81,10 @@ public class PunishmentCmd extends Command
             if(!parts[1].equalsIgnoreCase("none") &&
                 sia.getServiceManagers().getActionsService().getAllPunishments(event.getGuild()).size()>=Punishment.MAX_SET)
                 throw new CommandExceptionListener.CommandErrorException("This server already has "+Punishment.MAX_SET+" punishments set up; please remove some before adding more.");
-        } catch (NoActionsExceptions noActionsExceptions) {
-            noActionsExceptions.printStackTrace();
+        } catch (NoActionsExceptions e) {
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
         }
 
         String successMessage;
@@ -92,8 +94,10 @@ public class PunishmentCmd extends Command
             {
                 try {
                     sia.getServiceManagers().getActionsService().removeAction(event.getGuild(), numstrikes);
-                } catch (NoActionsExceptions noActionsExceptions) {
-                    noActionsExceptions.printStackTrace();
+                } catch (NoActionsExceptions e) {
+                    if ( sia.isDebugMode() )
+                        sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                            event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                 }
                 successMessage = "No action will be taken on `"+numstrikes+"` strikes.";
                 break;

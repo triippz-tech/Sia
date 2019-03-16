@@ -27,6 +27,7 @@ import net.dv8tion.jda.core.Permission;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
+@SuppressWarnings("Duplicates")
 public class PrefixCmd extends Command
 {
     private final Sia sia;
@@ -57,7 +58,9 @@ public class PrefixCmd extends Command
                 sia.getServiceManagers().getGuildSettingsService().setPrefix(event.getGuild(), null);
                 event.replySuccess("The server prefix has been reset.");
             } catch (SetPrefixException e) {
-                e.printStackTrace();
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                 event.replyError(e.getMessage());
             }
             return;
@@ -74,7 +77,9 @@ public class PrefixCmd extends Command
             event.replySuccess("The server prefix has been set to `"+event.getArgs()+"`\n"
                 + "Note that the default prefix (`"+Constants.PREFIX+"`) cannot be removed and will work in addition to the custom prefix.");
         } catch (SetPrefixException e) {
-            e.printStackTrace();
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             event.replyError(e.getMessage());
         }
 

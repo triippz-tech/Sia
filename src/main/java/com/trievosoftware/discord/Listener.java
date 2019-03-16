@@ -237,6 +237,13 @@ public class Listener implements EventListener
                 ).build()
             ).queue();
 
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(new MessageBuilder()
+                    .setContent("Bot has joined Server: "
+                        + ((GuildJoinEvent) event).getGuild().getName() +"/"
+                        + ((GuildJoinEvent) event).getGuild().getIdLong())
+                    .setEmbed(new EmbedBuilder().setThumbnail(((GuildJoinEvent) event).getGuild().getIconUrl()).build())
+                    .build());
         }
         else if (event instanceof ReadyEvent)
         {

@@ -43,6 +43,10 @@ public class ReloadCmd extends AbstractOwnerCommand
             case "ref":
                 sia.getAutoMod().loadReferralDomains();
                 event.replySuccess("Reloaded ref domains");
+
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send("Reloaded ref domains");
+
                 break;
 //            case "safe":
 //                sia.getAutoMod().loadSafeDomains();
@@ -51,6 +55,9 @@ public class ReloadCmd extends AbstractOwnerCommand
             case "copy":
                 sia.getAutoMod().loadCopypastas();
                 event.replySuccess("Reloaded copypastas");
+
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send("Reloaded Copypastas");
                 break;
             default:
                 throw new CommandErrorException("Invalid reload selection: `ref` `safe` `copy`");

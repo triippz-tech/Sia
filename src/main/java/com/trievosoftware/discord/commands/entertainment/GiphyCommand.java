@@ -36,6 +36,7 @@ import java.awt.*;
 public class GiphyCommand extends Command {
     private static final Logger log = LoggerFactory.getLogger(GiphyCommand.class);
     private Giphy giphy;
+    private Sia sia;
 
     public GiphyCommand(Sia sia)
     {
@@ -46,6 +47,7 @@ public class GiphyCommand extends Command {
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
+        this.sia = sia;
         this.giphy = new Giphy(sia.getApplicationProperties().getApi().getGiphy());
     }
 
@@ -82,6 +84,9 @@ public class GiphyCommand extends Command {
                 event.reply(builder.build());
             } catch (GiphyException e1) {
                 log.error("Error receiving default <NOT FOUND> GIF from Giphy: {}", e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
     }

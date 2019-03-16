@@ -93,6 +93,9 @@ public class VoicemoveCmd extends ModCommand
         catch(Exception e) 
         {
             event.replyWarning("I could not connect to **"+vc.getName()+"**");
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             return;
         }
         sia.getEventWaiter().waitForEvent(GuildVoiceMoveEvent.class,

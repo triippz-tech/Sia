@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @Component
+@SuppressWarnings("Duplicates")
 @Author("Mark Tripoli (Triippz)")
 public class CryptoInfoCommand extends Command {
 
@@ -50,6 +51,7 @@ public class CryptoInfoCommand extends Command {
     private final String SCROLL_EMOJII = "<:scroll:550499361134608384>";
     private String LINK_TEMPLATE = "https://%s.com";
     private CryptoCompareAPI cryptoCompare;
+    private Sia sia;
 
     public CryptoInfoCommand(Sia sia)
     {
@@ -60,6 +62,7 @@ public class CryptoInfoCommand extends Command {
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
+        this.sia = sia;
         this.cryptoCompare = new CryptoCompareAPI(sia.getApplicationProperties().getApi().getCryptoCompare());
     }
 
@@ -78,17 +81,25 @@ public class CryptoInfoCommand extends Command {
             log.error("Unable to process price request: {}", e.getMessage());
             event.replyError("Sorry, I was unable to perform your request. " +
                 "Please ensure you have properly used the command.");
-            e.printStackTrace();
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
         } catch (OutOfCallsException e){
             EmbedBuilder builder = new EmbedBuilder();
             builder.setDescription("Looks like we have reached our maximum call requests for this month.");
             builder.setColor(Color.red);
             event.reply(builder.build());
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
         } catch (NoCoinFoundException e) {
             EmbedBuilder builder = new EmbedBuilder();
             builder.setDescription("Sorry, I could not find any information for: " + arguments[0].toUpperCase());
             builder.setColor(Color.red);
             event.reply(builder.build());
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
         }
     }
 

@@ -26,6 +26,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.List;
 
+@SuppressWarnings("Duplicates")
 public class SetMusicVcCommand extends AbstractDjCommand {
 
     public SetMusicVcCommand(Sia sia) {
@@ -50,6 +51,9 @@ public class SetMusicVcCommand extends AbstractDjCommand {
                 sia.getServiceManagers().getGuildMusicSettingsService().setVoiceChannel(event.getGuild(),null);
             } catch (NoMusicSettingsException e) {
                 event.replyError(e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
             event.reply(event.getClient().getSuccess()+" Music can now be played in any channel");
         }
@@ -66,6 +70,9 @@ public class SetMusicVcCommand extends AbstractDjCommand {
                     sia.getServiceManagers().getGuildMusicSettingsService().setVoiceChannel(event.getGuild(), list.get(0));
                 } catch (NoMusicSettingsException e) {
                     event.replyError(e.getMessage());
+                    if ( sia.isDebugMode() )
+                        sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                            event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                 }
                 event.reply(event.getClient().getSuccess()+" Music can now only be played in **"+list.get(0).getName()+"**");
             }

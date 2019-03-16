@@ -21,6 +21,7 @@ import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.entities.Game;
 
+@SuppressWarnings("Duplicates")
 public class SetGameCommand extends AbstractModeratorCommand
 {
     public SetGameCommand(Sia sia)
@@ -50,6 +51,9 @@ public class SetGameCommand extends AbstractModeratorCommand
         catch(Exception e)
         {
             event.reply(event.getClient().getError()+" The game could not be set!");
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
         }
     }
 
@@ -83,6 +87,9 @@ public class SetGameCommand extends AbstractModeratorCommand
             catch(Exception e)
             {
                 event.reply(event.getClient().getError()+" The game could not be set!");
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
     }
@@ -114,6 +121,9 @@ public class SetGameCommand extends AbstractModeratorCommand
                 event.replySuccess("**"+event.getSelfUser().getName()+"** is now listening to `"+title+"`");
             } catch(Exception e) {
                 event.reply(event.getClient().getError()+" The game could not be set!");
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
     }
@@ -145,6 +155,9 @@ public class SetGameCommand extends AbstractModeratorCommand
                 event.replySuccess("**"+event.getSelfUser().getName()+"** is now watching `"+title+"`");
             } catch(Exception e) {
                 event.reply(event.getClient().getError()+" The game could not be set!");
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
     }
@@ -176,6 +189,9 @@ public class SetGameCommand extends AbstractModeratorCommand
                 event.replySuccess("**"+event.getSelfUser().getName()+"** is now playing `"+title+"`");
             } catch(Exception e) {
                 event.reply(event.getClient().getError()+" The game could not be set!");
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
     }

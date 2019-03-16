@@ -45,6 +45,9 @@ public class SkipToCommand extends AbstractDjCommand {
         catch(NumberFormatException e)
         {
             event.reply(event.getClient().getError()+" `"+event.getArgs()+"` is not a valid integer!");
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             return;
         }
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();

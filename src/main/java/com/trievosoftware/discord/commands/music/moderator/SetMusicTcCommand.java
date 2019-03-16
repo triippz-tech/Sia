@@ -26,6 +26,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.List;
 
+@SuppressWarnings("Duplicates")
 public class SetMusicTcCommand extends AbstractDjCommand {
 
     public SetMusicTcCommand(Sia sia) {
@@ -50,6 +51,9 @@ public class SetMusicTcCommand extends AbstractDjCommand {
                 sia.getServiceManagers().getGuildMusicSettingsService().setTextChannel(event.getGuild(),null);
             } catch (NoMusicSettingsException e) {
                 event.replyError(e.getMessage());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
             event.reply(event.getClient().getSuccess()+" Music commands can now be used in any channel");
         }
@@ -66,6 +70,9 @@ public class SetMusicTcCommand extends AbstractDjCommand {
                     sia.getServiceManagers().getGuildMusicSettingsService().setTextChannel(event.getGuild(), list.get(0));
                 } catch (NoMusicSettingsException e) {
                     event.replyError(e.getMessage());
+                    if ( sia.isDebugMode() )
+                        sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                            event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                 }
                 event.reply(event.getClient().getSuccess()+" Music commands can now only be used in <#"+list.get(0).getId()+">");
             }

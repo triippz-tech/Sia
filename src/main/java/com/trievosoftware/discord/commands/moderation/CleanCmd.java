@@ -213,6 +213,9 @@ public class CleanCmd extends ModCommand
             {
                 event.replyError("Failed to delete "+del.size()+" messages.");
                 event.getClient().applyCooldown(getCooldownKey(event), 1);
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                 return;
             }
             event.replySuccess("Cleaned **"+del.size()+"** messages."+(week2?week2limit:""));
