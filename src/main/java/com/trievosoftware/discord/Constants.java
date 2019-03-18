@@ -46,6 +46,7 @@ public class Constants
     public final static String DONATION_LINK = "https://paypal.me/marktripoli";
     public final static String XLM_DONATION_ADDR = "GDHX7GSK6T2VPUHECJERKW7PUAZ3X3NHIPFLJSRXZ6IZYNMO3FHHTBAT";
     public final static String NEED_PRO      = WARNING + " Sorry, this feature requires Sia Pro. Sia Pro is not available yet.";
+    public final static String SEARCHING = "\uD83D\uDD0E"; //🔎
     
     public final static class Wiki
     {
@@ -58,5 +59,15 @@ public class Constants
         public final static String RAID_MODE    = WIKI_BASE + "/Raid-Mode";
         public final static String COMMANDS     = WIKI_BASE + "/Commands";
         public final static String AUTOMOD      = WIKI_BASE + "/Auto-Moderation";
+    }
+
+    public final static class Music
+    {
+        public final static String PLAY_EMOJI  = "\u25B6"; // ▶
+        public final static String PAUSE_EMOJI = "\u23F8"; // ⏸
+        public final static String STOP_EMOJI  = "\u23F9"; // ⏹
+        public final static Permission[] RECOMMENDED_PERMS = new Permission[]{Permission.MESSAGE_READ, Permission.MESSAGE_WRITE, Permission.MESSAGE_HISTORY, Permission.MESSAGE_ADD_REACTION,
+            Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_MANAGE, Permission.MESSAGE_EXT_EMOJI,
+            Permission.MANAGE_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK, Permission.NICKNAME_CHANGE};
     }
 }

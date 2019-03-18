@@ -14,6 +14,11 @@
     <include file="config/liquibase/changelog/20190306200753_added_entity_Strikes.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190306202748_added_entity_TempMutes.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190306222130_added_entity_TempBans.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190311195325_added_entity_GuildMusicSettings.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190311195326_added_entity_Playlist.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190311195327_added_entity_Songs.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20190311195325_added_entity_constraints_GuildMusicSettings.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190311195327_added_entity_constraints_Songs.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

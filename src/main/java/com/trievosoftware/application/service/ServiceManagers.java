@@ -32,6 +32,9 @@ public class ServiceManagers {
     private TempMutesService tempMutesService;
     private NasaService nasaService;
     private OpenWeatherService openWeatherService;
+    private GuildMusicSettingsService guildMusicSettingsService;
+    private PlaylistService playlistService;
+    private SongService songService;
 
     private GuildSettingsServiceImpl guildSettingsServiceImpl;
 
@@ -40,7 +43,8 @@ public class ServiceManagers {
                            IgnoredService ignoredService, PremiumService premiumService, StrikesService strikesService,
                            TempBansService tempBansService, TempMutesService tempMutesService,
                            GuildSettingsServiceImpl guildSettingsServiceImpl, NasaService nasaService,
-                           OpenWeatherService openWeatherService) {
+                           OpenWeatherService openWeatherService, GuildMusicSettingsService guildMusicSettingsService,
+                           PlaylistService playlistService, SongService songService) {
         this.actionsService = actionsService;
         this.auditCacheService = auditCacheService;
         this.autoModService = autoModService;
@@ -53,6 +57,9 @@ public class ServiceManagers {
         this.guildSettingsServiceImpl = guildSettingsServiceImpl;
         this.nasaService = nasaService;
         this.openWeatherService = openWeatherService;
+        this.guildMusicSettingsService = guildMusicSettingsService;
+        this.playlistService = playlistService;
+        this.songService = songService;
     }
 
     public ActionsService getActionsService() {
@@ -100,4 +107,16 @@ public class ServiceManagers {
     }
 
     public OpenWeatherService getOpenWeatherService() { return openWeatherService; }
+
+    public GuildMusicSettingsService getGuildMusicSettingsService() {
+        return guildMusicSettingsService;
+    }
+
+    public PlaylistService getPlaylistService() {
+        return playlistService;
+    }
+
+    public SongService getSongService() {
+        return songService;
+    }
 }

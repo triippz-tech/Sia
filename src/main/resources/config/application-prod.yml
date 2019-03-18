@@ -162,4 +162,4 @@ application:
         guildId: 484462646763061249 #Trievo Server ID
         categoryId: 547415713418182665
         schedulerPoolSize: 50
-        logWebookUrl: "https://discordapp.com/api/webhooks/551465925283676161/gHZH3h0wkaJtUW4isr7ani-ArKgCirbwiR2a9XZce6tBNvcQKSGaeaxjgR9ejtrJvdDw"
+        logWebookUrl:

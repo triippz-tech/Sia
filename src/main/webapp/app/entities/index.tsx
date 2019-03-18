@@ -13,6 +13,9 @@ import Actions from './actions';
 import Strikes from './strikes';
 import TempMutes from './temp-mutes';
 import TempBans from './temp-bans';
+import GuildMusicSettings from './guild-music-settings';
+import Playlist from './playlist';
+import Songs from './songs';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -28,6 +31,9 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/strikes`} component={Strikes} />
       <ErrorBoundaryRoute path={`${match.url}/temp-mutes`} component={TempMutes} />
       <ErrorBoundaryRoute path={`${match.url}/temp-bans`} component={TempBans} />
+      <ErrorBoundaryRoute path={`${match.url}/guild-music-settings`} component={GuildMusicSettings} />
+      <ErrorBoundaryRoute path={`${match.url}/playlist`} component={Playlist} />
+      <ErrorBoundaryRoute path={`${match.url}/songs`} component={Songs} />
       {/* jhipster-needle-add-route-path - JHipster will routes here */}
     </Switch>
   </div>

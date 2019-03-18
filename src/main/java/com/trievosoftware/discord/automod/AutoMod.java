@@ -98,7 +98,12 @@ public class AutoMod
             try
             {
                 guild.getManager().setVerificationLevel(VerificationLevel.HIGH).reason("Enabling Anti-Raid Mode").queue();
-            } catch(PermissionException ignore) {}
+            } catch(PermissionException ignore)
+            {
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        guild.getName(), guild.getIdLong(), ignore.getMessage()));
+            }
         }
         sia.getModLogger().postRaidmodeCase(moderator, now, true, reason);
     }
@@ -111,7 +116,12 @@ public class AutoMod
             try
             {
                 guild.getManager().setVerificationLevel(last).reason("Disabling Anti-Raid Mode").queue();
-            } catch(PermissionException ignore) {}
+            } catch(PermissionException ignore)
+            {
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        guild.getName(), guild.getIdLong(), ignore.getMessage()));
+            }
         }
         sia.getModLogger().postRaidmodeCase(moderator, now, false, reason);
     }
@@ -180,7 +190,12 @@ public class AutoMod
                             .addSingleRoleToMember(event.getMember(), sia.getServiceManagers().getGuildSettingsService()
                                 .getSettings(event.getGuild()).getMutedRole(event.getGuild()))
                             .reason(RESTORE_MUTE_ROLE_AUDIT).queue();
-                } catch(Exception ignore){}
+                } catch(Exception ignore)
+                {
+                    if ( sia.isDebugMode() )
+                        sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                            event.getGuild().getName(), event.getGuild().getIdLong(), ignore.getMessage()));
+                }
             }
             dehoist(event.getMember());
         }
@@ -242,7 +257,12 @@ public class AutoMod
         {
             OtherUtil.dehoist(member, (char) settings.getDehoistChar().intValue() );
         }
-        catch(Exception ignore) {}
+        catch(Exception ignore)
+        {
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    member.getGuild().getName(), member.getGuild().getIdLong(), ignore.getMessage()));
+        }
     }
     
     public void performAutomod(Message message) 
@@ -412,7 +432,12 @@ public class AutoMod
             try
             {
                 message.delete().reason("Automod").queue(v->{}, f->{});
-            }catch(PermissionException ignore){}
+            }catch(PermissionException ignore)
+            {
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        message.getGuild().getName(), message.getGuild().getIdLong(), ignore.getMessage()));
+            }
         }
         
         // channel mute if applicable (prevent sending messages in that channel for a short time as a 'warning'
@@ -433,7 +458,12 @@ public class AutoMod
                             try
                             {
                                 p.delete().queueAfter(3, TimeUnit.SECONDS, s->{}, f->{});
-                            } catch(Exception ignore) {}
+                            } catch(Exception ignore)
+                            {
+                                if ( sia.isDebugMode() )
+                                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                                        message.getGuild().getName(), message.getGuild().getIdLong(), ignore.getMessage()));
+                            }
                         }, f->{});
                     }
                     else
@@ -444,7 +474,12 @@ public class AutoMod
                             try
                             {
                                 po.getManager().deny(existingDenied).queueAfter(3, TimeUnit.SECONDS, s->{}, f->{});
-                            } catch(Exception ignore) {}
+                            } catch(Exception ignore)
+                            {
+                                if ( sia.isDebugMode() )
+                                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                                        message.getGuild().getName(), message.getGuild().getIdLong(), ignore.getMessage()));
+                            }
                         }, f->{});
                     }
                 } catch(Exception ignore) {}
@@ -519,7 +554,12 @@ public class AutoMod
                 if(mtc!=null)
                     mtc.deleteMessageById(m.getIdLong()).queue(s->{}, f->{});
             }
-            catch(PermissionException ignore) {}
+            catch(PermissionException ignore)
+            {
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        guild.getName(), guild.getIdLong(), ignore.getMessage()));
+            }
         });
     }
     

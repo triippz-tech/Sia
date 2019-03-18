@@ -102,6 +102,9 @@ public class WeatherCommand extends Command {
         } catch (NoWeatherException e) {
             log.error("Error retrieving weather: {}", e.getMessage());
             event.replyError("Encountered and error retrieving the weather. Please try again later.");
+            if ( sia.isDebugMode() )
+                sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                    event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
         }
     }
 }

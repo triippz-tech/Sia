@@ -19,6 +19,7 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractOwnerCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.JDA;
 
@@ -29,18 +30,14 @@ import java.time.temporal.ChronoUnit;
  *
  * @author John Grosh (jagrosh)
  */
-public class DebugCmd extends Command
+public class DebugCmd extends AbstractOwnerCommand
 {
-    private final Sia sia;
-    
+
     public DebugCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "debug";
         this.help = "shows some debug stats";
-        this.ownerCommand = true;
-        this.guildOnly = false;
-        this.hidden = true;
     }
     
     @Override

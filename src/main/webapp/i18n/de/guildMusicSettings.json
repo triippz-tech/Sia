@@ -1,0 +1,31 @@
+{
+  "siaApp": {
+    "guildMusicSettings": {
+      "home": {
+        "title": "Guild Music Settings",
+        "createLabel": "Guild Music Settings erstellen",
+        "createOrEditLabel": "Guild Music Settings erstellen oder bearbeiten"
+      },
+      "created": "Guild Music Settings erstellt mit ID {{ param }}",
+      "updated": "Guild Music Settings aktualisiert mit ID {{ param }}",
+      "deleted": "Guild Music Settings gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Guild Music Settings {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Guild Music Settings"
+      },
+      "guildId": "Guild Id",
+      "textChannelId": "Text Channel Id",
+      "voiceChannelId": "Voice Channel Id",
+      "djRoleId": "Dj Role Id",
+      "volume": "Volume",
+      "repeat": "Repeat",
+      "stayInChannel": "Stay in Channel",
+      "songInGame": "Song in Game",
+      "nowPlayingImages": "Song in Game",
+      "maxSeconds": "Max Seconds",
+      "playlist": "Playlist"
+    }
+  }
+}

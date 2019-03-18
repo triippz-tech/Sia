@@ -53,6 +53,21 @@ export const EntitiesMenu = props => (
       &nbsp;
       <Translate contentKey="global.menu.entities.tempBans" />
     </DropdownItem>
+    <DropdownItem tag={Link} to="/entity/guild-music-settings">
+      <FontAwesomeIcon icon="asterisk" fixedWidth />
+      &nbsp;
+      <Translate contentKey="global.menu.entities.guildMusicSettings" />
+    </DropdownItem>
+    <DropdownItem tag={Link} to="/entity/playlist">
+      <FontAwesomeIcon icon="asterisk" fixedWidth />
+      &nbsp;
+      <Translate contentKey="global.menu.entities.playlist" />
+    </DropdownItem>
+    <DropdownItem tag={Link} to="/entity/songs">
+      <FontAwesomeIcon icon="asterisk" fixedWidth />
+      &nbsp;
+      <Translate contentKey="global.menu.entities.songs" />
+    </DropdownItem>
     {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
   </NavDropdown>
 );

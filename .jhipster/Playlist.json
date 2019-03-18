@@ -1,0 +1,45 @@
+{
+    "name": "Playlist",
+    "fields": [
+        {
+            "fieldName": "guildId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "userId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "playlistName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "songs",
+            "otherEntityRelationshipName": "playlist",
+            "relationshipName": "song"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "guildMusicSettings",
+            "otherEntityRelationshipName": "playlist",
+            "relationshipValidateRules": "required",
+            "relationshipName": "guildmusicsettings",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20190311195326",
+    "entityTableName": "playlist",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,25 @@
+{
+  "siaApp": {
+    "playlist": {
+      "home": {
+        "title": "Playlists",
+        "createLabel": "Playlist erstellen",
+        "createOrEditLabel": "Playlist erstellen oder bearbeiten"
+      },
+      "created": "Playlist erstellt mit ID {{ param }}",
+      "updated": "Playlist aktualisiert mit ID {{ param }}",
+      "deleted": "Playlist gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Playlist {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Wiedergabeliste"
+      },
+      "guildId": "Gilden-ID",
+      "userId": "Benutzeridentifikation",
+      "playlistName": "Name der Wiedergabeliste",
+      "song": "Lied",
+      "guildmusicsettings": "Gildenmusikeinstellungen"
+    }
+  }
+}

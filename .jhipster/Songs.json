@@ -1,0 +1,35 @@
+{
+    "name": "Songs",
+    "fields": [
+        {
+            "fieldName": "songName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "songQuery",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "playlist",
+            "otherEntityRelationshipName": "song",
+            "relationshipValidateRules": "required",
+            "relationshipName": "playlist",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190311195327",
+    "entityTableName": "songs",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

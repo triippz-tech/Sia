@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "songs": {
+      "home": {
+        "title": "Lieder",
+        "createLabel": "Songs erstellen",
+        "createOrEditLabel": "Songs erstellen oder bearbeiten"
+      },
+      "created": "Songs erstellt mit ID {{ param }}",
+      "updated": "Songs aktualisiert mit ID {{ param }}",
+      "deleted": "Songs gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Songs {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Lieder"
+      },
+      "songName": "Liedtitel",
+      "songQuery": "Song-Abfrage",
+      "playlist": "Wiedergabeliste"
+    }
+  }
+}

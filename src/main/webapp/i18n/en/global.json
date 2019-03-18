@@ -16,6 +16,9 @@
         "strikes": "Strikes",
         "tempMutes": "Temp Mutes",
         "tempBans": "Temp Bans",
+        "guildMusicSettings": "Guild Music Settings",
+        "playlist": "Playlist",
+        "songs": "Songs",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

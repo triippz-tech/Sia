@@ -1,0 +1,27 @@
+entity GuildMusicSettings {
+	guildId Long required unique,
+    textChannelId Long required,
+    voiceChannelId Long required,
+    djRoleId Long required,
+    volume Integer required,
+    repeat Boolean required,
+}
+
+entity Playlist {
+	guildId Long,
+	userId Long,
+    playlistName String required // name of the playlist
+}
+
+entity Songs {
+	songName String, 
+	songQuery String required // This is either the search, url, etc. of the song
+}
+
+relationship OneToOne {
+	GuildMusicSettings{playlist} to Playlist{guildmusicsettings(guildid) required}
+}
+relationship OneToMany {
+    Playlist{song} to Songs{playlist required}
+}
+

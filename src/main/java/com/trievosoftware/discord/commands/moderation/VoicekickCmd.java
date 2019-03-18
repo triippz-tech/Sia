@@ -106,6 +106,9 @@ public class VoicekickCmd extends ModCommand
             {
                 builder.append("\n").append(event.getClient().getError()).append(" Failed to create a voice kick channel.");
                 event.reply(builder.toString());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), ex.getMessage()));
                 return;
             }
             for(int i=0; i<toKick.size(); i++)
@@ -119,6 +122,9 @@ public class VoicekickCmd extends ModCommand
                 catch(Exception ex)
                 {
                     builder.append("\n").append(event.getClient().getError()).append(" Failed to move ").append(FormatUtil.formatUser(m.getUser())).append(" to the voice kick channel.");
+                    if ( sia.isDebugMode() )
+                        sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                            event.getGuild().getName(), event.getGuild().getIdLong(), ex.getMessage()));
                 }
             }
             try
@@ -128,6 +134,9 @@ public class VoicekickCmd extends ModCommand
             catch(Exception ex)
             {
                 builder.append("\n").append(event.getClient().getError()).append(" Failed to delete the temporary voice channel.");
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), ex.getMessage()));
             }
             event.reply(builder.toString());
         });

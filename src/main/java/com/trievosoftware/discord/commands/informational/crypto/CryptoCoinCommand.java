@@ -54,6 +54,7 @@ public class CryptoCoinCommand extends Command {
 
     private final Logger log = LoggerFactory.getLogger(CryptoCoinCommand.class);
 
+    private Sia sia;
     private CryptoCompareAPI cryptoCompare;
     private static final String BASE_URL = "https://www.cryptocompare.com";
     private static final String HELP = "Look up crypto specific information (Must use ticker):\n" +
@@ -72,6 +73,7 @@ public class CryptoCoinCommand extends Command {
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
+        this.sia = sia;
         this.cryptoCompare = new CryptoCompareAPI(sia.getApplicationProperties().getApi().getCryptoCompare());
     }
 
@@ -90,6 +92,9 @@ public class CryptoCoinCommand extends Command {
                 event.reply(builder.build());
 
             } catch (IOException | NullPointerException | InvalidParameterException e) {
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                 log.error("{}", e.getMessage());
                 event.replyError("It looks like there was an issue processing your request. Please ensure" +
                     "you spelled everything correctly, and only used an approved coin ticker.");
@@ -98,6 +103,9 @@ public class CryptoCoinCommand extends Command {
                 builder.setDescription("Looks like we have reach our maximum call requests for this month.");
                 builder.setColor(Color.red);
                 event.reply(builder.build());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
         else {
@@ -111,12 +119,18 @@ public class CryptoCoinCommand extends Command {
                 log.error("Unable to process price request: {}", e.getMessage());
                 event.replyError("Sorry, I was unable to perform your request. " +
                     "Please ensure you have properly used the command.");
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
                 e.printStackTrace();
             } catch (OutOfCallsException e){
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.setDescription("Looks like we have reach our maximum call requests for this month.");
                 builder.setColor(Color.red);
                 event.reply(builder.build());
+                if ( sia.isDebugMode() )
+                    sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",
+                        event.getGuild().getName(), event.getGuild().getIdLong(), e.getMessage()));
             }
         }
     }

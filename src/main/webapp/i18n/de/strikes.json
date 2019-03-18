@@ -13,11 +13,11 @@
         "question": "Soll Strikes {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Strikes"
+        "title": "Streiks"
       },
-      "guildId": "Guild Id",
-      "userId": "User Id",
-      "strikes": "Strikes"
+      "guildId": "Gilden-ID",
+      "userId": "Benutzeridentifikation",
+      "strikes": "Streiks"
     }
   }
 }

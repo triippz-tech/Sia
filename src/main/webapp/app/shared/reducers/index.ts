@@ -43,6 +43,18 @@ import tempMutes, {
 import tempBans, {
   TempBansState
 } from 'app/entities/temp-bans/temp-bans.reducer';
+// prettier-ignore
+import guildMusicSettings, {
+  GuildMusicSettingsState
+} from 'app/entities/guild-music-settings/guild-music-settings.reducer';
+// prettier-ignore
+import playlist, {
+  PlaylistState
+} from 'app/entities/playlist/playlist.reducer';
+// prettier-ignore
+import songs, {
+  SongsState
+} from 'app/entities/songs/songs.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -60,6 +72,9 @@ export interface IRootState {
   readonly strikes: StrikesState;
   readonly tempMutes: TempMutesState;
   readonly tempBans: TempBansState;
+  readonly guildMusicSettings: GuildMusicSettingsState;
+  readonly playlist: PlaylistState;
+  readonly songs: SongsState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -79,6 +94,9 @@ const rootReducer = combineReducers<IRootState>({
   strikes,
   tempMutes,
   tempBans,
+  guildMusicSettings,
+  playlist,
+  songs,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });
