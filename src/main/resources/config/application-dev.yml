@@ -138,18 +138,18 @@ jhipster:
 
 application:
     api:
-        openweathermap: 471755ecdc6530072c463318f7756f4a
+        openweathermap:
         # GOOGLE API KEY INCLUDES
         # - Youtube Public API (free)
         # - Places API (free)
         # - Cloud Speech-to-Text API (free + paid)
         # - Custom Search API (free)
-        google: IzaSyBg8Zb9SU1ckxQllZnATODQMri_3SP4ToU
-        giphy: 4zFUl8QxMZbhRSHnbSMmM6fUhyrke5eb # will need a production key
-        cryptoCompare: ab134d00401076bef5c3074fbcfb8edc498583dbe2fe9775066ba5ed78be7159
-        nasa: AFwaryW58QrmrTDbAtrfljdmuxoPpPavXcVT2OtC
+        google:
+        giphy:  # will need a production key
+        cryptoCompare:
+        nasa:
     discord:
-        token: NTUzMTkzOTg3ODcyMjYwMDk2.D2Kh3g._sF3zPPHPet74undiU-YVRUL2GE
+        token:
         authorId: 110926644876689408
         prefix: /
         alternatePrefix: <
@@ -157,6 +157,6 @@ application:
         guildId: 484462646763061249 #Trievo Server ID
         categoryId: 547415713418182665
         schedulerPoolSize: 50
-        logWebookUrl: "https://discordapp.com/api/webhooks/551465925283676161/gHZH3h0wkaJtUW4isr7ani-ArKgCirbwiR2a9XZce6tBNvcQKSGaeaxjgR9ejtrJvdDw"
+        logWebookUrl:
 
 

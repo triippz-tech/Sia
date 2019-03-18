@@ -214,6 +214,31 @@ public class GuildMusicSettings implements Serializable, GuildSettingsProvider {
         return this;
     }
 
+    public GuildMusicSettings maxSeconds(Long maxSeconds) {
+        this.maxSeconds = maxSeconds;
+        return this;
+    }
+
+    public GuildMusicSettings stayInChannel(Boolean stayInChannel) {
+        this.stayInChannel = stayInChannel;
+        return this;
+    }
+
+    public GuildMusicSettings nowPlayingImages(Boolean nowPlayingImages) {
+        this.nowPlayingImages = nowPlayingImages;
+        return this;
+    }
+
+    public GuildMusicSettings songInGame(Boolean songInGame) {
+        this.songInGame = songInGame;
+        return this;
+    }
+
+    public GuildMusicSettings use_eval(Boolean use_eval) {
+        this.use_eval = use_eval;
+        return this;
+    }
+
     public Boolean getStayInChannel() {
         return stayInChannel;
     }

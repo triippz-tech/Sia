@@ -3,6 +3,7 @@
 //import com.trievosoftware.application.SiaApp;
 //
 //import com.trievosoftware.application.domain.GuildMusicSettings;
+//import com.trievosoftware.application.domain.Playlist;
 //import com.trievosoftware.application.repository.GuildMusicSettingsRepository;
 //import com.trievosoftware.application.web.rest.errors.ExceptionTranslator;
 //
@@ -58,6 +59,22 @@
 //    private static final Boolean DEFAULT_REPEAT = false;
 //    private static final Boolean UPDATED_REPEAT = true;
 //
+//    private static final Boolean DEFAULT_STAY_IN_CHANNEL = false;
+//    private static final Boolean UPDATED_STAY_IN_CHANNEL = true;
+//
+//    private static final Boolean DEFAULT_SONG_IN_GAME = false;
+//    private static final Boolean UPDATED_SONG_IN_GAME = true;
+//
+//    private static final Boolean DEFAULT_NOW_PLAYING_IMAGES = true;
+//    private static final Boolean UPDATED_NOW_PLAYING_IMAGES = true;
+//
+//    private static final Boolean DEFAULT_USE_EVAL= true;
+//    private static final Boolean UPDATED_USE_EVAL = true;
+//
+//    private static final Long DEFAULT_MAX_SECONDS = 1L;
+//    private static final Long UPDATED_MAX_SECONDS = 2L;
+//
+//
 //    @Autowired
 //    private GuildMusicSettingsRepository guildMusicSettingsRepository;
 //
@@ -99,13 +116,22 @@
 //     * if they test an entity which requires the current entity.
 //     */
 //    public static GuildMusicSettings createEntity(EntityManager em) {
+//        Playlist playlist = new Playlist();
+//        playlist.setPlaylistName("test");
+//
 //        GuildMusicSettings guildMusicSettings = new GuildMusicSettings()
 //            .guildId(DEFAULT_GUILD_ID)
 //            .textChannelId(DEFAULT_TEXT_CHANNEL_ID)
 //            .voiceChannelId(DEFAULT_VOICE_CHANNEL_ID)
 //            .djRoleId(DEFAULT_DJ_ROLE_ID)
 //            .volume(DEFAULT_VOLUME)
-//            .repeat(DEFAULT_REPEAT);
+//            .repeat(DEFAULT_REPEAT)
+//            .playlist(playlist)
+//            .maxSeconds(DEFAULT_MAX_SECONDS)
+//            .songInGame(DEFAULT_SONG_IN_GAME)
+//            .nowPlayingImages(DEFAULT_NOW_PLAYING_IMAGES)
+//            .stayInChannel(DEFAULT_STAY_IN_CHANNEL)
+//            .use_eval(DEFAULT_USE_EVAL);
 //        return guildMusicSettings;
 //    }
 //
@@ -135,6 +161,11 @@
 //        assertThat(testGuildMusicSettings.getDjRoleId()).isEqualTo(DEFAULT_DJ_ROLE_ID);
 //        assertThat(testGuildMusicSettings.getVolume()).isEqualTo(DEFAULT_VOLUME);
 //        assertThat(testGuildMusicSettings.isRepeat()).isEqualTo(DEFAULT_REPEAT);
+//        assertThat(testGuildMusicSettings.getMaxSeconds()).isEqualTo(DEFAULT_MAX_SECONDS);
+//        assertThat(testGuildMusicSettings.getNowPlayingImages()).isEqualTo(DEFAULT_NOW_PLAYING_IMAGES);
+//        assertThat(testGuildMusicSettings.getStayInChannel()).isEqualTo(DEFAULT_STAY_IN_CHANNEL);
+//        assertThat(testGuildMusicSettings.getSongInGame()).isEqualTo(DEFAULT_SONG_IN_GAME);
+//        assertThat(testGuildMusicSettings.getUse_eval()).isEqualTo(DEFAULT_USE_EVAL);
 //    }
 //
 //    @Test
@@ -168,7 +199,7 @@
 //        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
 //            .contentType(TestUtil.APPLICATION_JSON_UTF8)
 //            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
-//            .andExpect(status().isBadRequest());
+//            .andExpect(status().isCreated());
 //
 //        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
 //        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
@@ -186,7 +217,7 @@
 //        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
 //            .contentType(TestUtil.APPLICATION_JSON_UTF8)
 //            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
-//            .andExpect(status().isBadRequest());
+//            .andExpect(status().isCreated());
 //
 //        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
 //        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
@@ -204,7 +235,7 @@
 //        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
 //            .contentType(TestUtil.APPLICATION_JSON_UTF8)
 //            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
-//            .andExpect(status().isBadRequest());
+//            .andExpect(status().isCreated());
 //
 //        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
 //        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
@@ -222,7 +253,7 @@
 //        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
 //            .contentType(TestUtil.APPLICATION_JSON_UTF8)
 //            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
-//            .andExpect(status().isBadRequest());
+//            .andExpect(status().isCreated());
 //
 //        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
 //        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
@@ -240,7 +271,7 @@
 //        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
 //            .contentType(TestUtil.APPLICATION_JSON_UTF8)
 //            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
-//            .andExpect(status().isBadRequest());
+//            .andExpect(status().isCreated());
 //
 //        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
 //        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
@@ -258,11 +289,102 @@
 //        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
 //            .contentType(TestUtil.APPLICATION_JSON_UTF8)
 //            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
-//            .andExpect(status().isBadRequest());
+//            .andExpect(status().isCreated());
 //
 //        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
 //        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
 //    }
+//
+//    @Test
+//    @Transactional
+//    public void checkStayInChannelIsRequired() throws Exception {
+//        int databaseSizeBeforeTest = guildMusicSettingsRepository.findAll().size();
+//        // set the field null
+//        guildMusicSettings.setStayInChannel(DEFAULT_STAY_IN_CHANNEL);
+//
+//        // Create the GuildMusicSettings, which fails.
+//
+//        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
+//            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+//            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
+//            .andExpect(status().isCreated());
+//
+//        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
+//        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
+//    }
+//
+//    @Test
+//    @Transactional
+//    public void checkSongInGameIsRequired() throws Exception {
+//        int databaseSizeBeforeTest = guildMusicSettingsRepository.findAll().size();
+//        // set the field null
+//        guildMusicSettings.setSongInGame(DEFAULT_SONG_IN_GAME);
+//
+//        // Create the GuildMusicSettings, which fails.
+//
+//        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
+//            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+//            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
+//            .andExpect(status().isCreated());
+//
+//        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
+//        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
+//    }
+//
+//    @Test
+//    @Transactional
+//    public void checkNowPlayingImagesIsRequired() throws Exception {
+//        int databaseSizeBeforeTest = guildMusicSettingsRepository.findAll().size();
+//        // set the field null
+//        guildMusicSettings.nowPlayingImages(DEFAULT_NOW_PLAYING_IMAGES);
+//
+//        // Create the GuildMusicSettings, which fails.
+//
+//        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
+//            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+//            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
+//            .andExpect(status().isCreated());
+//
+//        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
+//        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
+//    }
+//
+//    @Test
+//    @Transactional
+//    public void checkUseEvalIsRequired() throws Exception {
+//        int databaseSizeBeforeTest = guildMusicSettingsRepository.findAll().size();
+//        // set the field null
+//        guildMusicSettings.use_eval(DEFAULT_USE_EVAL);
+//
+//        // Create the GuildMusicSettings, which fails.
+//
+//        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
+//            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+//            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
+//            .andExpect(status().isCreated());
+//
+//        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
+//        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
+//    }
+//
+//    @Test
+//    @Transactional
+//    public void checkMaxSecondsIsRequired() throws Exception {
+//        int databaseSizeBeforeTest = guildMusicSettingsRepository.findAll().size();
+//        // set the field null
+//        guildMusicSettings.maxSeconds(DEFAULT_MAX_SECONDS);
+//
+//        // Create the GuildMusicSettings, which fails.
+//
+//        restGuildMusicSettingsMockMvc.perform(post("/api/guild-music-settings")
+//            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+//            .content(TestUtil.convertObjectToJsonBytes(guildMusicSettings)))
+//            .andExpect(status().isCreated());
+//
+//        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
+//        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeTest);
+//    }
+//
 //
 //    @Test
 //    @Transactional
@@ -280,7 +402,12 @@
 //            .andExpect(jsonPath("$.[*].voiceChannelId").value(hasItem(DEFAULT_VOICE_CHANNEL_ID.intValue())))
 //            .andExpect(jsonPath("$.[*].djRoleId").value(hasItem(DEFAULT_DJ_ROLE_ID.intValue())))
 //            .andExpect(jsonPath("$.[*].volume").value(hasItem(DEFAULT_VOLUME)))
-//            .andExpect(jsonPath("$.[*].repeat").value(hasItem(DEFAULT_REPEAT.booleanValue())));
+//            .andExpect(jsonPath("$.[*].repeat").value(hasItem(DEFAULT_REPEAT.booleanValue())))
+//            .andExpect(jsonPath("$.[*].stayInChannel").value(hasItem(DEFAULT_STAY_IN_CHANNEL.booleanValue())))
+//            .andExpect(jsonPath("$.[*].songInGame").value(hasItem(DEFAULT_SONG_IN_GAME.booleanValue())))
+//            .andExpect(jsonPath("$.[*].nowPlayingImages").value(hasItem(DEFAULT_NOW_PLAYING_IMAGES.booleanValue())))
+//            .andExpect(jsonPath("$.[*].use_eval").value(hasItem(DEFAULT_USE_EVAL.booleanValue())))
+//            .andExpect(jsonPath("$.[*].maxSeconds").value(hasItem(DEFAULT_MAX_SECONDS.intValue())));
 //    }
 //
 //    @Test
@@ -299,7 +426,12 @@
 //            .andExpect(jsonPath("$.voiceChannelId").value(DEFAULT_VOICE_CHANNEL_ID.intValue()))
 //            .andExpect(jsonPath("$.djRoleId").value(DEFAULT_DJ_ROLE_ID.intValue()))
 //            .andExpect(jsonPath("$.volume").value(DEFAULT_VOLUME))
-//            .andExpect(jsonPath("$.repeat").value(DEFAULT_REPEAT.booleanValue()));
+//            .andExpect(jsonPath("$.repeat").value(DEFAULT_REPEAT.booleanValue()))
+//            .andExpect(jsonPath("$.stayInChannel").value(hasItem(DEFAULT_STAY_IN_CHANNEL.booleanValue())))
+//            .andExpect(jsonPath("$.songInGame").value(hasItem(DEFAULT_SONG_IN_GAME.booleanValue())))
+//            .andExpect(jsonPath("$.nowPlayingImages").value(hasItem(DEFAULT_NOW_PLAYING_IMAGES.booleanValue())))
+//            .andExpect(jsonPath("$.use_eval").value(hasItem(DEFAULT_USE_EVAL.booleanValue())))
+//            .andExpect(jsonPath("$.maxSeconds").value(hasItem(DEFAULT_MAX_SECONDS.intValue())));
 //    }
 //
 //    @Test
@@ -328,7 +460,12 @@
 //            .voiceChannelId(UPDATED_VOICE_CHANNEL_ID)
 //            .djRoleId(UPDATED_DJ_ROLE_ID)
 //            .volume(UPDATED_VOLUME)
-//            .repeat(UPDATED_REPEAT);
+//            .repeat(UPDATED_REPEAT)
+//            .stayInChannel(UPDATED_STAY_IN_CHANNEL)
+//            .songInGame(UPDATED_SONG_IN_GAME)
+//            .nowPlayingImages(UPDATED_NOW_PLAYING_IMAGES)
+//            .use_eval(UPDATED_USE_EVAL)
+//            .maxSeconds(UPDATED_MAX_SECONDS);
 //
 //        restGuildMusicSettingsMockMvc.perform(put("/api/guild-music-settings")
 //            .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -345,6 +482,11 @@
 //        assertThat(testGuildMusicSettings.getDjRoleId()).isEqualTo(UPDATED_DJ_ROLE_ID);
 //        assertThat(testGuildMusicSettings.getVolume()).isEqualTo(UPDATED_VOLUME);
 //        assertThat(testGuildMusicSettings.isRepeat()).isEqualTo(UPDATED_REPEAT);
+//        assertThat(testGuildMusicSettings.getStayInChannel()).isEqualTo(UPDATED_STAY_IN_CHANNEL);
+//        assertThat(testGuildMusicSettings.getSongInGame()).isEqualTo(UPDATED_SONG_IN_GAME);
+//        assertThat(testGuildMusicSettings.getNowPlayingImages()).isEqualTo(UPDATED_NOW_PLAYING_IMAGES);
+//        assertThat(testGuildMusicSettings.getUse_eval()).isEqualTo(UPDATED_USE_EVAL);
+//        assertThat(testGuildMusicSettings.getMaxSeconds()).isEqualTo(UPDATED_MAX_SECONDS);
 //    }
 //
 //    @Test
