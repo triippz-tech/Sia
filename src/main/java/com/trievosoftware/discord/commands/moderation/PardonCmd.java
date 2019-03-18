@@ -17,7 +17,7 @@ package com.trievosoftware.discord.commands.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.ModCommand;
+import com.trievosoftware.discord.commands.meta.ModCommand;
 import com.trievosoftware.discord.utils.ArgsUtil;
 import com.trievosoftware.discord.utils.ArgsUtil.ResolvedArgs;
 import com.trievosoftware.discord.utils.FormatUtil;

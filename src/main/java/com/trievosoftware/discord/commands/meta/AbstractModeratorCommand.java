@@ -17,17 +17,59 @@
 package com.trievosoftware.discord.commands.meta;
 
 import com.jagrosh.jdautilities.command.Command;
+import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Role;
 
 public abstract class AbstractModeratorCommand extends Command {
 
     protected Sia sia;
-    public AbstractModeratorCommand(Sia sia)
+    public AbstractModeratorCommand(Sia sia, Permission... altPerms)
     {
         this.sia = sia;
-        this.category = new Category("Moderation");
-        this.guildOnly = true;
-        this.userPermissions = new Permission[]{Permission.MANAGE_SERVER};
+        this.category = new Category("Moderation", event ->
+        {
+            if(event.getGuild()==null)
+            {
+                event.replyError("This command is not available in Direct Messages!");
+                return false;
+            }
+            Role modrole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+            if(modrole!=null && event.getMember().getRoles().contains(modrole))
+                return true;
+
+            boolean missingPerms = false;
+            for(Permission altPerm: altPerms)
+            {
+                if(altPerm.isText())
+                {
+                    if(!event.getMember().hasPermission(event.getTextChannel(), altPerm))
+                        missingPerms = true;
+                }
+                else
+                {
+                    if(!event.getMember().hasPermission(altPerm))
+                        missingPerms = true;
+                }
+            }
+            if(!missingPerms)
+                return true;
+            if(event.getMember().getRoles().isEmpty())
+                event.getMessage().addReaction(Constants.ERROR_REACTION).queue();
+            else
+                event.replyError("You must have the following permissions to use that: "+listPerms(altPerms));
+            return false;
+        });
+    }
+
+    private static String listPerms(Permission... perms)
+    {
+        if(perms.length==0)
+            return "";
+        StringBuilder sb = new StringBuilder(perms[0].getName());
+        for(int i=1; i<perms.length; i++)
+            sb.append(", ").append(perms[i].getName());
+        return sb.toString();
     }
 }

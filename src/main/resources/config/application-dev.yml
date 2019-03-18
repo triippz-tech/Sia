@@ -138,7 +138,7 @@ jhipster:
 
 application:
     api:
-        openweathermap:
+        openweathermap: 
         # GOOGLE API KEY INCLUDES
         # - Youtube Public API (free)
         # - Places API (free)
@@ -152,7 +152,7 @@ application:
         token:
         authorId: 110926644876689408
         prefix: /
-        alternatePrefix: <
+        alternatePrefix: "<<"
         shards: 1
         guildId: 484462646763061249 #Trievo Server ID
         categoryId: 547415713418182665

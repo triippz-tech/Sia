@@ -19,7 +19,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.trievosoftware.discord.Action;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.ModCommand;
+import com.trievosoftware.discord.commands.meta.ModCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild.Ban;

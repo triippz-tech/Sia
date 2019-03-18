@@ -133,6 +133,7 @@ public class Sia
                         .addCommands(// General
                             //new AboutCommand(Color.CYAN, "and I'm here to keep your Discord server safe and make moderating easy!", 
                             //                            new String[]{"Moderation commands","Configurable automoderation","Very easy setup"},Constants.PERMISSIONS),
+                            // General
                             new AboutCmd(),
                             new InviteCmd(),
                             new PingCommand(),
@@ -156,6 +157,7 @@ public class Sia
                             new CheckCmd(this),
                             new ReasonCmd(this),
                             new SetGameCommand(this),
+                            new PollCommand(this),
 
 
                             // Settings
