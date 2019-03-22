@@ -8,16 +8,15 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Objects;
 
 /**
- * A Premium.
+ * A DiscordUser.
  */
 @Entity
-@Table(name = "premium")
+@Table(name = "discord_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Premium implements Serializable {
+public class DiscordUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -27,16 +26,16 @@ public class Premium implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "discord_id", nullable = false, unique = true)
-    private Long discordId;
+    @Column(name = "user_id", nullable = false, unique = true)
+    private Long userId;
 
     @NotNull
-    @Column(name = "jhi_until", nullable = false)
-    private Instant until;
+    @Column(name = "commands_issued", nullable = false)
+    private Integer commandsIssued;
 
     @NotNull
-    @Column(name = "jhi_level", nullable = false)
-    private Integer level;
+    @Column(name = "blacklisted", nullable = false)
+    private Boolean blacklisted;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -47,43 +46,43 @@ public class Premium implements Serializable {
         this.id = id;
     }
 
-    public Long getDiscordId() {
-        return discordId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public Premium discordId(Long discordId) {
-        this.discordId = discordId;
+    public DiscordUser userId(Long userId) {
+        this.userId = userId;
         return this;
     }
 
-    public void setDiscordId(Long discordId) {
-        this.discordId = discordId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Instant getUntil() {
-        return until;
+    public Integer getCommandsIssued() {
+        return commandsIssued;
     }
 
-    public Premium until(Instant until) {
-        this.until = until;
+    public DiscordUser commandsIssued(Integer commandsIssued) {
+        this.commandsIssued = commandsIssued;
         return this;
     }
 
-    public void setUntil(Instant until) {
-        this.until = until;
+    public void setCommandsIssued(Integer commandsIssued) {
+        this.commandsIssued = commandsIssued;
     }
 
-    public Integer getLevel() {
-        return level;
+    public Boolean isBlacklisted() {
+        return blacklisted;
     }
 
-    public Premium level(Integer level) {
-        this.level = level;
+    public DiscordUser blacklisted(Boolean blacklisted) {
+        this.blacklisted = blacklisted;
         return this;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setBlacklisted(Boolean blacklisted) {
+        this.blacklisted = blacklisted;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -95,11 +94,11 @@ public class Premium implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Premium premium = (Premium) o;
-        if (premium.getId() == null || getId() == null) {
+        DiscordUser discordUser = (DiscordUser) o;
+        if (discordUser.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), premium.getId());
+        return Objects.equals(getId(), discordUser.getId());
     }
 
     @Override
@@ -109,11 +108,11 @@ public class Premium implements Serializable {
 
     @Override
     public String toString() {
-        return "Premium{" +
+        return "DiscordUser{" +
             "id=" + getId() +
-            ", discordId=" + getDiscordId() +
-            ", until='" + getUntil() + "'" +
-            ", level=" + getLevel() +
+            ", userId=" + getUserId() +
+            ", commandsIssued=" + getCommandsIssued() +
+            ", blacklisted='" + isBlacklisted() + "'" +
             "}";
     }
 }

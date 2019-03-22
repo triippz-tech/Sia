@@ -1,5 +1,5 @@
 entity GuildMusicSettings {
-	guildId Long required unique,
+	discordId Long required unique,
     textChannelId Long required,
     voiceChannelId Long required,
     djRoleId Long required,
@@ -8,7 +8,7 @@ entity GuildMusicSettings {
 }
 
 entity Playlist {
-	guildId Long,
+	discordId Long,
 	userId Long,
     playlistName String required // name of the playlist
 }

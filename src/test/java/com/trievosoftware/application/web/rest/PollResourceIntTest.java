@@ -52,11 +52,17 @@ public class PollResourceIntTest {
     private static final Long DEFAULT_TEXT_CHANNEL_ID = 1L;
     private static final Long UPDATED_TEXT_CHANNEL_ID = 2L;
 
+    private static final Long DEFAULT_MESSAGE_ID = 1L;
+    private static final Long UPDATED_MESSAGE_ID = 2L;
+
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_FINISH_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_FINISH_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Boolean DEFAULT_EXPIRED = false;
+    private static final Boolean UPDATED_EXPIRED = true;
 
     @Autowired
     private PollRepository pollRepository;
@@ -107,6 +113,8 @@ public class PollResourceIntTest {
             .userId(DEFAULT_USER_ID)
             .textChannelId(DEFAULT_TEXT_CHANNEL_ID)
             .title(DEFAULT_TITLE)
+            .messageId(DEFAULT_MESSAGE_ID)
+            .expired(DEFAULT_EXPIRED)
             .finishTime(DEFAULT_FINISH_TIME);
         return poll;
     }
@@ -136,6 +144,8 @@ public class PollResourceIntTest {
         assertThat(testPoll.getTextChannelId()).isEqualTo(DEFAULT_TEXT_CHANNEL_ID);
         assertThat(testPoll.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testPoll.getFinishTime()).isEqualTo(DEFAULT_FINISH_TIME);
+        assertThat(testPoll.isExpired()).isEqualTo(DEFAULT_EXPIRED);
+        assertThat(testPoll.getMessageId()).isEqualTo(DEFAULT_MESSAGE_ID);
     }
 
     @Test
@@ -216,17 +226,17 @@ public class PollResourceIntTest {
     public void checkFinishTimeIsRequired() throws Exception {
         int databaseSizeBeforeTest = pollRepository.findAll().size();
         // set the field null
-        poll.setFinishTime(null);
+        poll.setFinishTime(Instant.now());
 
         // Create the Poll, which fails.
 
         restPollMockMvc.perform(post("/api/polls")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(poll)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
         List<Poll> pollList = pollRepository.findAll();
-        assertThat(pollList).hasSize(databaseSizeBeforeTest);
+        assertThat(pollList).isNotSameAs(databaseSizeBeforeTest);
     }
 
     @Test
@@ -244,7 +254,9 @@ public class PollResourceIntTest {
             .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())))
             .andExpect(jsonPath("$.[*].textChannelId").value(hasItem(DEFAULT_TEXT_CHANNEL_ID.intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
-            .andExpect(jsonPath("$.[*].finishTime").value(hasItem(DEFAULT_FINISH_TIME.toString())));
+            .andExpect(jsonPath("$.[*].finishTime").value(hasItem(DEFAULT_FINISH_TIME.toString())))
+            .andExpect(jsonPath("$.[*].expired").value(hasItem(DEFAULT_EXPIRED)))
+            .andExpect(jsonPath("$.[*].messageId").value(hasItem(DEFAULT_MESSAGE_ID.intValue())));
     }
     
     @Test
@@ -262,7 +274,9 @@ public class PollResourceIntTest {
             .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.intValue()))
             .andExpect(jsonPath("$.textChannelId").value(DEFAULT_TEXT_CHANNEL_ID.intValue()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
-            .andExpect(jsonPath("$.finishTime").value(DEFAULT_FINISH_TIME.toString()));
+            .andExpect(jsonPath("$.finishTime").value(DEFAULT_FINISH_TIME.toString()))
+            .andExpect(jsonPath("$.expired").value(DEFAULT_EXPIRED.booleanValue()))
+            .andExpect(jsonPath("$.messageId").value(DEFAULT_MESSAGE_ID.toString()));
     }
 
     @Test
@@ -290,6 +304,8 @@ public class PollResourceIntTest {
             .userId(UPDATED_USER_ID)
             .textChannelId(UPDATED_TEXT_CHANNEL_ID)
             .title(UPDATED_TITLE)
+            .expired(UPDATED_EXPIRED)
+            .messageId(UPDATED_MESSAGE_ID)
             .finishTime(UPDATED_FINISH_TIME);
 
         restPollMockMvc.perform(put("/api/polls")
@@ -306,6 +322,8 @@ public class PollResourceIntTest {
         assertThat(testPoll.getTextChannelId()).isEqualTo(UPDATED_TEXT_CHANNEL_ID);
         assertThat(testPoll.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testPoll.getFinishTime()).isEqualTo(UPDATED_FINISH_TIME);
+        assertThat(testPoll.isExpired()).isEqualTo(UPDATED_EXPIRED);
+        assertThat(testPoll.getMessageId()).isEqualTo(UPDATED_MESSAGE_ID);
     }
 
     @Test

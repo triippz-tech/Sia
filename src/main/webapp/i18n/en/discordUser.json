@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "discordUser": {
+      "home": {
+        "title": "Discord Users",
+        "createLabel": "Create a new Discord User",
+        "createOrEditLabel": "Create or edit a Discord User"
+      },
+      "created": "A new Discord User is created with identifier {{ param }}",
+      "updated": "A Discord User is updated with identifier {{ param }}",
+      "deleted": "A Discord User is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Discord User {{ id }}?"
+      },
+      "detail": {
+        "title": "Discord User"
+      },
+      "userId": "User Id",
+      "commandsIssued": "Commands Issued",
+      "blacklisted": "Blacklisted"
+    }
+  }
+}

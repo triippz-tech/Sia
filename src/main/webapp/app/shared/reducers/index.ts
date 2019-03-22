@@ -63,6 +63,10 @@ import poll, {
 import pollItems, {
   PollItemsState
 } from 'app/entities/poll-items/poll-items.reducer';
+// prettier-ignore
+import discordUser, {
+  DiscordUserState
+} from 'app/entities/discord-user/discord-user.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -85,6 +89,7 @@ export interface IRootState {
   readonly songs: SongsState;
   readonly poll: PollState;
   readonly pollItems: PollItemsState;
+  readonly discordUser: DiscordUserState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -109,6 +114,7 @@ const rootReducer = combineReducers<IRootState>({
   songs,
   poll,
   pollItems,
+  discordUser,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

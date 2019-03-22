@@ -2,7 +2,7 @@ import { Moment } from 'moment';
 
 export interface IPremium {
   id?: number;
-  guildId?: number;
+  discordId?: number;
   until?: Moment;
   level?: number;
 }

@@ -15,7 +15,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface PremiumRepository extends JpaRepository<Premium, Long> {
-    Optional<Premium> findByGuildId(Long guildId);
+    Optional<Premium> findByDiscordId(Long discordId);
 
     List<Premium> findAllByUntilIsLessThan(Instant now);
 }

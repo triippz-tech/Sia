@@ -8,19 +8,19 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { getEntity, updateEntity, createEntity, reset } from './premium.reducer';
-import { IPremium } from 'app/shared/model/premium.model';
+import { getEntity, updateEntity, createEntity, reset } from './discord-user.reducer';
+import { IDiscordUser } from 'app/shared/model/discord-user.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface IPremiumUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IDiscordUserUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-export interface IPremiumUpdateState {
+export interface IDiscordUserUpdateState {
   isNew: boolean;
 }
 
-export class PremiumUpdate extends React.Component<IPremiumUpdateProps, IPremiumUpdateState> {
+export class DiscordUserUpdate extends React.Component<IDiscordUserUpdateProps, IDiscordUserUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,12 +43,10 @@ export class PremiumUpdate extends React.Component<IPremiumUpdateProps, IPremium
   }
 
   saveEntity = (event, errors, values) => {
-    values.until = convertDateTimeToServer(values.until);
-
     if (errors.length === 0) {
-      const { premiumEntity } = this.props;
+      const { discordUserEntity } = this.props;
       const entity = {
-        ...premiumEntity,
+        ...discordUserEntity,
         ...values
       };
 
@@ -61,19 +59,19 @@ export class PremiumUpdate extends React.Component<IPremiumUpdateProps, IPremium
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/premium');
+    this.props.history.push('/entity/discord-user');
   };
 
   render() {
-    const { premiumEntity, loading, updating } = this.props;
+    const { discordUserEntity, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
       <div>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="siaApp.premium.home.createOrEditLabel">
-              <Translate contentKey="siaApp.premium.home.createOrEditLabel">Create or edit a Premium</Translate>
+            <h2 id="siaApp.discordUser.home.createOrEditLabel">
+              <Translate contentKey="siaApp.discordUser.home.createOrEditLabel">Create or edit a DiscordUser</Translate>
             </h2>
           </Col>
         </Row>
@@ -82,24 +80,24 @@ export class PremiumUpdate extends React.Component<IPremiumUpdateProps, IPremium
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={isNew ? {} : premiumEntity} onSubmit={this.saveEntity}>
+              <AvForm model={isNew ? {} : discordUserEntity} onSubmit={this.saveEntity}>
                 {!isNew ? (
                   <AvGroup>
                     <Label for="id">
                       <Translate contentKey="global.field.id">ID</Translate>
                     </Label>
-                    <AvInput id="premium-id" type="text" className="form-control" name="id" required readOnly />
+                    <AvInput id="discord-user-id" type="text" className="form-control" name="id" required readOnly />
                   </AvGroup>
                 ) : null}
                 <AvGroup>
-                  <Label id="guildIdLabel" for="discordId">
-                    <Translate contentKey="siaApp.premium.discordId">Guild/User Id</Translate>
+                  <Label id="userIdLabel" for="userId">
+                    <Translate contentKey="siaApp.discordUser.userId">User Id</Translate>
                   </Label>
                   <AvField
-                    id="premium-discordId"
+                    id="discord-user-userId"
                     type="string"
                     className="form-control"
-                    name="discordId"
+                    name="userId"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') },
                       number: { value: true, errorMessage: translate('entity.validation.number') }
@@ -107,37 +105,27 @@ export class PremiumUpdate extends React.Component<IPremiumUpdateProps, IPremium
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="untilLabel" for="until">
-                    <Translate contentKey="siaApp.premium.until">Until</Translate>
-                  </Label>
-                  <AvInput
-                    id="premium-until"
-                    type="datetime-local"
-                    className="form-control"
-                    name="until"
-                    placeholder={'YYYY-MM-DD HH:mm'}
-                    value={isNew ? null : convertDateTimeFromServer(this.props.premiumEntity.until)}
-                    validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') }
-                    }}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="levelLabel" for="level">
-                    <Translate contentKey="siaApp.premium.level">Level</Translate>
+                  <Label id="commandsIssuedLabel" for="commandsIssued">
+                    <Translate contentKey="siaApp.discordUser.commandsIssued">Commands Issued</Translate>
                   </Label>
                   <AvField
-                    id="premium-level"
+                    id="discord-user-commandsIssued"
                     type="string"
                     className="form-control"
-                    name="level"
+                    name="commandsIssued"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') },
                       number: { value: true, errorMessage: translate('entity.validation.number') }
                     }}
                   />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/premium" replace color="info">
+                <AvGroup>
+                  <Label id="blacklistedLabel" check>
+                    <AvInput id="discord-user-blacklisted" type="checkbox" className="form-control" name="blacklisted" />
+                    <Translate contentKey="siaApp.discordUser.blacklisted">Blacklisted</Translate>
+                  </Label>
+                </AvGroup>
+                <Button tag={Link} id="cancel-save" to="/entity/discord-user" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">
@@ -160,10 +148,10 @@ export class PremiumUpdate extends React.Component<IPremiumUpdateProps, IPremium
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  premiumEntity: storeState.premium.entity,
-  loading: storeState.premium.loading,
-  updating: storeState.premium.updating,
-  updateSuccess: storeState.premium.updateSuccess
+  discordUserEntity: storeState.discordUser.entity,
+  loading: storeState.discordUser.loading,
+  updating: storeState.discordUser.updating,
+  updateSuccess: storeState.discordUser.updateSuccess
 });
 
 const mapDispatchToProps = {
@@ -179,4 +167,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PremiumUpdate);
+)(DiscordUserUpdate);

@@ -47,6 +47,9 @@ public class PollItemsResourceIntTest {
     private static final Integer DEFAULT_ITEM_NUMBER = 1;
     private static final Integer UPDATED_ITEM_NUMBER = 2;
 
+    private static final String DEFAULT_REACTION = "AAAAAAAAAA";
+    private static final String UPDATED_REACTION = "BBBBBBBBBB";
+
     @Autowired
     private PollItemsRepository pollItemsRepository;
 
@@ -93,7 +96,8 @@ public class PollItemsResourceIntTest {
     public static PollItems createEntity(EntityManager em) {
         PollItems pollItems = new PollItems()
             .itemName(DEFAULT_ITEM_NAME)
-            .itemNumber(DEFAULT_ITEM_NUMBER);
+            .votes(DEFAULT_ITEM_NUMBER)
+            .reaction(DEFAULT_REACTION);
         return pollItems;
     }
 
@@ -119,6 +123,7 @@ public class PollItemsResourceIntTest {
         PollItems testPollItems = pollItemsList.get(pollItemsList.size() - 1);
         assertThat(testPollItems.getItemName()).isEqualTo(DEFAULT_ITEM_NAME);
         assertThat(testPollItems.getVotes()).isEqualTo(DEFAULT_ITEM_NUMBER);
+        assertThat(testPollItems.getReaction()).isEqualTo(DEFAULT_REACTION);
     }
 
     @Test
@@ -170,7 +175,8 @@ public class PollItemsResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(pollItems.getId().intValue())))
             .andExpect(jsonPath("$.[*].itemName").value(hasItem(DEFAULT_ITEM_NAME.toString())))
-            .andExpect(jsonPath("$.[*].itemNumber").value(hasItem(DEFAULT_ITEM_NUMBER)));
+            .andExpect(jsonPath("$.[*].votes").value(hasItem(DEFAULT_ITEM_NUMBER)))
+            .andExpect(jsonPath("$.[*].reaction").value(hasItem(DEFAULT_REACTION)));
     }
     
     @Test
@@ -185,7 +191,8 @@ public class PollItemsResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(pollItems.getId().intValue()))
             .andExpect(jsonPath("$.itemName").value(DEFAULT_ITEM_NAME.toString()))
-            .andExpect(jsonPath("$.itemNumber").value(DEFAULT_ITEM_NUMBER));
+            .andExpect(jsonPath("$.votes").value(DEFAULT_ITEM_NUMBER))
+            .andExpect(jsonPath("$.reaction").value(DEFAULT_REACTION.toString()));
     }
 
     @Test
@@ -210,7 +217,8 @@ public class PollItemsResourceIntTest {
         em.detach(updatedPollItems);
         updatedPollItems
             .itemName(UPDATED_ITEM_NAME)
-            .itemNumber(UPDATED_ITEM_NUMBER);
+            .votes(UPDATED_ITEM_NUMBER)
+            .reaction(UPDATED_REACTION);
 
         restPollItemsMockMvc.perform(put("/api/poll-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -223,6 +231,7 @@ public class PollItemsResourceIntTest {
         PollItems testPollItems = pollItemsList.get(pollItemsList.size() - 1);
         assertThat(testPollItems.getItemName()).isEqualTo(UPDATED_ITEM_NAME);
         assertThat(testPollItems.getVotes()).isEqualTo(UPDATED_ITEM_NUMBER);
+        assertThat(testPollItems.getReaction()).isEqualTo(UPDATED_REACTION);
     }
 
     @Test

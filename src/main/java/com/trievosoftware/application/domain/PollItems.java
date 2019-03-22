@@ -83,8 +83,8 @@ public class PollItems implements Serializable {
         return votes;
     }
 
-    public PollItems itemNumber(Integer itemNumber) {
-        this.votes = itemNumber;
+    public PollItems votes(Integer votes) {
+        this.votes = votes;
         return this;
     }
 
@@ -98,6 +98,12 @@ public class PollItems implements Serializable {
 
     public PollItems poll(Poll poll) {
         this.poll = poll;
+        return this;
+    }
+
+    public PollItems reaction(String reaction)
+    {
+        this.reaction = reaction;
         return this;
     }
 

@@ -14,28 +14,27 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Premium.
+        Added the entity DiscordUser.
     -->
-    <changeSet id="20190306151753-1" author="jhipster">
-        <createTable tableName="premium">
+    <changeSet id="20190322192008-1" author="jhipster">
+        <createTable tableName="discord_user">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="discord_id" type="bigint">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_premium_guild_id" />
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_discord_user_user_id" />
             </column>
 
-            <column name="jhi_until" type="datetime">
+            <column name="commands_issued" type="integer">
                 <constraints nullable="false" />
             </column>
 
-            <column name="jhi_level" type="integer">
+            <column name="blacklisted" type="boolean">
                 <constraints nullable="false" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="premium" columnName="jhi_until" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

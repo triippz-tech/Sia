@@ -3,60 +3,58 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
+import { Translate, ICrudGetAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './premium.reducer';
-import { IPremium } from 'app/shared/model/premium.model';
+import { getEntity } from './discord-user.reducer';
+import { IDiscordUser } from 'app/shared/model/discord-user.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
-export interface IPremiumDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IDiscordUserDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-export class PremiumDetail extends React.Component<IPremiumDetailProps> {
+export class DiscordUserDetail extends React.Component<IDiscordUserDetailProps> {
   componentDidMount() {
     this.props.getEntity(this.props.match.params.id);
   }
 
   render() {
-    const { premiumEntity } = this.props;
+    const { discordUserEntity } = this.props;
     return (
       <Row>
         <Col md="8">
           <h2>
-            <Translate contentKey="siaApp.premium.detail.title">Premium</Translate> [<b>{premiumEntity.id}</b>]
+            <Translate contentKey="siaApp.discordUser.detail.title">DiscordUser</Translate> [<b>{discordUserEntity.id}</b>]
           </h2>
           <dl className="jh-entity-details">
             <dt>
-              <span id="discordId">
-                <Translate contentKey="siaApp.premium.discordId">Guild/User Id</Translate>
+              <span id="userId">
+                <Translate contentKey="siaApp.discordUser.userId">User Id</Translate>
               </span>
             </dt>
-            <dd>{premiumEntity.discordId}</dd>
+            <dd>{discordUserEntity.userId}</dd>
             <dt>
-              <span id="until">
-                <Translate contentKey="siaApp.premium.until">Until</Translate>
+              <span id="commandsIssued">
+                <Translate contentKey="siaApp.discordUser.commandsIssued">Commands Issued</Translate>
               </span>
             </dt>
-            <dd>
-              <TextFormat value={premiumEntity.until} type="date" format={APP_DATE_FORMAT} />
-            </dd>
+            <dd>{discordUserEntity.commandsIssued}</dd>
             <dt>
-              <span id="level">
-                <Translate contentKey="siaApp.premium.level">Level</Translate>
+              <span id="blacklisted">
+                <Translate contentKey="siaApp.discordUser.blacklisted">Blacklisted</Translate>
               </span>
             </dt>
-            <dd>{premiumEntity.level}</dd>
+            <dd>{discordUserEntity.blacklisted ? 'true' : 'false'}</dd>
           </dl>
-          <Button tag={Link} to="/entity/premium" replace color="info">
+          <Button tag={Link} to="/entity/discord-user" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/premium/${premiumEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/discord-user/${discordUserEntity.id}/edit`} replace color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>
@@ -68,8 +66,8 @@ export class PremiumDetail extends React.Component<IPremiumDetailProps> {
   }
 }
 
-const mapStateToProps = ({ premium }: IRootState) => ({
-  premiumEntity: premium.entity
+const mapStateToProps = ({ discordUser }: IRootState) => ({
+  discordUserEntity: discordUser.entity
 });
 
 const mapDispatchToProps = { getEntity };
@@ -80,4 +78,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PremiumDetail);
+)(DiscordUserDetail);

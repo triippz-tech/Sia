@@ -153,7 +153,7 @@
 //        List<GuildSettings> guildSettingsList = guildSettingsRepository.findAll();
 //        assertThat(guildSettingsList).hasSize(databaseSizeBeforeCreate + 1);
 //        GuildSettings testGuildSettings = guildSettingsList.get(guildSettingsList.size() - 1);
-//        assertThat(testGuildSettings.getGuildId()).isEqualTo(DEFAULT_GUILD_ID);
+//        assertThat(testGuildSettings.getDiscordId()).isEqualTo(DEFAULT_GUILD_ID);
 //        assertThat(testGuildSettings.getModRoleId()).isEqualTo(DEFAULT_MOD_ROLE_ID);
 //        assertThat(testGuildSettings.getModLogId()).isEqualTo(DEFAULT_MOD_LOG_ID);
 //        assertThat(testGuildSettings.getServerLogId()).isEqualTo(DEFAULT_SERVER_LOG_ID);
@@ -187,10 +187,10 @@
 //
 //    @Test
 //    @Transactional
-//    public void checkGuildIdIsRequired() throws Exception {
+//    public void checkDiscordIdIsRequired() throws Exception {
 //        int databaseSizeBeforeTest = guildSettingsRepository.findAll().size();
 //        // set the field null
-//        guildSettings.setGuildId(null);
+//        guildSettings.setDiscordId(null);
 //
 //        // Create the GuildSettings, which fails.
 //
@@ -437,7 +437,7 @@
 //        List<GuildSettings> guildSettingsList = guildSettingsRepository.findAll();
 //        assertThat(guildSettingsList).hasSize(databaseSizeBeforeUpdate);
 //        GuildSettings testGuildSettings = guildSettingsList.get(guildSettingsList.size() - 1);
-//        assertThat(testGuildSettings.getGuildId()).isEqualTo(UPDATED_GUILD_ID);
+//        assertThat(testGuildSettings.getDiscordId()).isEqualTo(UPDATED_GUILD_ID);
 //        assertThat(testGuildSettings.getModRoleId()).isEqualTo(UPDATED_MOD_ROLE_ID);
 //        assertThat(testGuildSettings.getModLogId()).isEqualTo(UPDATED_MOD_LOG_ID);
 //        assertThat(testGuildSettings.getServerLogId()).isEqualTo(UPDATED_SERVER_LOG_ID);

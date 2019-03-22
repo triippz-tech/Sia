@@ -5,6 +5,7 @@ import com.trievosoftware.application.domain.Premium;
 import com.trievosoftware.application.domain.PremiumInfo;
 import com.trievosoftware.application.exceptions.NoPremiumFoundException;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.User;
 
 import java.time.Instant;
 import java.time.temporal.TemporalUnit;
@@ -47,17 +48,25 @@ public interface PremiumService {
      */
     void delete(Long id);
 
-    Optional<Premium> findByGuildId(Long guildId);
+    Optional<Premium> findByDiscordId(Long discordId);
 
     List<Premium> findAllByUntilIsLessThan(Instant now);
 
     PremiumInfo getPremiumInfo(Guild guild);
 
+    PremiumInfo getPremiumInfo(User user);
+
     void addPremiumForever(Guild guild, Level level);
+
+    void addPremiumForever(User user, Level level);
 
     void addPremium(Guild guild, Level level, int time, TemporalUnit unit);
 
+    void addPremium(User user, Level level, int time, TemporalUnit unit);
+
     void cancelPremium(Guild guild) throws NoPremiumFoundException;
+
+    void cancelPremium(User user) throws NoPremiumFoundException;
 
     List<Long> cleanPremiumList();
 }

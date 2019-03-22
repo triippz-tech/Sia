@@ -1,5 +1,5 @@
 entity Poll {
-	guildId Long required,
+	discordId Long required,
     userId Long required,
     textChannelId Long,
     title String required,

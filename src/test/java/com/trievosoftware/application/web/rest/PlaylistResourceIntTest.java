@@ -127,7 +127,7 @@
 //        List<Playlist> playlistList = playlistService.findAll();
 //        assertThat(playlistList).hasSize(databaseSizeBeforeCreate + 1);
 //        Playlist testPlaylist = playlistList.get(playlistList.size() - 1);
-//        assertThat(testPlaylist.getGuildId()).isEqualTo(DEFAULT_GUILD_ID);
+//        assertThat(testPlaylist.getDiscordId()).isEqualTo(DEFAULT_GUILD_ID);
 //        assertThat(testPlaylist.getUserId()).isEqualTo(DEFAULT_USER_ID);
 //        assertThat(testPlaylist.getPlaylistName()).isEqualTo(DEFAULT_PLAYLIST_NAME);
 //    }
@@ -235,7 +235,7 @@
 //        List<Playlist> playlistList = playlistService.findAll();
 //        assertThat(playlistList).hasSize(databaseSizeBeforeUpdate);
 //        Playlist testPlaylist = playlistList.get(playlistList.size() - 1);
-//        assertThat(testPlaylist.getGuildId()).isEqualTo(UPDATED_GUILD_ID);
+//        assertThat(testPlaylist.getDiscordId()).isEqualTo(UPDATED_GUILD_ID);
 //        assertThat(testPlaylist.getUserId()).isEqualTo(UPDATED_USER_ID);
 //        assertThat(testPlaylist.getPlaylistName()).isEqualTo(UPDATED_PLAYLIST_NAME);
 //    }

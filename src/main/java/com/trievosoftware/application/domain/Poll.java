@@ -151,6 +151,18 @@ public class Poll implements Serializable {
         return this;
     }
 
+    public Poll messageId(Long messageId)
+    {
+        this.messageId = messageId;
+        return this;
+    }
+
+    public Poll expired(Boolean expired)
+    {
+        this.expired = expired;
+        return this;
+    }
+
     public Long getMessageId() {
         return messageId;
     }

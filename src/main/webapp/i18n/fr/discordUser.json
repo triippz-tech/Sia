@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "discordUser": {
+      "home": {
+        "title": "DiscordUsers",
+        "createLabel": "Créer un nouveau Discord User",
+        "createOrEditLabel": "Créer ou éditer un Discord User"
+      },
+      "created": "Un nouveau Discord User a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Discord User avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Discord User avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Discord User {{ id }} ?"
+      },
+      "detail": {
+        "title": "Discord User"
+      },
+      "userId": "User Id",
+      "commandsIssued": "Commands Issued",
+      "blacklisted": "Blacklisted"
+    }
+  }
+}
