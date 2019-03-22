@@ -1,0 +1,34 @@
+{
+    "name": "PollItems",
+    "fields": [
+        {
+            "fieldName": "itemName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "itemNumber",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "poll",
+            "otherEntityName": "poll",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "pollitems"
+        }
+    ],
+    "changelogDate": "20190319163951",
+    "entityTableName": "poll_items",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

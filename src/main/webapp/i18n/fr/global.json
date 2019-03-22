@@ -19,6 +19,8 @@
         "guildMusicSettings": "Guild Music Settings",
         "playlist": "Playlist",
         "songs": "Songs",
+        "poll": "Poll",
+        "pollItems": "Poll Items",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

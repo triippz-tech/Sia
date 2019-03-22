@@ -17,10 +17,14 @@ package com.trievosoftware.discord.utils;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.Poll;
+import com.trievosoftware.application.domain.PollItems;
+import com.trievosoftware.application.exceptions.StringNotIntegerException;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.logging.MessageCache.CachedMessage;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
@@ -28,17 +32,21 @@ import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
  *
- * @author John Grosh (jagrosh)
+ * @author Mark Tripoli (triippz)
  */
+@SuppressWarnings("Duplicates")
 public class FormatUtil {
     
     private final static String MULTIPLE_FOUND = "**Multiple %s found matching \"%s\":**";
     private final static String CMD_EMOJI = "\uD83D\uDCDC"; // 📜
+    private final static String POLL_EMOJI = "\uD83D\uDCCA"; //📊
+    private final static String PARTY_EMOJI = "\uD83C\uDF89"; //🎉
     
     public static String filterEveryone(String input)
     {
@@ -369,5 +377,151 @@ public class FormatUtil {
         if(list.size()>6)
             out+="\n**And "+(list.size()-6)+" more...**";
         return out;
+    }
+
+    public static Integer getMinutes(String timeStr) throws StringNotIntegerException {
+        String tempTime = timeStr;
+        timeStr = timeStr.substring(0, timeStr.length() - 1);
+        if ( timeStr.matches("\\d+"))
+            return Integer.parseInt(timeStr);
+        else
+            throw new StringNotIntegerException("`" + tempTime + "`: is not a valid Time. Correct format is: `time:time_unit (1M)`");
+    }
+
+    public static MessageEmbed.Field getPollWinner(Set<PollItems> pollItemsSet)
+    {
+        Integer max = 0;
+        String itemName = "";
+
+        for ( PollItems pollItem : pollItemsSet )
+        {
+            if ( pollItem.getVotes() > max ) {
+                max = pollItem.getVotes();
+                itemName = pollItem.getItemName();
+            }
+        }
+
+        return new MessageEmbed.Field(
+            PARTY_EMOJI + "  **The Winner of the Poll!**  " + PARTY_EMOJI,
+            "**`" + itemName.replaceAll("_", " ") + "` with `" + max + "` votes!**",
+            false
+        );
+    }
+
+    public static Message formatPollComplete(JDA jda, Poll poll)
+    {
+        MessageBuilder builder = new MessageBuilder();
+
+        builder.setContent(POLL_EMOJI+ "  **Poll '" + poll.getTitle() + "` Results!**  " + POLL_EMOJI);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        int i = 1;
+        for ( PollItems pollItem : poll.getPollitems() )
+        {
+            stringBuilder.append(pollItem.getReaction()).append(". `").append(pollItem.getItemName().replaceAll("_", " ")).append("` : [")
+                .append(pollItem.getVotes()).append(" votes]\n");
+            i++;
+        }
+
+        MessageEmbed.Field field = getPollWinner(poll.getPollitems());
+
+        builder.setEmbed(new EmbedBuilder()
+            .setColor(jda.getGuildById(poll.getGuildId()).getSelfMember().getColor())
+            .setDescription(stringBuilder.toString())
+            .addField(field)
+            .build()
+        );
+
+        return builder.build();
+    }
+
+    public static Message formatPollComplete(Guild guild, Poll poll)
+    {
+        MessageBuilder builder = new MessageBuilder();
+
+        builder.setContent(POLL_EMOJI+ "  **Poll '" + poll.getTitle() + "` Results!**  " + POLL_EMOJI);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        int i = 1;
+        for ( PollItems pollItem : poll.getPollitems() )
+        {
+            stringBuilder.append(pollItem.getReaction()).append(". `").append(pollItem.getItemName().replaceAll("_", " ")).append("` : [")
+                .append(pollItem.getVotes()).append(" votes]\n");
+            i++;
+        }
+
+        MessageEmbed.Field field = getPollWinner(poll.getPollitems());
+
+        builder.setEmbed(new EmbedBuilder()
+            .setColor(guild.getSelfMember().getColor())
+            .setDescription(stringBuilder.toString())
+            .addField(field)
+            .build()
+        );
+
+        return builder.build();
+    }
+
+    public static Message formatPollComplete(Poll poll)
+    {
+        MessageBuilder builder = new MessageBuilder();
+
+        builder.setContent(POLL_EMOJI+ "  **Poll '" + poll.getTitle() + "` Results!**  " + POLL_EMOJI);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        int i = 1;
+        for ( PollItems pollItem : poll.getPollitems() )
+        {
+            stringBuilder.append(pollItem.getReaction()).append(". `").append(pollItem.getItemName().replaceAll("_", " ")).append("` : [")
+                .append(pollItem.getVotes()).append(" votes]\n");
+            i++;
+        }
+
+        MessageEmbed.Field field = getPollWinner(poll.getPollitems());
+
+        builder.setEmbed(new EmbedBuilder()
+            .setColor(Color.CYAN)
+            .setDescription(stringBuilder.toString())
+            .addField(field)
+            .build()
+        );
+
+        return builder.build();
+    }
+
+    public static String formatPoll(Poll poll)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        int i = 1;
+        for ( PollItems pollItem : poll.getPollitems() )
+        {
+            stringBuilder.append(i).append(". `").append(pollItem.getItemName().replaceAll("_", " ")).append("` : [")
+                .append(pollItem.getVotes()).append(" votes]\n");
+            i++;
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public static String formatPollItems(Set<PollItems> pollItems)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        int i = 1;
+        for ( PollItems pollItem : pollItems )
+        {
+            stringBuilder.append(pollItem.getReaction()).append(". `").append(pollItem.getItemName().replaceAll("_", " ")).append("` : [")
+                .append(pollItem.getVotes()).append(" votes]\n");
+            i++;
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public static String formatPollCompleteDirect(JDA jda, Poll poll)
+    {
+        return "Hi, `" + jda.getGuildById(poll.getGuildId()).getOwner().getUser().getName() + "`! " +
+            "The Poll `" + poll.getTitle() + "` has concluded. Unfortunately no TextChannel was set to" +
+            " display the results and it looks like there was an error sending this message to your \"default channel\". " +
+            "When ready, please feel free to display the results of this poll in any TextChannel in your server!";
     }
 }

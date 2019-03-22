@@ -1,0 +1,24 @@
+{
+  "siaApp": {
+    "pollItems": {
+      "home": {
+        "title": "PollItems",
+        "createLabel": "Créer un nouveau Poll Items",
+        "createOrEditLabel": "Créer ou éditer un Poll Items"
+      },
+      "created": "Un nouveau Poll Items a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Poll Items avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Poll Items avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Poll Items {{ id }} ?"
+      },
+      "detail": {
+        "title": "Poll Items"
+      },
+      "itemName": "Item Name",
+      "reaction": "Reaction",
+      "votes": "Votes",
+      "poll": "Poll"
+    }
+  }
+}

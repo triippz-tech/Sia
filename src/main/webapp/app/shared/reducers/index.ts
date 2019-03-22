@@ -55,6 +55,14 @@ import playlist, {
 import songs, {
   SongsState
 } from 'app/entities/songs/songs.reducer';
+// prettier-ignore
+import poll, {
+  PollState
+} from 'app/entities/poll/poll.reducer';
+// prettier-ignore
+import pollItems, {
+  PollItemsState
+} from 'app/entities/poll-items/poll-items.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -75,6 +83,8 @@ export interface IRootState {
   readonly guildMusicSettings: GuildMusicSettingsState;
   readonly playlist: PlaylistState;
   readonly songs: SongsState;
+  readonly poll: PollState;
+  readonly pollItems: PollItemsState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -97,6 +107,8 @@ const rootReducer = combineReducers<IRootState>({
   guildMusicSettings,
   playlist,
   songs,
+  poll,
+  pollItems,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

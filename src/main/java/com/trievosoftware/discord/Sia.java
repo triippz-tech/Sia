@@ -267,6 +267,9 @@ public class Sia
                 .build();
         
         modlog.start();
+
+        // Load all active polls into cache. THis should only be done on startup
+        serviceManagers.getPollService().loadPollCache();
         
         threadpool.scheduleWithFixedDelay(this::cleanPremium, 0, 2, TimeUnit.HOURS);
         threadpool.scheduleWithFixedDelay(this::leavePointlessGuilds, 5, 30, TimeUnit.MINUTES);
