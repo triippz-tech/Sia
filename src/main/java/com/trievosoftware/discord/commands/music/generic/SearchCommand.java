@@ -88,13 +88,13 @@ public class SearchCommand extends AbstractMusicCommand {
             if(settings.isTooLong(track))
             {
                 m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" This track (**"+track.getInfo().title+"**) is longer than the allowed maximum: `"
-                    +FormatUtil.formatTime(track.getDuration())+"` > `"+ settings.getMaxTime()+"`")).queue();
+                    + FormatUtil.formatTime(track.getDuration())+"` > `"+ settings.getMaxTime()+"`")).queue();
                 return;
             }
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
             m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+" Added **"+track.getInfo().title
-                +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "to begin playing"
+                +"** (`"+ FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "to begin playing"
                 : " to the queue at position "+pos))).queue();
         }
 
@@ -110,13 +110,13 @@ public class SearchCommand extends AbstractMusicCommand {
                     if(settings.isTooLong(track))
                     {
                         event.replyWarning("This track (**"+track.getInfo().title+"**) is longer than the allowed maximum: `"
-                            +FormatUtil.formatTime(track.getDuration())+"` > `"+ settings.getMaxTime()+"`");
+                            + FormatUtil.formatTime(track.getDuration())+"` > `"+ settings.getMaxTime()+"`");
                         return;
                     }
                     AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
                     int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
                     event.replySuccess("Added **"+track.getInfo().title
-                        +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "to begin playing"
+                        +"** (`"+ FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "to begin playing"
                         : " to the queue at position "+pos));
                 })
                 .setCancel((msg) -> {})
@@ -125,7 +125,7 @@ public class SearchCommand extends AbstractMusicCommand {
             for(int i=0; i<4 && i<playlist.getTracks().size(); i++)
             {
                 AudioTrack track = playlist.getTracks().get(i);
-                builder.addChoices("`["+FormatUtil.formatTime(track.getDuration())+"]` [**"+track.getInfo().title+"**]("+track.getInfo().uri+")");
+                builder.addChoices("`["+ FormatUtil.formatTime(track.getDuration())+"]` [**"+track.getInfo().title+"**]("+track.getInfo().uri+")");
             }
             builder.build().display(m);
         }

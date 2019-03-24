@@ -17,7 +17,7 @@ package com.trievosoftware.discord.commands.settings;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.LogCommand;
+import com.trievosoftware.discord.commands.meta.LogCommand;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 /**

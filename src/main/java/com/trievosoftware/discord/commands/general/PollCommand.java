@@ -39,8 +39,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("Duplicates")
@@ -69,7 +67,7 @@ public class PollCommand extends AbstractModeratorCommand
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         StringBuilder builder = new StringBuilder(event.getClient().getWarning() + " Guild Poll Commands:\n");
         for (Command cmd : this.children)
@@ -94,7 +92,7 @@ public class PollCommand extends AbstractModeratorCommand
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             String[] parts = event.getArgs().split("\\|");
             if ( parts.length <= 3 )
@@ -199,7 +197,7 @@ public class PollCommand extends AbstractModeratorCommand
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             if(event.getArgs().isEmpty())
                 throw new CommandExceptionListener.CommandErrorException(FORMAT);
@@ -291,7 +289,7 @@ public class PollCommand extends AbstractModeratorCommand
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             Message activePolls = sia.getServiceManagers().getPollService().getActivePollsForGuild(event.getGuild());
             event.reply(activePolls);
@@ -314,7 +312,7 @@ public class PollCommand extends AbstractModeratorCommand
         }
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
             StringBuilder builder = new StringBuilder(event.getClient().getWarning() + " Guild Poll Voting Commands:\n");
             for (Command cmd : this.children)
                 builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" ").append(cmd.getName())
@@ -331,7 +329,7 @@ public class PollCommand extends AbstractModeratorCommand
             }
 
             @Override
-            protected void execute(CommandEvent event)
+            public void doCommand(CommandEvent event)
             {
                 if ( event.getArgs().isEmpty() )
                 {
@@ -396,7 +394,7 @@ public class PollCommand extends AbstractModeratorCommand
             }
 
             @Override
-            protected void execute(CommandEvent event)
+            public void doCommand(CommandEvent event)
             {
                 if ( event.getArgs().isEmpty() )
                 {
@@ -460,7 +458,7 @@ public class PollCommand extends AbstractModeratorCommand
             }
 
             @Override
-            protected void execute(CommandEvent event)
+            public void doCommand(CommandEvent event)
             {
                 if ( event.getArgs().isEmpty() )
                 {

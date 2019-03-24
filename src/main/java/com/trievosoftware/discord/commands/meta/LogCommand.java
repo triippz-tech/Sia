@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.trievosoftware.discord.commands;
+package com.trievosoftware.discord.commands.meta;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
+import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.Permission;
@@ -47,6 +48,12 @@ public abstract class LogCommand extends Command
     @Override
     protected void execute(CommandEvent event)
     {
+        if ( sia.getServiceManagers().getDiscordUserService().isUserBlacklisted(event.getAuthor().getIdLong()))
+        {
+            event.replyError("You are not authorized to use this bot. If you feel like this is a mistake please contact" +
+                "the creators via discord: " + Constants.SERVER_INVITE);
+            return;
+        }
         if(event.getArgs().isEmpty())
         {
             showCurrentChannel(event);

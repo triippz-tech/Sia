@@ -15,29 +15,31 @@
  */
 package com.trievosoftware.discord.commands.general;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Constants;
+import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 
 /**
  *
  * @author John Grosh (jagrosh)
  */
-public class InviteCmd extends Command 
+public class InviteCmd extends AbstractGenericCommand
 {
-    public InviteCmd()
+    public InviteCmd(Sia sia)
     {
+        super(sia);
         this.name = "invite";
         this.help = "invite the bot";
         this.guildOnly = false;
     }
     
     @Override
-    protected void execute(CommandEvent event) 
+    public void doCommand(CommandEvent event)
     {
         event.reply("Hello. I am **"+event.getJDA().getSelfUser().getName()+"**, a simple moderation bot built by **triippz**#0689."
                 + "\nYou can find out how to add me to your server with the link below:"
-                + "\n\n\uD83D\uDD17 **<"+Constants.Wiki.START+">**" // 🔗
-                + "\n\nFor assistance, check out the wiki: <"+Constants.Wiki.WIKI_BASE+">");
+                + "\n\n\uD83D\uDD17 **<"+ Constants.Wiki.START+">**" // 🔗
+                + "\n\nFor assistance, check out the wiki: <"+ Constants.Wiki.WIKI_BASE+">");
     }
 }

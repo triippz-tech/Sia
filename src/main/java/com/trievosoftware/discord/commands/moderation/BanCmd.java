@@ -19,7 +19,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.exceptions.NoBanFoundExcetion;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandErrorException;
-import com.trievosoftware.discord.commands.meta.ModCommand;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.ArgsUtil;
 import com.trievosoftware.discord.utils.ArgsUtil.ResolvedArgs;
 import com.trievosoftware.discord.utils.FormatUtil;
@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author John Grosh (jagrosh)
  */
-public class BanCmd extends ModCommand
+public class BanCmd extends AbstractModeratorCommand
 {
     public BanCmd(Sia sia)
     {
@@ -51,7 +51,7 @@ public class BanCmd extends ModCommand
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         ResolvedArgs args = ArgsUtil.resolve(event.getArgs(), true, event.getGuild());
         if(args.isEmpty())
@@ -99,7 +99,7 @@ public class BanCmd extends ModCommand
             event.reactSuccess();
         
         Instant unbanTime = Instant.now().plus(minutes, ChronoUnit.MINUTES);
-        String time = minutes==0 ? "" : " for "+FormatUtil.secondsToTimeCompact(minutes*60);
+        String time = minutes==0 ? "" : " for "+ FormatUtil.secondsToTimeCompact(minutes*60);
         for(int i=0; i<ids.size(); i++)
         {
             long uid = ids.get(i);

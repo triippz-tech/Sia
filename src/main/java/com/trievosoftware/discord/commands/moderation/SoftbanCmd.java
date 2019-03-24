@@ -47,7 +47,7 @@ public class SoftbanCmd extends ModCommand
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         ArgsUtil.ResolvedArgs args = ArgsUtil.resolve(event.getArgs(), event.getGuild());
         if(args.isEmpty())

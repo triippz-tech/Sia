@@ -20,20 +20,20 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.domain.Level;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class ResolvelinksCmd extends Command
+public class ResolvelinksCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
     private final static String DESCRIPTION = "When link resolving is enabled, all links will be checked for redirects when performing automod functions.";
-    
+
     public ResolvelinksCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "resolvelinks";
         this.guildOnly = true;
         this.category = new Category("AutoMod");
@@ -43,7 +43,7 @@ public class ResolvelinksCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().equalsIgnoreCase("on") || event.getArgs().equalsIgnoreCase("off"))
         {
@@ -59,6 +59,6 @@ public class ResolvelinksCmd extends Command
         {
             event.replyWarning(DESCRIPTION+"\nValid options are `ON` and `OFF`");
         }
-        
+
     }
 }

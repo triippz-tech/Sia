@@ -33,7 +33,6 @@ package com.trievosoftware.discord.commands.music.moderator;/*
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.trievosoftware.application.exceptions.NoMusicSettingsException;
-import com.trievosoftware.application.exceptions.NoPlaylistFoundException;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.meta.AbstractDjCommand;
 import com.trievosoftware.discord.utils.FormatUtil;

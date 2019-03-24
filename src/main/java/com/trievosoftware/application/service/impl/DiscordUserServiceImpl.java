@@ -1,8 +1,10 @@
 package com.trievosoftware.application.service.impl;
 
+import com.trievosoftware.application.exceptions.NoDiscordUserFoundException;
 import com.trievosoftware.application.service.DiscordUserService;
 import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.repository.DiscordUserRepository;
+import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,5 +78,110 @@ public class DiscordUserServiceImpl implements DiscordUserService {
     public void delete(Long id) {
         log.debug("Request to delete DiscordUser : {}", id);
         discordUserRepository.deleteById(id);
+    }
+
+    /**
+     * Get one discordUser by id.
+     *
+     * @param userId the id of the user
+     * @return the entity
+     */
+    @Override
+    @Transactional()
+    public Optional<DiscordUser> findByUserId(Long userId) {
+        log.debug("Request to get DiscordUser : {}", userId);
+        return discordUserRepository.findByUserId(userId);
+    }
+
+    @Override
+    public boolean userExists(Long userId)
+    {
+        log.debug("Request to see if user exists");
+        Optional<DiscordUser> user = findByUserId(userId);
+        return user.isPresent();
+    }
+
+
+    @Override
+    public void addNewUser(Long userId)
+    {
+        log.debug("Request to add new user");
+        if ( userExists(userId) ) return;
+
+        DiscordUser user = new DiscordUser(userId);
+        save(user);
+    }
+
+    @Override
+    public DiscordUser addNewUser(User user)
+    {
+        log.debug("Request to add new user");
+
+        DiscordUser discordUser = new DiscordUser(user.getIdLong());
+        save(discordUser);
+        return discordUser;
+    }
+
+    @Override
+    public void blacklistUser(User user)
+    {
+        log.debug("Request to blacklist User={}:{}", user.getName(), user.getIdLong());
+        Optional<DiscordUser> discordUser = findByUserId(user.getIdLong());
+        if ( !discordUser.isPresent() )
+        {
+            DiscordUser newUser = new DiscordUser(user.getIdLong(), true);
+            save(newUser);
+            log.info("No User named {} found in Sia database. New entry created with Blacklisted flag set to TRUE", user.getName());
+            return;
+        }
+
+        discordUser.get().setBlacklisted(true);
+        save(discordUser.get());
+        log.info("User={} has been blacklisted", user.getName());
+    }
+
+
+    @Override
+    public void removeBlacklist(User user) throws NoDiscordUserFoundException {
+        log.debug("Request to remove blacklist from User={}:{}", user.getName(), user.getIdLong());
+        Optional<DiscordUser> discordUser = findByUserId(user.getIdLong());
+        if ( !discordUser.isPresent() )
+            throw new NoDiscordUserFoundException(String.format(
+                "User `%s` is not blacklisted", user.getName()
+            ));
+
+        discordUser.get().setBlacklisted(false);
+        log.info("User={}:{} is not longer blacklisted", user.getName(), user.getIdLong());
+    }
+
+
+    @Override
+    public void addCommand(User user)
+    {
+        log.debug("Request to add command count for User={}", user.getName());
+        Optional<DiscordUser> discordUser = findByUserId(user.getIdLong());
+        if ( !discordUser.isPresent() )
+        {
+            DiscordUser discordUserNew = addNewUser(user);
+            discordUserNew.setCommandsIssued(1);
+            save(discordUserNew);
+            return;
+        }
+
+        discordUser.get().setCommandsIssued(1);
+    }
+
+    @Override
+    public boolean isUserBlacklisted(Long userid)
+    {
+        log.debug("Request to see if User={} is blacklisted", userid);
+        Optional<DiscordUser> user = findByUserId(userid);
+        if ( !user.isPresent() )
+        {
+            addNewUser(userid);
+            return false;
+        }
+
+        return user.get().isBlacklisted();
     }
 }

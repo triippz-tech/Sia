@@ -17,7 +17,7 @@ package com.trievosoftware.discord.commands.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.meta.ModCommand;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.ArgsUtil;
 import com.trievosoftware.discord.utils.FormatUtil;
 import com.trievosoftware.discord.utils.LogUtil;
@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author John Grosh (jagrosh)
  */
-public class UnmuteCmd extends ModCommand
+public class UnmuteCmd extends AbstractModeratorCommand
 {
     public UnmuteCmd(Sia sia)
     {
@@ -46,7 +46,7 @@ public class UnmuteCmd extends ModCommand
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         Role muteRole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
         if(muteRole == null)

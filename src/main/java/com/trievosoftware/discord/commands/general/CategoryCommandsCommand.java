@@ -16,42 +16,37 @@
 
 package com.trievosoftware.discord.commands.general;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
-import net.dv8tion.jda.core.entities.Category;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 
-import java.util.List;
+public class CategoryCommandsCommand extends AbstractGenericCommand {
 
-public class CategoryCommandsCommand extends Command {
-
-    private Sia sia;
     public CategoryCommandsCommand(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "commands";
         this.aliases = new String[]{"cmds"};
         this.help = "Displays all commands for a category";
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void doCommand(CommandEvent event) {
 
     }
 
-    public class Categories extends Command
+    public class Categories extends AbstractGenericCommand
     {
-        private Sia sia;
         public Categories (Sia sia)
         {
-            this.sia = sia;
+            super(sia);
             this.name = "categories";
             this.help = "Shows the different categories of commands";
             this.guildOnly = true;
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
         }
     }

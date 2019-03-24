@@ -15,9 +15,10 @@
  */
 package com.trievosoftware.discord.commands.general;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
+import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -37,14 +38,15 @@ import java.util.List;
  *
  * @author John Grosh (jagrosh)
  */
-public class UserinfoCmd extends Command
+public class UserinfoCmd extends AbstractGenericCommand
 {
     private final static String BOT_EMOJI = "<:sia:553207744673349650>";
     private final static String USER_EMOJI = "\uD83D\uDC64"; // 👤
     private final static String LINESTART = "\u25AB"; // ▫
     
-    public UserinfoCmd()
+    public UserinfoCmd(Sia sia)
     {
+        super(sia);
         this.name = "userinfo";
         this.aliases = new String[]{"user","uinfo","memberinfo"};
         this.help = "shows info on a member";
@@ -54,7 +56,7 @@ public class UserinfoCmd extends Command
     }
     
     @Override
-    protected void execute(CommandEvent event) 
+    public void doCommand(CommandEvent event)
     {
         Member member;
         if(event.getArgs().isEmpty())

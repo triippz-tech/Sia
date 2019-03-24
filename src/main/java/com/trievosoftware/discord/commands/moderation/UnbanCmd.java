@@ -17,7 +17,7 @@ package com.trievosoftware.discord.commands.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.meta.ModCommand;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.ArgsUtil;
 import com.trievosoftware.discord.utils.ArgsUtil.ResolvedArgs;
 import com.trievosoftware.discord.utils.FormatUtil;
@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author John Grosh (jagrosh)
  */
-public class UnbanCmd extends ModCommand
+public class UnbanCmd extends AbstractModeratorCommand
 {
     public UnbanCmd(Sia sia)
     {
@@ -45,7 +45,7 @@ public class UnbanCmd extends ModCommand
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         ResolvedArgs args = ArgsUtil.resolve(event.getArgs(), event.getGuild());
         if(args.isEmpty())

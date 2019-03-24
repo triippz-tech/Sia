@@ -16,9 +16,9 @@
 
 package com.trievosoftware.discord.commands.informational.crypto;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPI;
 import me.joshmcfarlin.cryptocompareapi.utils.IntervalTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.RateLimiting;
@@ -32,15 +32,15 @@ import java.awt.*;
 import java.io.IOException;
 
 @Component
-public class CryptoAdminCommand extends Command {
+public class CryptoAdminCommand extends AbstractGenericCommand {
 
     private final Logger log = LoggerFactory.getLogger(CryptoAdminCommand.class);
     private final static String LINESTART = "\u25AB"; // ▫
-    private Sia sia;
 
     private CryptoCompareAPI cryptoCompare;
 
     public CryptoAdminCommand(Sia sia){
+        super(sia);
         this.name = "cryptoadmin";
         this.aliases = new String[]{"ca"};
         this.help = "Show CryptoCompare API information in debug";
@@ -49,12 +49,11 @@ public class CryptoAdminCommand extends Command {
         this.hidden = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
-        this.sia = sia;
         this.cryptoCompare = new CryptoCompareAPI(sia.getApplicationProperties().getApi().getCryptoCompare());
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void doCommand(CommandEvent event) {
         log.debug("User={} requesting Debug information on CryptoCompare API", event.getAuthor().getName());
         try {
             RateLimiting.TotalRate rates = RateLimiting.getRates();

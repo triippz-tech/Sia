@@ -17,6 +17,8 @@
 package com.trievosoftware.discord.commands.meta;
 
 import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 import net.dv8tion.jda.core.Permission;
 
@@ -31,4 +33,18 @@ public abstract class AbstractMusicModeratorCommand extends Command {
         this.userPermissions = new Permission[]{Permission.ADMINISTRATOR};
         this.category = new Category("Music Moderation");
     }
+
+    @Override
+    protected void execute (CommandEvent event)
+    {
+        if ( sia.getServiceManagers().getDiscordUserService().isUserBlacklisted(event.getAuthor().getIdLong()))
+        {
+            event.replyError("You are not authorized to use this bot. If you feel like this is a mistake please contact" +
+                "the creators via discord: " + Constants.SERVER_INVITE);
+            return;
+        }
+        doCommand(event);
+    }
+
+    public abstract void doCommand(CommandEvent event);
 }

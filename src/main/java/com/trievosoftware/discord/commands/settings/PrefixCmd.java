@@ -15,12 +15,12 @@
  */
 package com.trievosoftware.discord.commands.settings;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.exceptions.SetPrefixException;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
@@ -28,13 +28,11 @@ import net.dv8tion.jda.core.Permission;
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
 @SuppressWarnings("Duplicates")
-public class PrefixCmd extends Command
+public class PrefixCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public PrefixCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "prefix";
         this.help = "sets the server prefix";
         this.arguments = "<prefix or NONE>";
@@ -44,11 +42,11 @@ public class PrefixCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
         {
-            event.replyError("Please include a prefix. The server's current prefix can be seen via the `"+Constants.PREFIX+"settings` command");
+            event.replyError("Please include a prefix. The server's current prefix can be seen via the `"+ Constants.PREFIX+"settings` command");
             return;
         }
         
@@ -68,14 +66,14 @@ public class PrefixCmd extends Command
         
         if(event.getArgs().length()> GuildSettings.PREFIX_MAX_LENGTH)
         {
-            event.replySuccess("Prefixes cannot be longer than `"+GuildSettings.PREFIX_MAX_LENGTH+"` characters.");
+            event.replySuccess("Prefixes cannot be longer than `"+ GuildSettings.PREFIX_MAX_LENGTH+"` characters.");
             return;
         }
 
         try {
             sia.getServiceManagers().getGuildSettingsService().setPrefix(event.getGuild(), event.getArgs());
             event.replySuccess("The server prefix has been set to `"+event.getArgs()+"`\n"
-                + "Note that the default prefix (`"+Constants.PREFIX+"`) cannot be removed and will work in addition to the custom prefix.");
+                + "Note that the default prefix (`"+ Constants.PREFIX+"`) cannot be removed and will work in addition to the custom prefix.");
         } catch (SetPrefixException e) {
             if ( sia.isDebugMode() )
                 sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",

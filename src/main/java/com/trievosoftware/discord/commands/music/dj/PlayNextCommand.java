@@ -78,13 +78,13 @@ public class PlayNextCommand extends AbstractDjCommand {
             if(settings.isTooLong(track))
             {
                 m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" This track (**"+track.getInfo().title+"**) is longer than the allowed maximum: `"
-                    +FormatUtil.formatTime(track.getDuration())+"` > `"+FormatUtil.formatTime(settings.getMaxSeconds()*1000)+"`")).queue();
+                    + FormatUtil.formatTime(track.getDuration())+"` > `"+ FormatUtil.formatTime(settings.getMaxSeconds()*1000)+"`")).queue();
                 return;
             }
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrackToFront(new QueuedTrack(track, event.getAuthor()))+1;
             String addMsg = FormatUtil.filter(event.getClient().getSuccess()+" Added **"+track.getInfo().title
-                +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"to begin playing":" to the queue at position "+pos));
+                +"** (`"+ FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"to begin playing":" to the queue at position "+pos));
             m.editMessage(addMsg).queue();
         }
 

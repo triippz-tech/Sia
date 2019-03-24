@@ -21,19 +21,18 @@ import com.trievosoftware.application.domain.AutoMod;
 import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class MaxmentionsCmd extends Command
+public class MaxmentionsCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public MaxmentionsCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.guildOnly = true;
         this.name = "maxmentions";
         this.aliases = new String[]{"antimention","maxmention","mentionmax","mentionsmax"};
@@ -45,7 +44,7 @@ public class MaxmentionsCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().equalsIgnoreCase("off") || event.getArgs().equalsIgnoreCase("none"))
         {
@@ -63,19 +62,19 @@ public class MaxmentionsCmd extends Command
             short num = Short.parseShort(event.getArgs());
             if(num< AutoMod.MENTION_MINIMUM)
             {
-                event.replyError("Maximum mentions must be at least `"+AutoMod.MENTION_MINIMUM+"`");
+                event.replyError("Maximum mentions must be at least `"+ AutoMod.MENTION_MINIMUM+"`");
                 return;
             }
             sia.getServiceManagers().getAutoModService().setMaxMentions(event.getGuild(), num);
             boolean also = sia.getServiceManagers().getActionsService().useDefaultSettings(event.getGuild());
             event.replySuccess("Set the maximum allowed mentions to **"+num+"** users. Messages containing more than **"
                     +num+"** mentions will be deleted and the user will obtain 1 strike for every mention above the maximum."
-                    + "\n\nTo set the maximum allowed role mentions, use `"+Constants.PREFIX+name+" "+children[0].getName()+" "+children[0].getArguments()+"`"
+                    + "\n\nTo set the maximum allowed role mentions, use `"+ Constants.PREFIX+name+" "+children[0].getName()+" "+children[0].getArguments()+"`"
                     + (also ? Punishment.DEFAULT_SETUP_MESSAGE : ""));
         }
         catch(NumberFormatException e)
         {
-            event.replyError("`<maximum>` must be a valid integer at least `"+AutoMod.MENTION_MINIMUM+"`");
+            event.replyError("`<maximum>` must be a valid integer at least `"+ AutoMod.MENTION_MINIMUM+"`");
         }
     }
     
@@ -109,9 +108,9 @@ public class MaxmentionsCmd extends Command
             try
             {
                 short num = Short.parseShort(event.getArgs());
-                if(num<AutoMod.ROLE_MENTION_MINIMUM)
+                if(num< AutoMod.ROLE_MENTION_MINIMUM)
                 {
-                    event.replyError("Maximum role mentions must be at least `"+AutoMod.ROLE_MENTION_MINIMUM+"`");
+                    event.replyError("Maximum role mentions must be at least `"+ AutoMod.ROLE_MENTION_MINIMUM+"`");
                     return;
                 }
                 sia.getServiceManagers().getAutoModService().setMaxRoleMentions(event.getGuild(), num);
@@ -119,7 +118,7 @@ public class MaxmentionsCmd extends Command
             }
             catch(NumberFormatException e)
             {
-                event.replyError("`<maximum>` must be a valid integer at least `"+AutoMod.ROLE_MENTION_MINIMUM+"`");
+                event.replyError("`<maximum>` must be a valid integer at least `"+ AutoMod.ROLE_MENTION_MINIMUM+"`");
             }
         }
     }

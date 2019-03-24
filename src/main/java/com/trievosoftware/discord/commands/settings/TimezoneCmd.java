@@ -15,10 +15,10 @@
  */
 package com.trievosoftware.discord.commands.settings;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 import java.time.ZoneId;
@@ -27,13 +27,11 @@ import java.time.ZoneId;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class TimezoneCmd extends Command
+public class TimezoneCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public TimezoneCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "timezone";
         this.help = "sets the log timezone";
         this.arguments = "<zone>";
@@ -43,11 +41,11 @@ public class TimezoneCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
         {
-            event.replyError("Please include a time zone. A full list of timezones can be found here: <"+Constants.Wiki.LOG_TIMEZONE+">");
+            event.replyError("Please include a time zone. A full list of timezones can be found here: <"+ Constants.Wiki.LOG_TIMEZONE+">");
             return;
         }
         
@@ -66,7 +64,7 @@ public class TimezoneCmd extends Command
         }
         catch(Exception ex)
         {
-            event.replyError("`"+event.getArgs()+"` is not a valid timezone! See <"+Constants.Wiki.LOG_TIMEZONE+"> for a full list.");
+            event.replyError("`"+event.getArgs()+"` is not a valid timezone! See <"+ Constants.Wiki.LOG_TIMEZONE+"> for a full list.");
         }
     }
 }

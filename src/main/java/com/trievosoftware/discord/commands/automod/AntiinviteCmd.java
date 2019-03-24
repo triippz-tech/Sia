@@ -15,24 +15,22 @@
  */
 package com.trievosoftware.discord.commands.automod;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.domain.AutoMod;
 import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class AntiinviteCmd extends Command
+public class AntiinviteCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public AntiinviteCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "antiinvite";
         this.guildOnly = true;
         this.aliases = new String[]{"antinvite","anti-invite"};
@@ -44,7 +42,7 @@ public class AntiinviteCmd extends Command
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
         {
@@ -68,7 +66,7 @@ public class AntiinviteCmd extends Command
         }
         if(numstrikes<0 || numstrikes> AutoMod.MAX_STRIKES)
         {
-            event.replyError("The number of strikes must be between 0 and "+AutoMod.MAX_STRIKES);
+            event.replyError("The number of strikes must be between 0 and "+ AutoMod.MAX_STRIKES);
             return;
         }
         sia.getServiceManagers().getAutoModService().setInviteStrikes(event.getGuild(), numstrikes);

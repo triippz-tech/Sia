@@ -336,6 +336,9 @@ public class Listener implements EventListener
             sia.getLogWebhook().send("\uD83D\uDD3A Shard `"+shardinfo+"` has connected. Guilds: `" // 🔺
                     +event.getJDA().getGuildCache().size()+"` Users: `"+event.getJDA().getUserCache().size()+"`");
 
+            // Search for new users since last join
+            sia.checkForUserSinceShutdown();
+
             // Launch up the threads schedulers
             sia.getThreadpool().scheduleWithFixedDelay(() ->
                 sia.getServiceManagers().getTempBansService().checkUnbans(event.getJDA()), 0, 2, TimeUnit.MINUTES);

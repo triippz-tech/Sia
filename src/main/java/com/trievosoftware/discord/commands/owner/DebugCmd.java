@@ -15,7 +15,6 @@
  */
 package com.trievosoftware.discord.commands.owner;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
@@ -41,12 +40,12 @@ public class DebugCmd extends AbstractOwnerCommand
     }
     
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         long totalMb = Runtime.getRuntime().totalMemory()/(1024*1024);
         long usedMb = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/(1024*1024);
         StringBuilder sb = new StringBuilder("**"+event.getSelfUser().getName()+"** statistics:"
-                + "\nLast Startup: "+FormatUtil.secondsToTime(Constants.STARTUP.until(OffsetDateTime.now(), ChronoUnit.SECONDS))+" ago"
+                + "\nLast Startup: "+ FormatUtil.secondsToTime(Constants.STARTUP.until(OffsetDateTime.now(), ChronoUnit.SECONDS))+" ago"
                 + "\nGuilds: **"+ sia.getShardManager().getGuildCache().size()+"**"
                 + "\nMemory: **"+usedMb+"**Mb / **"+totalMb+"**Mb"
                 + "\nAverage Ping: **"+ sia.getShardManager().getAveragePing()+"**ms"

@@ -1,6 +1,7 @@
 package com.trievosoftware.application.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -19,7 +20,7 @@ import java.util.Objects;
 public class DiscordUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -36,6 +37,21 @@ public class DiscordUser implements Serializable {
     @NotNull
     @Column(name = "blacklisted", nullable = false)
     private Boolean blacklisted;
+
+    public DiscordUser() {
+    }
+
+    public DiscordUser(@NotNull Long userId) {
+        this.userId = userId;
+        this.commandsIssued = 0;
+        this.blacklisted = false;
+    }
+
+    public DiscordUser(@NotNull Long userId, @NotNull Boolean blacklisted) {
+        this.userId = userId;
+        this.blacklisted = blacklisted;
+        this.commandsIssued = 0;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

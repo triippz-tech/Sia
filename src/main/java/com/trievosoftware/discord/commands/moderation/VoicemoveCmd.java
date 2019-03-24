@@ -18,7 +18,7 @@ package com.trievosoftware.discord.commands.moderation;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.meta.ModCommand;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author John Grosh (jagrosh)
  */
-public class VoicemoveCmd extends ModCommand
+public class VoicemoveCmd extends AbstractModeratorCommand
 {
     public VoicemoveCmd(Sia sia)
     {
@@ -44,7 +44,7 @@ public class VoicemoveCmd extends ModCommand
     }
     
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getGuild().getSelfMember().getVoiceState().inVoiceChannel())
         {

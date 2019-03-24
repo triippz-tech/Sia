@@ -15,11 +15,11 @@
  */
 package com.trievosoftware.discord.commands.automod;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Role;
@@ -31,13 +31,11 @@ import java.util.List;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class UnignoreCmd extends Command {
-    
-    private final Sia sia;
-    
+public class UnignoreCmd extends AbstractModeratorCommand {
+
     public UnignoreCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.guildOnly = true;
         this.name = "unignore";
         this.aliases = new String[]{"deignore","delignore","removeignore"};
@@ -49,7 +47,7 @@ public class UnignoreCmd extends Command {
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event) {
+    public void doCommand(CommandEvent event) {
         if(event.getArgs().isEmpty())
         {
             event.replyWarning("Please include a #channel or role to stop ignoring!");
@@ -81,7 +79,7 @@ public class UnignoreCmd extends Command {
                 event.replySuccess("Automod is no longer ignoring role `"+roles.get(0).getName()+"`");
             else
                 event.replyError("Automod was not ignoring role `"+roles.get(0).getName()+"`"
-                        + "\n"+Constants.WARNING+" If this role is still listed when using `"+Constants.PREFIX+"ignore`:"
+                        + "\n"+ Constants.WARNING+" If this role is still listed when using `"+ Constants.PREFIX+"ignore`:"
                         + "\n`[can't interact]` - the role is above "+event.getSelfUser().getName()+"'s highest role; try moving the '"+event.getSelfUser().getName()+"' role higher"
                         + "\n`[elevated perms]` - the role has one of the following permissions: Kick Members, Ban Members, Manage Server, Manage Messages, Administrator");
         }

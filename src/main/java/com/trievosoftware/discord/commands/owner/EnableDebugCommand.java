@@ -30,7 +30,7 @@ public class EnableDebugCommand extends AbstractOwnerCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if ( event.getArgs().equalsIgnoreCase("ON"))
         {

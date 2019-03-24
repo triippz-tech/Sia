@@ -15,9 +15,10 @@
  */
 package com.trievosoftware.discord.commands.tools;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandErrorException;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import com.trievosoftware.discord.utils.OtherUtil;
 import net.dv8tion.jda.core.Permission;
 
@@ -25,10 +26,11 @@ import net.dv8tion.jda.core.Permission;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class DehoistCmd extends Command
+public class DehoistCmd extends AbstractGenericCommand
 {
-    public DehoistCmd()
+    public DehoistCmd(Sia sia)
     {
+        super(sia);
         this.name = "dehoist";
         this.arguments = "[symbol]";
         this.help = "modifies users' nicknames to prevent using ascii characters as a hoist";
@@ -40,7 +42,7 @@ public class DehoistCmd extends Command
     }
     
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         char symbol;
         if(event.getArgs().isEmpty())
@@ -48,13 +50,13 @@ public class DehoistCmd extends Command
         else if(event.getArgs().length()==1)
             symbol = event.getArgs().charAt(0);
         else
-            throw new CommandErrorException("Provided symbol must be one character of the following: "+OtherUtil.DEHOIST_JOINED);
+            throw new CommandErrorException("Provided symbol must be one character of the following: "+ OtherUtil.DEHOIST_JOINED);
         boolean allowed = false;
         for(char c: OtherUtil.DEHOIST_ORIGINAL)
             if(c==symbol)
                 allowed = true;
         if(!allowed)
-            throw new CommandErrorException("Provided symbol must be one character of the following: "+OtherUtil.DEHOIST_JOINED);
+            throw new CommandErrorException("Provided symbol must be one character of the following: "+ OtherUtil.DEHOIST_JOINED);
         
         long count = event.getGuild().getMembers().stream().filter(m -> OtherUtil.dehoist(m, symbol)).count();
         

@@ -16,37 +16,33 @@
 
 package com.trievosoftware.discord.commands.informational.weather;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.examples.doc.Author;
 import com.trievosoftware.application.exceptions.NoWeatherException;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import net.dv8tion.jda.core.Permission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Author("Mark Tripoli (triippz)")
-public class WeatherCommand extends Command {
+public class WeatherCommand extends AbstractGenericCommand {
     private final Logger log = LoggerFactory.getLogger(WeatherCommand.class);
     private final String zipRegex = "\\d+";
 
-    private Sia sia;
-
-
-    public WeatherCommand (Sia sia)
+    public WeatherCommand(Sia sia)
     {
+        super(sia);
         this.name = "weather";
         this.help = "Finds the current or 5 day forecast by a zip code.";
         this.arguments = "[now/forecast] [zip code] [C/F]";
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
-
-        this.sia = sia;
     }
 
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if (event.getArgs().isEmpty())
         {

@@ -69,7 +69,7 @@ public class SetupMusicCommand extends AbstractDjCommand {
             this.userPermissions = new Permission[]{Permission.MANAGE_SERVER};
             this.botPermissions = new Permission[]{Permission.ADMINISTRATOR};
             this.cooldown = 20;
-            this.cooldownScope = Command.CooldownScope.GUILD;
+            this.cooldownScope = CooldownScope.GUILD;
         }
 
         @Override

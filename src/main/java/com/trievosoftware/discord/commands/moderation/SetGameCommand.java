@@ -39,7 +39,7 @@ public class SetGameCommand extends AbstractModeratorCommand
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         String title = event.getArgs().toLowerCase().startsWith("playing") ? event.getArgs().substring(7).trim() : event.getArgs();
         try
@@ -70,7 +70,7 @@ public class SetGameCommand extends AbstractModeratorCommand
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             String[] parts = event.getArgs().split("\\s+", 2);
             if(parts.length<2)
@@ -107,7 +107,7 @@ public class SetGameCommand extends AbstractModeratorCommand
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             if(event.getArgs().isEmpty())
             {
@@ -141,7 +141,7 @@ public class SetGameCommand extends AbstractModeratorCommand
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             if(event.getArgs().isEmpty())
             {
@@ -175,7 +175,7 @@ public class SetGameCommand extends AbstractModeratorCommand
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             if(event.getArgs().isEmpty())
             {

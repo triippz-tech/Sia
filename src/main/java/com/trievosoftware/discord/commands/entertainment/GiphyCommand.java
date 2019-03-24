@@ -15,10 +15,10 @@
  */
 package com.trievosoftware.discord.commands.entertainment;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.examples.doc.Author;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import com.trievosoftware.giphy4j.Giphy;
 import com.trievosoftware.giphy4j.entity.search.SearchFeed;
 import com.trievosoftware.giphy4j.entity.search.SearchGiphy;
@@ -33,13 +33,13 @@ import java.awt.*;
 
 @Component
 @Author("Mark Tripoli (Triippz)")
-public class GiphyCommand extends Command {
+public class GiphyCommand extends AbstractGenericCommand {
     private static final Logger log = LoggerFactory.getLogger(GiphyCommand.class);
     private Giphy giphy;
-    private Sia sia;
 
     public GiphyCommand(Sia sia)
     {
+        super(sia);
         this.name = "gif";
         this.aliases = new String[]{"gifs","giphy","meme"};
         this.help = "Searches for a gif based on a query parameter";
@@ -47,13 +47,12 @@ public class GiphyCommand extends Command {
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
-        this.sia = sia;
         this.giphy = new Giphy(sia.getApplicationProperties().getApi().getGiphy());
     }
 
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void doCommand(CommandEvent event) {
 
         if(event.getArgs().isEmpty())
         {

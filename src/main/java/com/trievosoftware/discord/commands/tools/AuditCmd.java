@@ -15,12 +15,13 @@
  */
 package com.trievosoftware.discord.commands.tools;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.trievosoftware.discord.Constants;
+import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandErrorException;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandWarningException;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -39,15 +40,16 @@ import java.util.List;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class AuditCmd extends Command
+public class AuditCmd extends AbstractGenericCommand
 {
     private final static String LINESTART = "\u25AB"; // ▫
     private final static String UNKNOWN = "*Unknown*";
     
     private final String actions;
     
-    public AuditCmd()
+    public AuditCmd(Sia sia)
     {
+        super(sia);
         this.name = "audit";
         this.aliases = new String[]{"auditlog","auditlogs","audits"};
         this.arguments = "<ALL | FROM | ACTION> [target]";
@@ -64,7 +66,7 @@ public class AuditCmd extends Command
     }
     
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         String[] parts = event.getArgs().split("\\s+", 2);
         AuditLogPaginationAction action = event.getGuild().getAuditLogs().cache(false).limit(10); 
@@ -173,7 +175,7 @@ public class AuditCmd extends Command
                 eb.addField(actionToEmote(ale.getType())+" "+fixCase(ale.getType().name()), str, true);
             });
             event.reply(new MessageBuilder()
-                    .setContent(Constants.SUCCESS+" Recent Audit Logs in **"+FormatUtil.filterEveryone(event.getGuild().getName())+"**:")
+                    .setContent(Constants.SUCCESS+" Recent Audit Logs in **"+ FormatUtil.filterEveryone(event.getGuild().getName())+"**:")
                     .setEmbed(eb.build()).build());
         }, f -> event.replyWarning("Failed to retrieve audit logs"));
     }

@@ -15,24 +15,22 @@
  */
 package com.trievosoftware.discord.commands.automod;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.domain.AutoMod;
 import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class AntieveryoneCmd extends Command
+public class AntieveryoneCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public AntieveryoneCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "antieveryone";
         this.guildOnly = true;
         this.aliases = new String[]{"antiateveryone", "anti-everyone", "anti-ateveryone"};
@@ -44,7 +42,7 @@ public class AntieveryoneCmd extends Command
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
         {
@@ -68,7 +66,7 @@ public class AntieveryoneCmd extends Command
         }
         if(numstrikes<0 || numstrikes> AutoMod.MAX_STRIKES)
         {
-            event.replyError("The number of strikes must be between 0 and "+AutoMod.MAX_STRIKES);
+            event.replyError("The number of strikes must be between 0 and "+ AutoMod.MAX_STRIKES);
             return;
         }
         sia.getServiceManagers().getAutoModService().setEveryoneStrikes(event.getGuild(), numstrikes);

@@ -15,10 +15,11 @@
  */
 package com.trievosoftware.discord.commands.general;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
+import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandErrorException;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -33,13 +34,14 @@ import java.util.List;
  *
  * @author John Grosh (jagrosh)
  */
-public class RoleinfoCmd extends Command
+public class RoleinfoCmd extends AbstractGenericCommand
 {
     private final static String LINESTART = "\u25AB"; // ▫
     private final static String ROLE_EMOJI = "\uD83C\uDFAD"; // 🎭
     
-    public RoleinfoCmd()
+    public RoleinfoCmd(Sia sia)
     {
+        super(sia);
         this.name = "roleinfo";
         this.aliases = new String[]{"rinfo","rankinfo"};
         this.help = "shows info about a role";
@@ -49,7 +51,7 @@ public class RoleinfoCmd extends Command
     }
     
     @Override
-    protected void execute(CommandEvent event) 
+    public void doCommand(CommandEvent event)
     {
         Role role;
         if(event.getArgs().isEmpty())
