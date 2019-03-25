@@ -22,7 +22,8 @@
       "title": "Title",
       "finishTime": "Finish Time",
       "expired": "Is Expired",
-      "pollitems": "Pollitems"
+      "pollitems": "Pollitems",
+      "discorduser": "Discord Users"
     }
   }
 }

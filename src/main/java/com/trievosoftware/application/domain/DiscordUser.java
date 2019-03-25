@@ -1,6 +1,7 @@
 package com.trievosoftware.application.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -9,7 +10,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DiscordUser.
@@ -37,6 +40,11 @@ public class DiscordUser implements Serializable {
     @NotNull
     @Column(name = "blacklisted", nullable = false)
     private Boolean blacklisted;
+
+    @ManyToMany(mappedBy = "discordusers", fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
+    private Set<Poll> polls = new HashSet<>();
 
     public DiscordUser() {
     }
@@ -95,6 +103,31 @@ public class DiscordUser implements Serializable {
     public DiscordUser blacklisted(Boolean blacklisted) {
         this.blacklisted = blacklisted;
         return this;
+    }
+
+    public Set<Poll> getPolls() {
+        return polls;
+    }
+
+    public DiscordUser polls(Set<Poll> polls) {
+        this.polls = polls;
+        return this;
+    }
+
+    public DiscordUser addPoll(Poll poll) {
+        this.polls.add(poll);
+        poll.getDiscordusers().add(this);
+        return this;
+    }
+
+    public DiscordUser removePoll(Poll poll) {
+        this.polls.remove(poll);
+        poll.getDiscordusers().remove(this);
+        return this;
+    }
+
+    public void setPolls(Set<Poll> polls) {
+        this.polls = polls;
     }
 
     public void setBlacklisted(Boolean blacklisted) {

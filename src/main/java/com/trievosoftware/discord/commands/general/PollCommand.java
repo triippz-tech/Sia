@@ -19,6 +19,7 @@ package com.trievosoftware.discord.commands.general;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
+import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.domain.Poll;
 import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.exceptions.*;
@@ -329,8 +330,7 @@ public class PollCommand extends AbstractModeratorCommand
             }
 
             @Override
-            public void doCommand(CommandEvent event)
-            {
+            public void doCommand(CommandEvent event) throws NoPollsFoundException {
                 if ( event.getArgs().isEmpty() )
                 {
                     event.replyError("Must include a Poll name and your item choice");
@@ -369,7 +369,18 @@ public class PollCommand extends AbstractModeratorCommand
                     return;
                 }
                  // check if user has voted already
-
+                if ( !poll.getDiscordusers().isEmpty() )
+                {
+                    for ( DiscordUser user : poll.getDiscordusers() )
+                    {
+                        if ( user.getUserId().equals(event.getAuthor().getIdLong() ) )
+                        {
+                            event.getMessage().delete().complete();
+                            event.replyError("Can only cast one vote per Poll.");
+                            return;
+                        }
+                    }
+                }
 
                 String reaction = Constants.NUMBERS[choice-1];
                 for ( PollItems item : poll.getPollitems() )
@@ -377,6 +388,10 @@ public class PollCommand extends AbstractModeratorCommand
                     if ( item.getReaction().equals(reaction))
                     {
                         sia.getServiceManagers().getPollItemsService().addVote(item.getId());
+
+                        DiscordUser user = sia.getServiceManagers().getDiscordUserService().getDiscordUser(event.getAuthor());
+                        sia.getServiceManagers().getPollService().addUserVoted(poll.getId(), user);
+
                         event.getMessage().delete().complete();
                         event.replySuccess("Vote casted!");
                         return;
@@ -394,8 +409,7 @@ public class PollCommand extends AbstractModeratorCommand
             }
 
             @Override
-            public void doCommand(CommandEvent event)
-            {
+            public void doCommand(CommandEvent event) throws NoPollsFoundException {
                 if ( event.getArgs().isEmpty() )
                 {
                     event.replyError("Must include a Poll name and your item choice");
@@ -433,19 +447,30 @@ public class PollCommand extends AbstractModeratorCommand
                     return;
                 }
                 // check if user has voted already
-
-
-                String reaction = Constants.NUMBERS[choice-1];
-                for ( PollItems item : poll.getPollitems() )
+                for ( DiscordUser discordUser : poll.getDiscordusers() )
                 {
-                    if ( item.getReaction().equals(reaction))
+                    Long userId = event.getAuthor().getIdLong();
+                    if ( discordUser.getUserId().equals(userId) )
                     {
-                        sia.getServiceManagers().getPollItemsService().removeVote(item.getId());
-                        event.getMessage().delete().complete();
-                        event.replySuccess("Vote Removed!");
-                        return;
+                        String reaction = Constants.NUMBERS[choice-1];
+                        for ( PollItems item : poll.getPollitems() )
+                        {
+                            if ( item.getReaction().equals(reaction))
+                            {
+                                sia.getServiceManagers().getPollItemsService().removeVote(item.getId());
+
+                                DiscordUser user = sia.getServiceManagers().getDiscordUserService().getDiscordUser(event.getAuthor());
+                                sia.getServiceManagers().getPollService().removeUserVoted(poll.getId(), user);
+
+                                event.getMessage().delete().complete();
+                                event.replySuccess("Vote Removed!");
+                                return;
+                            }
+                        }
                     }
                 }
+                event.replyError("Can not remove vote, since you have not voted yet");
+//                        event.getMessage().delete().complete();
             }
         }
 

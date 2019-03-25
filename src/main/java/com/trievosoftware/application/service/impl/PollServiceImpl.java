@@ -1,5 +1,6 @@
 package com.trievosoftware.application.service.impl;
 
+import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.exceptions.NoPollsFoundException;
 import com.trievosoftware.application.exceptions.PollExpiredException;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.TemporalUnit;
@@ -274,6 +276,27 @@ public class PollServiceImpl implements PollService {
         return pollRepository.findAllByGuildIdAndFinishTimeIsGreaterThan(guildId, now);
     }
 
+    @Override
+    @Transactional
+    public void addUserVoted(Long pollId, DiscordUser user) throws NoPollsFoundException {
+        log.debug("Request to add User={} to voted DiscordUsers", user.getId());
+        Optional<Poll> poll = findOne(pollId);
+        if ( !poll.isPresent() ) throw new NoPollsFoundException("Poll was not found, cannot add user");
+
+        poll.get().addDiscorduser(user);
+        save(poll.get());
+    }
+
+    @Override
+    @Transactional
+    public void removeUserVoted(Long pollId, DiscordUser user) throws NoPollsFoundException {
+        log.debug("Request to add User={} to voted DiscordUsers", user.getId());
+        Optional<Poll> poll = findOne(pollId);
+        if ( !poll.isPresent() ) throw new NoPollsFoundException("Poll was not found, cannot add user");
+
+        poll.get().removeDiscorduser(user);
+        save(poll.get());
+    }
 
     /**
      * Checks for expired Polls. If one or more are found. Sia will attempt to notify users in the follwing format:

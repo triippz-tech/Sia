@@ -56,6 +56,11 @@ public interface DiscordUserService {
 
     DiscordUser addNewUser(User user);
 
+    DiscordUser getDiscordUser(User user);
+
+    @Transactional
+    DiscordUser getDiscordUserById(Long id, User user);
+
     void blacklistUser(User user);
 
     void removeBlacklist(User user) throws NoDiscordUserFoundException;

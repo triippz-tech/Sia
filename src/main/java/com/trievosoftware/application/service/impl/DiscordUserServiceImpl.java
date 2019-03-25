@@ -94,6 +94,7 @@ public class DiscordUserServiceImpl implements DiscordUserService {
     }
 
     @Override
+    @Transactional
     public boolean userExists(Long userId)
     {
         log.debug("Request to see if user exists");
@@ -103,6 +104,7 @@ public class DiscordUserServiceImpl implements DiscordUserService {
 
 
     @Override
+    @Transactional
     public void addNewUser(Long userId)
     {
         log.debug("Request to add new user");
@@ -113,6 +115,7 @@ public class DiscordUserServiceImpl implements DiscordUserService {
     }
 
     @Override
+    @Transactional
     public DiscordUser addNewUser(User user)
     {
         log.debug("Request to add new user");
@@ -123,6 +126,30 @@ public class DiscordUserServiceImpl implements DiscordUserService {
     }
 
     @Override
+    @Transactional
+    public DiscordUser getDiscordUser(User user)
+    {
+        log.debug("Request to get DiscordUser with id of: {}", user.getIdLong());
+
+        Optional<DiscordUser>  discordUser = findByUserId(user.getIdLong());
+
+        return discordUser.orElseGet(() -> addNewUser(user));
+
+    }
+
+    @Override
+    @Transactional
+    public DiscordUser getDiscordUserById(Long id, User user)
+    {
+        log.debug("Request to get DiscordUser with ID={}", id);
+
+        Optional<DiscordUser> discordUser = findOne(id);
+
+        return discordUser.orElseGet(() -> addNewUser(user));
+    }
+
+    @Override
+    @Transactional
     public void blacklistUser(User user)
     {
         log.debug("Request to blacklist User={}:{}", user.getName(), user.getIdLong());
@@ -142,6 +169,7 @@ public class DiscordUserServiceImpl implements DiscordUserService {
 
 
     @Override
+    @Transactional
     public void removeBlacklist(User user) throws NoDiscordUserFoundException {
         log.debug("Request to remove blacklist from User={}:{}", user.getName(), user.getIdLong());
         Optional<DiscordUser> discordUser = findByUserId(user.getIdLong());
@@ -156,6 +184,7 @@ public class DiscordUserServiceImpl implements DiscordUserService {
 
 
     @Override
+    @Transactional
     public void addCommand(User user)
     {
         log.debug("Request to add command count for User={}", user.getName());
@@ -172,6 +201,7 @@ public class DiscordUserServiceImpl implements DiscordUserService {
     }
 
     @Override
+    @Transactional
     public boolean isUserBlacklisted(Long userid)
     {
         log.debug("Request to see if User={} is blacklisted", userid);

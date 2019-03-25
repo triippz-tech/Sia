@@ -72,6 +72,19 @@ export class PollDetail extends React.Component<IPollDetailProps> {
             <dd>
               <TextFormat value={pollEntity.finishTime} type="date" format={APP_DATE_FORMAT} />
             </dd>
+            <dt>
+              <Translate contentKey="siaApp.poll.discorduser">Discorduser</Translate>
+            </dt>
+            <dd>
+              {pollEntity.discordusers
+                ? pollEntity.discordusers.map((val, i) => (
+                    <span key={val.id}>
+                      <a>{val.id}</a>
+                      {i === pollEntity.discordusers.length - 1 ? '' : ', '}
+                    </span>
+                  ))
+                : null}
+            </dd>
           </dl>
           <Button tag={Link} to="/entity/poll" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}

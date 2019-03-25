@@ -8,6 +8,8 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { IDiscordUser } from 'app/shared/model/discord-user.model';
+import { getEntities as getDiscordUsers } from 'app/entities/discord-user/discord-user.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './poll.reducer';
 import { IPoll } from 'app/shared/model/poll.model';
 // tslint:disable-next-line:no-unused-variable
@@ -18,12 +20,14 @@ export interface IPollUpdateProps extends StateProps, DispatchProps, RouteCompon
 
 export interface IPollUpdateState {
   isNew: boolean;
+  idsdiscorduser: any[];
 }
 
 export class PollUpdate extends React.Component<IPollUpdateProps, IPollUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
+      idsdiscorduser: [],
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -40,6 +44,8 @@ export class PollUpdate extends React.Component<IPollUpdateProps, IPollUpdateSta
     } else {
       this.props.getEntity(this.props.match.params.id);
     }
+
+    this.props.getDiscordUsers();
   }
 
   saveEntity = (event, errors, values) => {
@@ -49,7 +55,8 @@ export class PollUpdate extends React.Component<IPollUpdateProps, IPollUpdateSta
       const { pollEntity } = this.props;
       const entity = {
         ...pollEntity,
-        ...values
+        ...values,
+        discordusers: mapIdList(values.discordusers)
       };
 
       if (this.state.isNew) {
@@ -65,7 +72,7 @@ export class PollUpdate extends React.Component<IPollUpdateProps, IPollUpdateSta
   };
 
   render() {
-    const { pollEntity, loading, updating } = this.props;
+    const { pollEntity, discordUsers, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -169,6 +176,28 @@ export class PollUpdate extends React.Component<IPollUpdateProps, IPollUpdateSta
                     }}
                   />
                 </AvGroup>
+                <AvGroup>
+                  <Label for="discordUsers">
+                    <Translate contentKey="siaApp.poll.discorduser">Discorduser</Translate>
+                  </Label>
+                  <AvInput
+                    id="poll-discorduser"
+                    type="select"
+                    multiple
+                    className="form-control"
+                    name="discordusers"
+                    value={pollEntity.discordusers && pollEntity.discordusers.map(e => e.id)}
+                  >
+                    <option value="" key="0" />
+                    {discordUsers
+                      ? discordUsers.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.id}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/poll" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
@@ -192,6 +221,7 @@ export class PollUpdate extends React.Component<IPollUpdateProps, IPollUpdateSta
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  discordUsers: storeState.discordUser.entities,
   pollEntity: storeState.poll.entity,
   loading: storeState.poll.loading,
   updating: storeState.poll.updating,
@@ -199,6 +229,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getDiscordUsers,
   getEntity,
   updateEntity,
   createEntity,

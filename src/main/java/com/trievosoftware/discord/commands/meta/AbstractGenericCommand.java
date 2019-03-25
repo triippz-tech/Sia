@@ -18,6 +18,7 @@ package com.trievosoftware.discord.commands.meta;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.exceptions.NoPollsFoundException;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 
@@ -39,8 +40,12 @@ public abstract class AbstractGenericCommand extends Command{
                 "the creators via discord: " + Constants.SERVER_INVITE);
             return;
         }
-        doCommand(event);
+        try {
+            doCommand(event);
+        } catch (NoPollsFoundException e) {
+            event.replyError(e.getMessage());
+        }
     }
 
-    public abstract void doCommand(CommandEvent event);
+    public abstract void doCommand(CommandEvent event) throws NoPollsFoundException;
 }

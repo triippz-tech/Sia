@@ -1,5 +1,6 @@
 package com.trievosoftware.application.service;
 
+import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.domain.Poll;
 import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.exceptions.NoPollsFoundException;
@@ -11,6 +12,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.webhook.WebhookClient;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -93,6 +95,11 @@ public interface PollService {
     List<Poll> checkExpiredPollsForUser(User user);
 
     List<Poll> findAllByGuildIdAndFinishTimeIsGreaterThan(Long guildId, Instant now);
+
+    void addUserVoted(Long pollId, DiscordUser user) throws NoPollsFoundException;
+
+    @Transactional
+    void removeUserVoted(Long pollId, DiscordUser user) throws NoPollsFoundException;
 
     void checkExpiredPolls(JDA jda);
 

@@ -58,6 +58,13 @@ public class Poll implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PollItems> pollitems = new HashSet<>();
 
+    @ManyToMany( fetch = FetchType.EAGER )
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "poll_discorduser",
+        joinColumns = @JoinColumn(name = "poll_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "discorduser_id", referencedColumnName = "id"))
+    private Set<DiscordUser> discordusers = new HashSet<>();
+
     public Poll() {
     }
 
@@ -211,6 +218,31 @@ public class Poll implements Serializable {
 
     public void setPollitems(Set<PollItems> pollItems) {
         this.pollitems = pollItems;
+    }
+
+    public Set<DiscordUser> getDiscordusers() {
+        return discordusers;
+    }
+
+    public Poll discordusers(Set<DiscordUser> discordUsers) {
+        this.discordusers = discordUsers;
+        return this;
+    }
+
+    public Poll addDiscorduser(DiscordUser discordUser) {
+        this.discordusers.add(discordUser);
+        discordUser.getPolls().add(this);
+        return this;
+    }
+
+    public Poll removeDiscorduser(DiscordUser discordUser) {
+        this.discordusers.remove(discordUser);
+        discordUser.getPolls().remove(this);
+        return this;
+    }
+
+    public void setDiscordusers(Set<DiscordUser> discordUsers) {
+        this.discordusers = discordUsers;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

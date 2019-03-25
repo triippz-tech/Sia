@@ -53,6 +53,17 @@
         </createTable>
         <dropDefaultValue tableName="poll" columnName="finish_time" columnDataType="datetime"/>
         
+        <createTable tableName="poll_discorduser">
+            <column name="discorduser_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="poll_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="poll_id, discorduser_id" tableName="poll_discorduser"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

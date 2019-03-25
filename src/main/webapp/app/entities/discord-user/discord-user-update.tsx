@@ -8,6 +8,8 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { IPoll } from 'app/shared/model/poll.model';
+import { getEntities as getPolls } from 'app/entities/poll/poll.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './discord-user.reducer';
 import { IDiscordUser } from 'app/shared/model/discord-user.model';
 // tslint:disable-next-line:no-unused-variable
@@ -18,12 +20,14 @@ export interface IDiscordUserUpdateProps extends StateProps, DispatchProps, Rout
 
 export interface IDiscordUserUpdateState {
   isNew: boolean;
+  pollId: string;
 }
 
 export class DiscordUserUpdate extends React.Component<IDiscordUserUpdateProps, IDiscordUserUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
+      pollId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -40,6 +44,8 @@ export class DiscordUserUpdate extends React.Component<IDiscordUserUpdateProps, 
     } else {
       this.props.getEntity(this.props.match.params.id);
     }
+
+    this.props.getPolls();
   }
 
   saveEntity = (event, errors, values) => {
@@ -63,7 +69,7 @@ export class DiscordUserUpdate extends React.Component<IDiscordUserUpdateProps, 
   };
 
   render() {
-    const { discordUserEntity, loading, updating } = this.props;
+    const { discordUserEntity, polls, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -148,6 +154,7 @@ export class DiscordUserUpdate extends React.Component<IDiscordUserUpdateProps, 
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  polls: storeState.poll.entities,
   discordUserEntity: storeState.discordUser.entity,
   loading: storeState.discordUser.loading,
   updating: storeState.discordUser.updating,
@@ -155,6 +162,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getPolls,
   getEntity,
   updateEntity,
   createEntity,

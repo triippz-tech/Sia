@@ -59,6 +59,9 @@ export class Poll extends React.Component<IPollProps> {
                 <th>
                   <Translate contentKey="siaApp.poll.finishTime">Finish Time</Translate>
                 </th>
+                <th>
+                  <Translate contentKey="siaApp.poll.discorduser">Discorduser</Translate>
+                </th>
                 <th />
               </tr>
             </thead>
@@ -78,6 +81,16 @@ export class Poll extends React.Component<IPollProps> {
                   <td>{poll.expired}</td>
                   <td>
                     <TextFormat type="date" value={poll.finishTime} format={APP_DATE_FORMAT} />
+                  </td>
+                  <td>
+                    {poll.discordusers
+                      ? poll.discordusers.map((val, j) => (
+                          <span key={j}>
+                            <Link to={`discord-user/${val.id}`}>{val.id}</Link>
+                            {j === poll.discordusers.length - 1 ? '' : ', '}
+                          </span>
+                        ))
+                      : null}
                   </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
