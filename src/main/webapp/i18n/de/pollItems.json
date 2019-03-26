@@ -18,7 +18,8 @@
       "itemName": "Item Name",
       "reaction": "Reaction",
       "votes": "Votes",
-      "poll": "Poll"
+      "poll": "Poll",
+      "discorduser": "Discord Users"
     }
   }
 }

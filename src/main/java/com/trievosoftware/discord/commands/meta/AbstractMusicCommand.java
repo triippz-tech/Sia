@@ -95,6 +95,7 @@ public abstract class AbstractMusicCommand extends Command {
         }
 
         try {
+            sia.getServiceManagers().getDiscordUserService().addCommand(event.getAuthor());
             doCommand(event);
         } catch (NoPlaylistFoundException | NoMusicSettingsException e) {
             event.replyError(e.getMessage());

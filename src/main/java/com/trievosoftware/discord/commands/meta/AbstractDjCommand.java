@@ -47,6 +47,7 @@ public abstract class AbstractDjCommand extends AbstractMusicCommand {
             return;
         }
         try {
+            sia.getServiceManagers().getDiscordUserService().addCommand(event.getAuthor());
             doCommand(event);
         } catch (NoMusicSettingsException e) {
             event.replyError(e.getMessage());

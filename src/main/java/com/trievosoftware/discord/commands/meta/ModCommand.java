@@ -26,6 +26,7 @@ import net.dv8tion.jda.core.entities.Role;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
+@SuppressWarnings("Duplicates")
 public abstract class ModCommand extends Command
 {
     protected final Sia sia;
@@ -77,6 +78,7 @@ public abstract class ModCommand extends Command
                 "the creators via discord: " + Constants.SERVER_INVITE);
             return;
         }
+        sia.getServiceManagers().getDiscordUserService().addCommand(event.getAuthor());
         doCommand(event);
     }
 

@@ -2,7 +2,10 @@ package com.trievosoftware.application.service;
 
 import com.trievosoftware.application.domain.DiscordUser;
 
+import com.trievosoftware.application.domain.Poll;
+import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.exceptions.NoDiscordUserFoundException;
+import com.trievosoftware.application.exceptions.UserHasNoVoteException;
 import net.dv8tion.jda.core.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,6 +58,15 @@ public interface DiscordUserService {
     void addNewUser(Long userId);
 
     DiscordUser addNewUser(User user);
+
+    @Transactional
+    void addVoteItem(DiscordUser user, PollItems item);
+
+    @Transactional
+    void removeVoteItem(DiscordUser user, PollItems items);
+
+    @Transactional
+    PollItems getUserVote(DiscordUser user, Poll poll) throws UserHasNoVoteException;
 
     DiscordUser getDiscordUser(User user);
 

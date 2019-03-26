@@ -10,6 +10,8 @@ import { IRootState } from 'app/shared/reducers';
 
 import { IPoll } from 'app/shared/model/poll.model';
 import { getEntities as getPolls } from 'app/entities/poll/poll.reducer';
+import { IPollItems } from 'app/shared/model/poll-items.model';
+import { getEntities as getPollItems } from 'app/entities/poll-items/poll-items.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './discord-user.reducer';
 import { IDiscordUser } from 'app/shared/model/discord-user.model';
 // tslint:disable-next-line:no-unused-variable
@@ -21,6 +23,7 @@ export interface IDiscordUserUpdateProps extends StateProps, DispatchProps, Rout
 export interface IDiscordUserUpdateState {
   isNew: boolean;
   pollId: string;
+  pollitemsId: string;
 }
 
 export class DiscordUserUpdate extends React.Component<IDiscordUserUpdateProps, IDiscordUserUpdateState> {
@@ -28,6 +31,7 @@ export class DiscordUserUpdate extends React.Component<IDiscordUserUpdateProps, 
     super(props);
     this.state = {
       pollId: '0',
+      pollitemsId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -46,6 +50,7 @@ export class DiscordUserUpdate extends React.Component<IDiscordUserUpdateProps, 
     }
 
     this.props.getPolls();
+    this.props.getPollItems();
   }
 
   saveEntity = (event, errors, values) => {
@@ -69,7 +74,7 @@ export class DiscordUserUpdate extends React.Component<IDiscordUserUpdateProps, 
   };
 
   render() {
-    const { discordUserEntity, polls, loading, updating } = this.props;
+    const { discordUserEntity, polls, pollItems, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -155,6 +160,7 @@ export class DiscordUserUpdate extends React.Component<IDiscordUserUpdateProps, 
 
 const mapStateToProps = (storeState: IRootState) => ({
   polls: storeState.poll.entities,
+  pollItems: storeState.pollItems.entities,
   discordUserEntity: storeState.discordUser.entity,
   loading: storeState.discordUser.loading,
   updating: storeState.discordUser.updating,
@@ -163,6 +169,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 
 const mapDispatchToProps = {
   getPolls,
+  getPollItems,
   getEntity,
   updateEntity,
   createEntity,

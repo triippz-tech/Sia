@@ -1,4 +1,5 @@
 import { IPoll } from 'app/shared/model/poll.model';
+import { IPollItems } from 'app/shared/model/poll-items.model';
 
 export interface IDiscordUser {
   id?: number;
@@ -6,6 +7,7 @@ export interface IDiscordUser {
   commandsIssued?: number;
   blacklisted?: boolean;
   polls?: IPoll[];
+  pollitems?: IPollItems[];
 }
 
 export const defaultValue: Readonly<IDiscordUser> = {

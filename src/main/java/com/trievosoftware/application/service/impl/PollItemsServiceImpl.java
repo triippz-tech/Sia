@@ -1,6 +1,8 @@
 package com.trievosoftware.application.service.impl;
 
+import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.domain.Poll;
+import com.trievosoftware.application.exceptions.UserHasNoVoteException;
 import com.trievosoftware.application.service.PollItemsService;
 import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.repository.PollItemsRepository;
@@ -138,5 +140,45 @@ public class PollItemsServiceImpl implements PollItemsService {
 
         pollItem.get().setVotes(pollItem.get().getVotes() + 1);
         save(pollItem.get());
+    }
+
+    @Override
+    @Transactional
+    public void addVoteToUser(DiscordUser user, PollItems item)
+    {
+        log.debug("Request to add vote for Discord User");
+        Optional<PollItems> pollItems = findOne(item.getId());
+
+        if ( !pollItems.isPresent() ) return;
+
+        pollItems.get().addDiscorduser(user);
+        save(pollItems.get());
+    }
+
+    @Override
+    @Transactional
+    public void removeVoteFromUser(DiscordUser user, PollItems item)
+    {
+        log.debug("Request to remove vote for Discord User");
+        Optional<PollItems> pollItems = findOne(item.getId());
+
+        if ( !pollItems.isPresent() ) return;
+
+        pollItems.get().removeDiscorduser(user);
+        save(pollItems.get());
+    }
+
+    @Override
+    @Transactional
+    public boolean userVotedThis(DiscordUser user, PollItems item)  {
+        log.debug("Request to find vote for poll");
+
+        for ( DiscordUser discordUser : item.getDiscordusers() )
+        {
+            if (discordUser.getId().equals(user.getId()))
+                return true;
+        }
+
+        return false;
     }
 }

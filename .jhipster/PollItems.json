@@ -9,7 +9,7 @@
             ]
         },
         {
-            "fieldName": "itemNumber",
+            "fieldName": "votes",
             "fieldType": "Integer"
         }
     ],

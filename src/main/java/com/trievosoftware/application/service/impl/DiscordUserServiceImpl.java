@@ -1,6 +1,9 @@
 package com.trievosoftware.application.service.impl;
 
+import com.trievosoftware.application.domain.Poll;
+import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.exceptions.NoDiscordUserFoundException;
+import com.trievosoftware.application.exceptions.UserHasNoVoteException;
 import com.trievosoftware.application.service.DiscordUserService;
 import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.repository.DiscordUserRepository;
@@ -123,6 +126,50 @@ public class DiscordUserServiceImpl implements DiscordUserService {
         DiscordUser discordUser = new DiscordUser(user.getIdLong());
         save(discordUser);
         return discordUser;
+    }
+
+    @Override
+    @Transactional
+    public void addVoteItem(DiscordUser user, PollItems item)
+    {
+        log.debug("Request to add new poll item vote to DiscordUser");
+
+        Optional<DiscordUser> discordUser = findOne(user.getId());
+        if ( !discordUser.isPresent() ) return;
+
+        discordUser.get().addPollitems(item);
+        save(discordUser.get());
+    }
+
+    @Override
+    @Transactional
+    public void removeVoteItem(DiscordUser user, PollItems items)
+    {
+        log.debug("Request to remove poll item vote from DiscordUser");
+
+        Optional<DiscordUser> discordUser = findOne(user.getId());
+        if ( !discordUser.isPresent() ) return;
+
+        discordUser.get().removePollitems(items);
+        save(discordUser.get());
+    }
+
+    @Override
+    @Transactional
+    public PollItems getUserVote(DiscordUser user, Poll poll) throws UserHasNoVoteException {
+        log.debug("Request to find vote for poll");
+
+        Optional<DiscordUser> discordUser = findOne(user.getId());
+
+        if (!discordUser.isPresent()) throw new UserHasNoVoteException("You have not voted in this Poll!");
+
+        for ( PollItems item : discordUser.get().getPollitems() )
+        {
+            if ( item.getPoll().getId().equals(poll.getId()) )
+                return item;
+        }
+
+        throw new UserHasNoVoteException("You have not voted in this Poll!");
     }
 
     @Override

@@ -83,7 +83,7 @@ public class PollCommand extends AbstractModeratorCommand
         private Integer amountOfTime;
         private TimeUnit timeUnits;
 
-        public CreatePollCommand(Sia sia)
+        CreatePollCommand(Sia sia)
         {
             super(sia);
             this.name = "create";
@@ -188,7 +188,7 @@ public class PollCommand extends AbstractModeratorCommand
 
     public class AnnouncePollCommand extends AbstractModeratorCommand
     {
-        public AnnouncePollCommand(Sia sia)
+        AnnouncePollCommand(Sia sia)
         {
             super(sia);
             this.name = "announce";
@@ -248,7 +248,7 @@ public class PollCommand extends AbstractModeratorCommand
 
             String message = PARTY_EMOJI + " " + role.getAsMention()+" "+ "There is an active Poll! `"
                 + pollTitle + "`: " + parts[3] + " " + PARTY_EMOJI + "\n\n" +
-                "To vote type `/poll vote add " + pollTitle + " | <choice number>`";
+                "To vote type `/poll vote add  " + pollTitle + " | <choice number>`";
 
             if(!event.getMember().hasPermission(tc, Permission.MESSAGE_MENTION_EVERYONE))
                 message = FormatUtil.filterEveryone(message);
@@ -282,7 +282,7 @@ public class PollCommand extends AbstractModeratorCommand
 
     public class ActivePollsCommand extends AbstractGenericCommand
     {
-        public ActivePollsCommand(Sia sia)
+        ActivePollsCommand(Sia sia)
         {
             super(sia);
             this.name = "active";
@@ -300,7 +300,7 @@ public class PollCommand extends AbstractModeratorCommand
     public class VoteCommand extends AbstractGenericCommand
     {
 
-        public VoteCommand(Sia sia) {
+        VoteCommand(Sia sia) {
             super(sia);
             this.name = "vote";
             this.help = "Displays options for voting";
@@ -322,7 +322,7 @@ public class PollCommand extends AbstractModeratorCommand
         }
 
         private class AddVoteCommand extends AbstractGenericCommand {
-            public AddVoteCommand(Sia sia) {
+            AddVoteCommand(Sia sia) {
                 super(sia);
                 this.name = "add";
                 this.help = "adds a vote to a poll";
@@ -391,6 +391,7 @@ public class PollCommand extends AbstractModeratorCommand
 
                         DiscordUser user = sia.getServiceManagers().getDiscordUserService().getDiscordUser(event.getAuthor());
                         sia.getServiceManagers().getPollService().addUserVoted(poll.getId(), user);
+                        sia.getServiceManagers().getPollItemsService().addVoteToUser(user, item);
 
                         event.getMessage().delete().complete();
                         event.replySuccess("Vote casted!");
@@ -401,7 +402,7 @@ public class PollCommand extends AbstractModeratorCommand
         }
 
         private class RemoveVoteCommand extends AbstractGenericCommand {
-            public RemoveVoteCommand(Sia sia) {
+            RemoveVoteCommand(Sia sia) {
                 super(sia);
                 this.name = "remove";
                 this.help = "removes a users vote from a poll";
@@ -409,7 +410,7 @@ public class PollCommand extends AbstractModeratorCommand
             }
 
             @Override
-            public void doCommand(CommandEvent event) throws NoPollsFoundException {
+            public void doCommand(CommandEvent event) throws NoPollsFoundException, UserHasNoVoteException {
                 if ( event.getArgs().isEmpty() )
                 {
                     event.replyError("Must include a Poll name and your item choice");
@@ -457,6 +458,12 @@ public class PollCommand extends AbstractModeratorCommand
                         {
                             if ( item.getReaction().equals(reaction))
                             {
+                                if (!sia.getServiceManagers().getPollItemsService().userVotedThis(discordUser, item))
+                                {
+                                    event.replyError("You do not have a vote for that choice.");
+                                    return;
+                                }
+
                                 sia.getServiceManagers().getPollItemsService().removeVote(item.getId());
 
                                 DiscordUser user = sia.getServiceManagers().getDiscordUserService().getDiscordUser(event.getAuthor());
@@ -475,7 +482,7 @@ public class PollCommand extends AbstractModeratorCommand
         }
 
         private class ChangeVoteCommand extends AbstractGenericCommand {
-            public ChangeVoteCommand(Sia sia) {
+            ChangeVoteCommand(Sia sia) {
                 super(sia);
                 this.name = "change";
                 this.help = "Changes a users vote to a new item";

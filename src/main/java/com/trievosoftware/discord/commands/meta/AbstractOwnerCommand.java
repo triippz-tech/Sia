@@ -21,6 +21,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 
+@SuppressWarnings("Duplicates")
 public abstract class AbstractOwnerCommand extends Command
 {
     protected Sia sia;
@@ -42,6 +43,7 @@ public abstract class AbstractOwnerCommand extends Command
                 "the creators via discord: " + Constants.SERVER_INVITE);
             return;
         }
+        sia.getServiceManagers().getDiscordUserService().addCommand(event.getAuthor());
         doCommand(event);
     }
 

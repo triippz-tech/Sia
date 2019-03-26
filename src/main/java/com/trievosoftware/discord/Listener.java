@@ -26,6 +26,7 @@ import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA.ShardInfo;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -242,6 +243,12 @@ public class Listener implements EventListener
                     .build()
                 ).build()
             ).queue();
+
+            for (Member member : ((GuildJoinEvent) event).getGuild().getMembers() )
+            {
+                if (! member.getUser().isBot())
+                    sia.getServiceManagers().getDiscordUserService().addNewUser(member.getUser().getIdLong());
+            }
 
             if ( sia.isDebugMode() )
                 sia.getLogWebhook().send(new MessageBuilder()

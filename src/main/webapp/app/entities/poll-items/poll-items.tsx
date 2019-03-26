@@ -48,6 +48,9 @@ export class PollItems extends React.Component<IPollItemsProps> {
                   <Translate contentKey="siaApp.pollItems.votes">Votes</Translate>
                 </th>
                 <th>
+                  <Translate contentKey="siaApp.pollItems.discorduser">Discorduser</Translate>
+                </th>
+                <th>
                   <Translate contentKey="siaApp.pollItems.poll">Poll</Translate>
                 </th>
                 <th />
@@ -64,6 +67,16 @@ export class PollItems extends React.Component<IPollItemsProps> {
                   <td>{pollItems.itemName}</td>
                   <td>{pollItems.reaction}</td>
                   <td>{pollItems.votes}</td>
+                  <td>
+                    {pollItems.discordusers
+                      ? pollItems.discordusers.map((val, j) => (
+                          <span key={j}>
+                            <Link to={`discord-user/${val.id}`}>{val.id}</Link>
+                            {j === pollItems.discordusers.length - 1 ? '' : ', '}
+                          </span>
+                        ))
+                      : null}
+                  </td>
                   <td>{pollItems.poll ? <Link to={`poll/${pollItems.poll.id}`}>{pollItems.poll.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">

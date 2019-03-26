@@ -9,7 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A PollItems.
@@ -39,6 +41,13 @@ public class PollItems implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("pollitems")
     private Poll poll;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "poll_items_discorduser",
+        joinColumns = @JoinColumn(name = "poll_items_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "discorduser_id", referencedColumnName = "id"))
+    private Set<DiscordUser> discordusers = new HashSet<>();
 
     public PollItems() {
     }
@@ -109,6 +118,31 @@ public class PollItems implements Serializable {
 
     public void setPoll(Poll poll) {
         this.poll = poll;
+    }
+
+    public Set<DiscordUser> getDiscordusers() {
+        return discordusers;
+    }
+
+    public PollItems discordusers(Set<DiscordUser> discordUsers) {
+        this.discordusers = discordUsers;
+        return this;
+    }
+
+    public PollItems addDiscorduser(DiscordUser discordUser) {
+        this.discordusers.add(discordUser);
+        discordUser.getPollitems().add(this);
+        return this;
+    }
+
+    public PollItems removeDiscorduser(DiscordUser discordUser) {
+        this.discordusers.remove(discordUser);
+        discordUser.getPollitems().remove(this);
+        return this;
+    }
+
+    public void setDiscordusers(Set<DiscordUser> discordUsers) {
+        this.discordusers = discordUsers;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

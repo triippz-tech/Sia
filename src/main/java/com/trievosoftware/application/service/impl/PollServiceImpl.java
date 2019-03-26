@@ -468,16 +468,16 @@ public class PollServiceImpl implements PollService {
             Constants.POLL_EMOJI + " `" + poll.getTitle() + "` " + Constants.POLL_EMOJI,
             stringBuilder.toString(),
             false);
-        embedBuilder.setFooter("To vote from a different channel type: `/poll vote " + poll.getTitle()
-            + " <choice number>`", textChannel.getGuild().getIconUrl());
+        embedBuilder.setFooter("To vote from a different channel type: `/poll vote add " + poll.getTitle()
+            + " | <choice number>`", textChannel.getGuild().getIconUrl());
         builder.setEmbed(embedBuilder.build());
 
         Message message = textChannel.sendMessage(builder.build()).complete();
 
-        for ( int x = 0; x < i; x++ )
-        {
-            message.addReaction(Constants.NUMBERS[x]).submit();
-        }
+//        for ( int x = 0; x < i; x++ )
+//        {
+//            message.addReaction(Constants.NUMBERS[x]).submit();
+//        }
 
         poll.setMessageId(message.getIdLong());
         poll.setTextChannelId(textChannel.getIdLong());
@@ -513,12 +513,12 @@ public class PollServiceImpl implements PollService {
             Constants.POLL_EMOJI + " `" + poll.getTitle() + "` " + Constants.POLL_EMOJI,
             stringBuilder.toString(),
             false);
-        embedBuilder.setFooter("To vote from a different channel type: `/poll vote " + poll.getTitle()
-            + " <choice number>`", message.getGuild().getIconUrl());
+        embedBuilder.setFooter("To vote from a different channel type: `/poll vote add " + poll.getTitle()
+            + " | <choice number>`", message.getGuild().getIconUrl());
         message.editMessage(builder.setEmbed(embedBuilder.build()).build()).complete();
 
         for ( PollItems item : poll.getPollitems() )
-            message.addReaction(item.getReaction()).submit();
+//            message.addReaction(item.getReaction()).submit();
 
         save(poll);
         cache.put(message.getIdLong(), poll);

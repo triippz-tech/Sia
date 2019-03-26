@@ -76,10 +76,11 @@ public class PollItemsResource {
     /**
      * GET  /poll-items : get all the pollItems.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of pollItems in body
      */
     @GetMapping("/poll-items")
-    public List<PollItems> getAllPollItems() {
+    public List<PollItems> getAllPollItems(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all PollItems");
         return pollItemsService.findAll();
     }

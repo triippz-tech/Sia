@@ -19,6 +19,7 @@ package com.trievosoftware.discord.commands.meta;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.exceptions.NoPollsFoundException;
+import com.trievosoftware.application.exceptions.UserHasNoVoteException;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 
@@ -41,11 +42,12 @@ public abstract class AbstractGenericCommand extends Command{
             return;
         }
         try {
+            sia.getServiceManagers().getDiscordUserService().addCommand(event.getAuthor());
             doCommand(event);
-        } catch (NoPollsFoundException e) {
+        } catch (NoPollsFoundException | UserHasNoVoteException e) {
             event.replyError(e.getMessage());
         }
     }
 
-    public abstract void doCommand(CommandEvent event) throws NoPollsFoundException;
+    public abstract void doCommand(CommandEvent event) throws NoPollsFoundException, UserHasNoVoteException;
 }

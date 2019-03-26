@@ -1,7 +1,9 @@
 package com.trievosoftware.application.service;
 
+import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.domain.Poll;
 import com.trievosoftware.application.domain.PollItems;
+import com.trievosoftware.application.exceptions.UserHasNoVoteException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -58,4 +60,13 @@ public interface PollItemsService {
 
     @Transactional
     void addVote(String itemName, Poll poll);
+
+    @Transactional
+    void addVoteToUser(DiscordUser user, PollItems item);
+
+    @Transactional
+    void removeVoteFromUser(DiscordUser user, PollItems item);
+
+    @Transactional
+    boolean userVotedThis(DiscordUser user, PollItems item);
 }

@@ -40,6 +40,17 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         
+        <createTable tableName="poll_items_discorduser">
+            <column name="discorduser_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="poll_items_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="poll_items_id, discorduser_id" tableName="poll_items_discorduser"/>
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

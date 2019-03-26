@@ -8,10 +8,12 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { getEntities as getDiscordUsers } from 'app/entities/discord-user/discord-user.reducer';
 import { IPoll } from 'app/shared/model/poll.model';
 import { getEntities as getPolls } from 'app/entities/poll/poll.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './poll-items.reducer';
 import { IPollItems } from 'app/shared/model/poll-items.model';
+import { getEntities as getPollItems } from 'app/entities/poll-items/poll-items.reducer';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
@@ -20,6 +22,7 @@ export interface IPollItemsUpdateProps extends StateProps, DispatchProps, RouteC
 
 export interface IPollItemsUpdateState {
   isNew: boolean;
+  idsdiscorduser: any[];
   pollId: string;
 }
 
@@ -27,6 +30,7 @@ export class PollItemsUpdate extends React.Component<IPollItemsUpdateProps, IPol
   constructor(props) {
     super(props);
     this.state = {
+      idsdiscorduser: [],
       pollId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
@@ -45,6 +49,7 @@ export class PollItemsUpdate extends React.Component<IPollItemsUpdateProps, IPol
       this.props.getEntity(this.props.match.params.id);
     }
 
+    this.props.getDiscordUsers();
     this.props.getPolls();
   }
 
@@ -53,7 +58,8 @@ export class PollItemsUpdate extends React.Component<IPollItemsUpdateProps, IPol
       const { pollItemsEntity } = this.props;
       const entity = {
         ...pollItemsEntity,
-        ...values
+        ...values,
+        discordusers: mapIdList(values.discordusers)
       };
 
       if (this.state.isNew) {
@@ -69,7 +75,7 @@ export class PollItemsUpdate extends React.Component<IPollItemsUpdateProps, IPol
   };
 
   render() {
-    const { pollItemsEntity, polls, loading, updating } = this.props;
+    const { pollItemsEntity, discordUsers, polls, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -109,16 +115,32 @@ export class PollItemsUpdate extends React.Component<IPollItemsUpdateProps, IPol
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="reactionLabel" for="reaction">
-                    <Translate contentKey="siaApp.pollItems.reaction">Reaction</Translate>
-                  </Label>
-                  <AvField id="poll-items-reaction" type="text" name="reaction" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="votes" for="votes">
+                  <Label id="votesLabel" for="votes">
                     <Translate contentKey="siaApp.pollItems.votes">Votes</Translate>
                   </Label>
                   <AvField id="poll-items-votes" type="string" className="form-control" name="votes" />
+                </AvGroup>
+                <AvGroup>
+                  <Label for="discordUsers">
+                    <Translate contentKey="siaApp.pollItems.discorduser">Discorduser</Translate>
+                  </Label>
+                  <AvInput
+                    id="poll-items-discorduser"
+                    type="select"
+                    multiple
+                    className="form-control"
+                    name="discordusers"
+                    value={pollItemsEntity.discordusers && pollItemsEntity.discordusers.map(e => e.id)}
+                  >
+                    <option value="" key="0" />
+                    {discordUsers
+                      ? discordUsers.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.id}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
                 </AvGroup>
                 <AvGroup>
                   <Label for="poll.id">
@@ -158,6 +180,7 @@ export class PollItemsUpdate extends React.Component<IPollItemsUpdateProps, IPol
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  discordUsers: storeState.discordUser.entities,
   polls: storeState.poll.entities,
   pollItemsEntity: storeState.pollItems.entity,
   loading: storeState.pollItems.loading,
@@ -166,6 +189,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getDiscordUsers,
   getPolls,
   getEntity,
   updateEntity,

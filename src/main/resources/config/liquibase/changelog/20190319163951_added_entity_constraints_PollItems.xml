@@ -8,6 +8,17 @@
     -->
     <changeSet id="20190319163951-2" author="jhipster">
         
+        <addForeignKeyConstraint baseColumnNames="poll_items_id"
+                                 baseTableName="poll_items_discorduser"
+                                 constraintName="fk_poll_items_discorduser_poll_items_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="poll_items"/>
+        <addForeignKeyConstraint baseColumnNames="discorduser_id"
+                                 baseTableName="poll_items_discorduser"
+                                 constraintName="fk_poll_items_discorduser_discorduser_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="discord_user"/>
+
         <addForeignKeyConstraint baseColumnNames="poll_id"
                                  baseTableName="poll_items"
                                  constraintName="fk_poll_items_poll_id"

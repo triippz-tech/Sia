@@ -41,6 +41,19 @@ export class PollItemsDetail extends React.Component<IPollItemsDetailProps> {
             </dt>
             <dd>{pollItemsEntity.reaction}</dd>
             <dt>
+              <Translate contentKey="siaApp.pollItems.discorduser">Discorduser</Translate>
+            </dt>
+            <dd>
+              {pollItemsEntity.discordusers
+                ? pollItemsEntity.discordusers.map((val, i) => (
+                    <span key={val.id}>
+                      <a>{val.id}</a>
+                      {i === pollItemsEntity.discordusers.length - 1 ? '' : ', '}
+                    </span>
+                  ))
+                : null}
+            </dd>
+            <dt>
               <span id="votes">
                 <Translate contentKey="siaApp.pollItems.votes">Votes</Translate>
               </span>

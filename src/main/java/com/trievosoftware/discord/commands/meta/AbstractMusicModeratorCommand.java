@@ -22,6 +22,7 @@ import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 import net.dv8tion.jda.core.Permission;
 
+@SuppressWarnings("Duplicates")
 public abstract class AbstractMusicModeratorCommand extends Command {
 
     protected Sia sia;
@@ -43,6 +44,7 @@ public abstract class AbstractMusicModeratorCommand extends Command {
                 "the creators via discord: " + Constants.SERVER_INVITE);
             return;
         }
+        sia.getServiceManagers().getDiscordUserService().addCommand(event.getAuthor());
         doCommand(event);
     }
 
