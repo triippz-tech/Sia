@@ -15,7 +15,6 @@
  */
 package com.trievosoftware.discord.commands.owner;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.meta.AbstractOwnerCommand;
@@ -41,7 +40,7 @@ public class TransferCmd extends AbstractOwnerCommand
     }
     
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         try
         {

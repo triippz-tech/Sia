@@ -19,7 +19,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.trievosoftware.discord.Action;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.ModCommand;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild.Ban;
@@ -33,7 +33,7 @@ import java.util.List;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class CheckCmd extends ModCommand
+public class CheckCmd extends AbstractModeratorCommand
 {
     public CheckCmd(Sia sia)
     {
@@ -46,7 +46,7 @@ public class CheckCmd extends ModCommand
     }
     
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty() || event.getArgs().equalsIgnoreCase("help"))
         {
@@ -100,9 +100,9 @@ public class CheckCmd extends ModCommand
         int minutesMuted = sia.getServiceManagers().getTempMutesService().timeUntilUnmute(event.getGuild(), user.getIdLong());
         Role mRole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
         int minutesBanned = sia.getServiceManagers().getTempBansService().timeUntilUnban(event.getGuild(), user.getIdLong());
-        String str = "Moderation Information for "+FormatUtil.formatFullUser(user)+":\n"
+        String str = "Moderation Information for "+ FormatUtil.formatFullUser(user)+":\n"
                 + Action.STRIKE.getEmoji() + " Strikes: **"+strikes+"**\n"
-                + Action.MUTE.getEmoji() + " Muted: **" + (event.getGuild().isMember(user) 
+                + Action.MUTE.getEmoji() + " Muted: **" + (event.getGuild().isMember(user)
                         ? (event.getGuild().getMember(user).getRoles().contains(mRole) ? "Yes" : "No") 
                         : "Not In Server") + "**\n"
                 + Action.TEMPMUTE.getEmoji() + " Mute Time Remaining: " + (minutesMuted <= 0 ? "N/A" : FormatUtil.secondsToTime(minutesMuted * 60)) + "\n"

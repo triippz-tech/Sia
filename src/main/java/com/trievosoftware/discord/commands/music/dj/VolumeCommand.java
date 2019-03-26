@@ -17,9 +17,7 @@
 package com.trievosoftware.discord.commands.music.dj;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.trievosoftware.application.domain.GuildMusicSettings;
 import com.trievosoftware.application.exceptions.NoMusicSettingsException;
-import com.trievosoftware.application.exceptions.NoPlaylistFoundException;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.meta.AbstractDjCommand;
 import com.trievosoftware.discord.music.audio.AudioHandler;

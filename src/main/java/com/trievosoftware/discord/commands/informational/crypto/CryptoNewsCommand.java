@@ -16,10 +16,10 @@
 
 package com.trievosoftware.discord.commands.informational.crypto;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.examples.doc.Author;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPI;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.models.news.NewsStory;
@@ -36,11 +36,10 @@ import java.util.List;
 
 @Component
 @Author("Mark Tripoli (Triippz)")
-public class CryptoNewsCommand extends Command {
+public class CryptoNewsCommand extends AbstractGenericCommand {
 
     private final Logger log = LoggerFactory.getLogger(CryptoNewsCommand.class);
 
-    private Sia sia;
     private CryptoCompareAPI cryptoCompare;
     private static final String BASE_URL = "https://www.cryptocompare.com";
     private static final String HELP = "Crypto Currency news!\n" +
@@ -49,6 +48,7 @@ public class CryptoNewsCommand extends Command {
 
     public CryptoNewsCommand(Sia sia)
     {
+        super(sia);
         this.name = "cryptonews";
         this.aliases = new String[]{"cn", "cnews", "coinnews"};
         this.help = HELP;
@@ -56,13 +56,12 @@ public class CryptoNewsCommand extends Command {
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
-        this.sia = sia;
         this.cryptoCompare = new CryptoCompareAPI(sia.getApplicationProperties().getApi().getCryptoCompare());
     }
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event) {
+    public void doCommand(CommandEvent event) {
         event.reply("Standby, let me see what I can find . . .");
         try {
             if (event.getArgs().isEmpty() ) {

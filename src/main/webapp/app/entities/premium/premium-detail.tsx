@@ -29,11 +29,11 @@ export class PremiumDetail extends React.Component<IPremiumDetailProps> {
           </h2>
           <dl className="jh-entity-details">
             <dt>
-              <span id="guildId">
-                <Translate contentKey="siaApp.premium.guildId">Guild Id</Translate>
+              <span id="discordId">
+                <Translate contentKey="siaApp.premium.discordId">Guild/User Id</Translate>
               </span>
             </dt>
-            <dd>{premiumEntity.guildId}</dd>
+            <dd>{premiumEntity.discordId}</dd>
             <dt>
               <span id="until">
                 <Translate contentKey="siaApp.premium.until">Until</Translate>

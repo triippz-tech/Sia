@@ -15,23 +15,21 @@
  */
 package com.trievosoftware.discord.commands.automod;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class AutoraidmodeCmd extends Command
+public class AutoraidmodeCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public AutoraidmodeCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.guildOnly = true;
         this.name = "autoraidmode";
         this.aliases = new String[]{"autoraid","autoantiraid","autoantiraidmode"};
@@ -43,7 +41,7 @@ public class AutoraidmodeCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().equalsIgnoreCase("off"))
         {
@@ -64,7 +62,7 @@ public class AutoraidmodeCmd extends Command
                     + "\nSetting to `OFF` means the bot will never automatically enable raid mode"
                     + "\nSetting to `ON` will use the recommended value of 10 joins per 10 seconds to trigger Anti-Raid mode"
                     + "\nSetting a customizable threshhold is possible; ex: `10/20` for 10 joins in 20 seconds"
-                    + "\nFor more information, check out the wiki: <"+Constants.Wiki.RAID_MODE+">");
+                    + "\nFor more information, check out the wiki: <"+ Constants.Wiki.RAID_MODE+">");
             return;
         }
         else

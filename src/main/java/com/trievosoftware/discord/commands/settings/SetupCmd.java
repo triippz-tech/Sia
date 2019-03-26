@@ -21,6 +21,7 @@ import com.jagrosh.jdautilities.menu.ButtonMenu;
 import com.trievosoftware.application.domain.AutoMod;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.PermissionOverride;
 import net.dv8tion.jda.core.entities.Role;
@@ -34,27 +35,25 @@ import java.util.concurrent.TimeUnit;
  * @author John Grosh (jagrosh)
  */
 @SuppressWarnings("Duplicates")
-public class SetupCmd extends Command
+public class SetupCmd extends AbstractModeratorCommand
 {
     private final String CANCEL = "\u274C"; // ❌
     private final String CONFIRM = "\u2611"; // ☑
-    
-    private final Sia sia;
-    
+
     public SetupCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "setup";
         this.category = new Category("Settings");
         this.help = "server setup";
         this.guildOnly = true;
         this.userPermissions = new Permission[]{Permission.MANAGE_SERVER};
         this.botPermissions = new Permission[]{Permission.ADMINISTRATOR};
-        this.children = new Command[]{new MuteSetupCmd(), new AutomodSetupCmd()};
+        this.children = new Command[]{new MuteSetupCmd(sia), new AutomodSetupCmd(sia)};
     }
     
     @Override
-    protected void execute(CommandEvent event) 
+    public void doCommand(CommandEvent event)
     {
         StringBuilder sb = new StringBuilder("The following commands can be used to set up a **").append(event.getSelfUser().getName()).append("** feature:\n");
         for(Command cmd: children)
@@ -62,11 +61,12 @@ public class SetupCmd extends Command
         event.replySuccess(sb.toString());
     }
     
-    private class AutomodSetupCmd extends Command
+    private class AutomodSetupCmd extends AbstractModeratorCommand
     {
         @SuppressWarnings("Duplicates")
-        private AutomodSetupCmd()
+        private AutomodSetupCmd(Sia sia)
         {
+            super(sia);
             this.name = "automod";
             this.aliases = new String[]{"auto"};
             this.category = new Category("Settings");
@@ -79,7 +79,7 @@ public class SetupCmd extends Command
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             waitForConfirmation(event, "This will enable all automod defaults. Any existing settings will not be overwritten.", () -> 
             {
@@ -142,11 +142,12 @@ public class SetupCmd extends Command
         }
     }
     
-    private class MuteSetupCmd extends Command
+    private class MuteSetupCmd extends AbstractModeratorCommand
     {
         @SuppressWarnings("Duplicates")
-        private MuteSetupCmd()
+        private MuteSetupCmd(Sia sia)
         {
+            super(sia);
             this.name = "muterole";
             this.aliases = new String[]{"muted","mute","mutedrole"};
             this.category = new Category("Settings");
@@ -159,7 +160,7 @@ public class SetupCmd extends Command
         }
         
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             Role muted = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
             String confirmation;

@@ -39,7 +39,7 @@ export class Premium extends React.Component<IPremiumProps> {
                   <Translate contentKey="global.field.id">ID</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="siaApp.premium.guildId">Guild Id</Translate>
+                  <Translate contentKey="siaApp.premium.discordId">Guild/User Id</Translate>
                 </th>
                 <th>
                   <Translate contentKey="siaApp.premium.until">Until</Translate>
@@ -58,7 +58,7 @@ export class Premium extends React.Component<IPremiumProps> {
                       {premium.id}
                     </Button>
                   </td>
-                  <td>{premium.guildId}</td>
+                  <td>{premium.discordId}</td>
                   <td>
                     <TextFormat type="date" value={premium.until} format={APP_DATE_FORMAT} />
                   </td>

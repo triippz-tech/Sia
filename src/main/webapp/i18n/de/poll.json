@@ -1,0 +1,29 @@
+{
+  "siaApp": {
+    "poll": {
+      "home": {
+        "title": "Polls",
+        "createLabel": "Poll erstellen",
+        "createOrEditLabel": "Poll erstellen oder bearbeiten"
+      },
+      "created": "Poll erstellt mit ID {{ param }}",
+      "updated": "Poll aktualisiert mit ID {{ param }}",
+      "deleted": "Poll gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Poll {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Poll"
+      },
+      "guildId": "Guild Id",
+      "userId": "User Id",
+      "messageId": "Message ID",
+      "textChannelId": "Text Channel Id",
+      "title": "Title",
+      "finishTime": "Finish Time",
+      "expired": "Is Expired",
+      "pollitems": "Pollitems",
+      "discorduser": "Discord Users"
+    }
+  }
+}

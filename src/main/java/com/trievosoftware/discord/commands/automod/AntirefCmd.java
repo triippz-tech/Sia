@@ -15,24 +15,22 @@
  */
 package com.trievosoftware.discord.commands.automod;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.domain.AutoMod;
 import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class AntirefCmd extends Command
+public class AntirefCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public AntirefCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "antireferral";
         this.guildOnly = true;
         this.aliases = new String[]{"antiref","antirefferal","antirefferral","anti-ref","anti-referral"};
@@ -44,7 +42,7 @@ public class AntirefCmd extends Command
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
         {
@@ -68,7 +66,7 @@ public class AntirefCmd extends Command
         }
         if(numstrikes<0 || numstrikes> AutoMod.MAX_STRIKES)
         {
-            event.replyError("The number of strikes must be between 0 and "+AutoMod.MAX_STRIKES);
+            event.replyError("The number of strikes must be between 0 and "+ AutoMod.MAX_STRIKES);
             return;
         }
         sia.getServiceManagers().getAutoModService().setRefStrikes(event.getGuild(), numstrikes);

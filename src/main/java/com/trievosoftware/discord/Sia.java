@@ -57,6 +57,7 @@ import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import net.dv8tion.jda.core.utils.cache.CacheFlag;
 import net.dv8tion.jda.webhook.WebhookClient;
@@ -133,12 +134,13 @@ public class Sia
                         .addCommands(// General
                             //new AboutCommand(Color.CYAN, "and I'm here to keep your Discord server safe and make moderating easy!", 
                             //                            new String[]{"Moderation commands","Configurable automoderation","Very easy setup"},Constants.PERMISSIONS),
-                            new AboutCmd(),
-                            new InviteCmd(),
+                            // General
+                            new AboutCmd(this),
+                            new InviteCmd(this),
                             new PingCommand(),
-                            new RoleinfoCmd(),
-                            new ServerinfoCmd(),
-                            new UserinfoCmd(),
+                            new RoleinfoCmd(this),
+                            new ServerinfoCmd(this),
+                            new UserinfoCmd(this),
 
                             // Moderation
                             new KickCmd(this),
@@ -156,6 +158,7 @@ public class Sia
                             new CheckCmd(this),
                             new ReasonCmd(this),
                             new SetGameCommand(this),
+                            new PollCommand(this),
 
 
                             // Settings
@@ -186,9 +189,9 @@ public class Sia
                             new UnignoreCmd(this),
                             
                             // Tools
-                            new AnnounceCmd(),
-                            new AuditCmd(),
-                            new DehoistCmd(),
+                            new AnnounceCmd(this),
+                            new AuditCmd(this),
+                            new DehoistCmd(this),
                             new InvitepruneCmd(this),
                             new LookupCmd(this),
                             new EnableDebugCommand(this),
@@ -265,6 +268,9 @@ public class Sia
                 .build();
         
         modlog.start();
+
+        // Load all active polls into cache. THis should only be done on startup
+        serviceManagers.getPollService().loadPollCache();
         
         threadpool.scheduleWithFixedDelay(this::cleanPremium, 0, 2, TimeUnit.HOURS);
         threadpool.scheduleWithFixedDelay(this::leavePointlessGuilds, 5, 30, TimeUnit.MINUTES);
@@ -320,7 +326,24 @@ public class Sia
     {
         return strikehandler;
     }
-    
+
+    public void checkForUserSinceShutdown()
+    {
+        log.info("Searching for new users joined since last shutdown");
+        Integer newUsers = 0;
+        for( Guild guild : getShardManager().getGuilds() )
+        {
+            for ( Member member : guild.getMembers() )
+            {
+                if (! member.getUser().isBot()) {
+                    serviceManagers.getDiscordUserService().addNewUser(member.getUser().getIdLong());
+                    newUsers++;
+                }
+            }
+        }
+        log.info("Added {} new users", newUsers);
+    }
+
     public void cleanPremium()
     {
         serviceManagers.getPremiumService().cleanPremiumList().forEach((gid) ->

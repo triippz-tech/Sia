@@ -18,7 +18,7 @@ package com.trievosoftware.discord.commands.moderation;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandErrorException;
-import com.trievosoftware.discord.commands.ModCommand;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.ArgsUtil;
 import com.trievosoftware.discord.utils.FormatUtil;
 import com.trievosoftware.discord.utils.LogUtil;
@@ -35,7 +35,7 @@ import java.util.List;
  *
  * @author John Grosh (jagrosh)
  */
-public class MuteCmd extends ModCommand
+public class MuteCmd extends AbstractModeratorCommand
 {
     public MuteCmd(Sia sia)
     {
@@ -49,7 +49,7 @@ public class MuteCmd extends ModCommand
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         Role muteRole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
         if(muteRole == null)
@@ -118,7 +118,7 @@ public class MuteCmd extends ModCommand
             event.reactSuccess();
         
         Instant unmuteTime = Instant.now().plus(minutes, ChronoUnit.MINUTES);
-        String time = minutes==0 ? "" : " for "+FormatUtil.secondsToTimeCompact(minutes*60);
+        String time = minutes==0 ? "" : " for "+ FormatUtil.secondsToTimeCompact(minutes*60);
         for(int i=0; i<toMute.size(); i++)
         {
             Member m = toMute.get(i);

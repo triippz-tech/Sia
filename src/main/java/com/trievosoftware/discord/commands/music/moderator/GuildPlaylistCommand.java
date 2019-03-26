@@ -60,7 +60,7 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
     }
 
     @Override
-    public void execute(CommandEvent event) {
+    public void doCommand(CommandEvent event) {
         StringBuilder builder = new StringBuilder(event.getClient().getWarning() + " Guild Playlist Management Commands:\n");
         for (Command cmd : this.children)
             builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" ").append(cmd.getName())
@@ -79,7 +79,7 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
         }
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
             String pname = event.getArgs().replaceAll("\\s+", "_");
             try {
                 sia.getServiceManagers().getPlaylistService().getGuildPlaylist(event.getGuild());
@@ -110,7 +110,7 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
         }
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
             String pname = event.getArgs().replaceAll("\\s+", "_");
             try {
                 GuildMusicSettings settings = sia.getServiceManagers().getGuildMusicSettingsService().getSettings(event.getGuild());
@@ -140,7 +140,7 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
         }
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
             String[] songNames = event.getArgs().split("\\|+", 2);
             try {
                 for ( String songName : songNames )
@@ -181,7 +181,7 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             try {
                 String songName = event.getArgs().trim().replaceAll(" ", "_").toUpperCase();
@@ -222,7 +222,7 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
         }
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
             String[] parts = event.getArgs().split("\\|", 2);
             if (parts.length <= 1) {
                 event.replyError(" Please include URL and Names to add and ensure you separate the " +
@@ -272,7 +272,7 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
 
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
 //            String[] parts = event.getArgs().split("\\s+", 2);
             String[] parts = event.getArgs().split("\\|", 2); // Split the urls by the pipes
             if (parts.length < 1) {
@@ -326,7 +326,7 @@ public class GuildPlaylistCommand extends AbstractMusicModeratorCommand {
         }
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
             PremiumInfo pi = sia.getServiceManagers().getPremiumService().getPremiumInfo(event.getGuild());
             event.getChannel().sendMessage(new MessageBuilder().append("**")
                 .append(event.getSelfUser().getName()).append("** settings on **")

@@ -17,9 +17,11 @@
 package com.trievosoftware.discord.commands.meta;
 
 import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
-import net.dv8tion.jda.core.Permission;
 
+@SuppressWarnings("Duplicates")
 public abstract class AbstractOwnerCommand extends Command
 {
     protected Sia sia;
@@ -31,4 +33,19 @@ public abstract class AbstractOwnerCommand extends Command
         this.hidden = true;
         this.guildOnly = false;
     }
+
+    @Override
+    protected void execute (CommandEvent event)
+    {
+        if ( sia.getServiceManagers().getDiscordUserService().isUserBlacklisted(event.getAuthor().getIdLong()))
+        {
+            event.replyError("You are not authorized to use this bot. If you feel like this is a mistake please contact" +
+                "the creators via discord: " + Constants.SERVER_INVITE);
+            return;
+        }
+        sia.getServiceManagers().getDiscordUserService().addCommand(event.getAuthor());
+        doCommand(event);
+    }
+
+    public abstract void doCommand(CommandEvent event);
 }

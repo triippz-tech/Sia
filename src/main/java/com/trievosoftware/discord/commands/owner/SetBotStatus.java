@@ -33,7 +33,7 @@ public class SetBotStatus extends AbstractOwnerCommand
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         try {
             OnlineStatus status = OnlineStatus.fromKey(event.getArgs());

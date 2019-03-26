@@ -19,6 +19,9 @@
         "guildMusicSettings": "Gildenmusik-Einstellungen",
         "playlist": "Wiedergabeliste",
         "songs": "Lieder",
+        "poll": "Poll",
+        "pollItems": "Poll Items",
+        "discordUser": "Discord User",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

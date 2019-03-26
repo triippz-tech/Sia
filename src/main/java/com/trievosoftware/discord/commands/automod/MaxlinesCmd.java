@@ -15,23 +15,21 @@
  */
 package com.trievosoftware.discord.commands.automod;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class MaxlinesCmd extends Command
+public class MaxlinesCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public MaxlinesCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "maxlines";
         this.guildOnly = true;
         this.aliases = new String[]{"maxnewlines"};
@@ -43,7 +41,7 @@ public class MaxlinesCmd extends Command
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
         {

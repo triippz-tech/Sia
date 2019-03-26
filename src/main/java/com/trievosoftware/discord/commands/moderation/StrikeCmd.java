@@ -17,7 +17,7 @@ package com.trievosoftware.discord.commands.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.ModCommand;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.ArgsUtil;
 import com.trievosoftware.discord.utils.ArgsUtil.ResolvedArgs;
 import com.trievosoftware.discord.utils.FormatUtil;
@@ -33,7 +33,7 @@ import java.util.Set;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class StrikeCmd extends ModCommand
+public class StrikeCmd extends AbstractModeratorCommand
 {
     public StrikeCmd(Sia sia)
     {
@@ -46,7 +46,7 @@ public class StrikeCmd extends ModCommand
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         int numstrikes;
         String[] parts = event.getArgs().split("\\s+", 2);

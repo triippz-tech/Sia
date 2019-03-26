@@ -15,8 +15,9 @@
  */
 package com.trievosoftware.discord.commands.general;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -30,14 +31,15 @@ import java.time.format.DateTimeFormatter;
  *
  * @author John Grosh (jagrosh)
  */
-public class ServerinfoCmd extends Command
+public class ServerinfoCmd extends AbstractGenericCommand
 {
     private final static String LINESTART = "\u25AB"; // ▫
     private final static String GUILD_EMOJI = "\uD83D\uDDA5"; // 🖥
     private final static String NO_REGION = "\u2754"; // ❔
     
-    public ServerinfoCmd()
+    public ServerinfoCmd(Sia sia)
     {
+        super(sia);
         this.name = "serverinfo";
         this.aliases = new String[]{"server","guildinfo"};
         this.help = "shows server info";
@@ -46,7 +48,7 @@ public class ServerinfoCmd extends Command
     }
     
     @Override
-    protected void execute(CommandEvent event) 
+    public void doCommand(CommandEvent event)
     {
         Guild guild = event.getGuild();
         long onlineCount = guild.getMembers().stream().filter((u) -> (u.getOnlineStatus()!=OnlineStatus.OFFLINE)).count();
@@ -66,7 +68,7 @@ public class ServerinfoCmd extends Command
                 break;
         }
         String str = LINESTART+"ID: **"+guild.getId()+"**\n"
-                +LINESTART+"Owner: "+FormatUtil.formatUser(guild.getOwner().getUser())+"\n"
+                +LINESTART+"Owner: "+ FormatUtil.formatUser(guild.getOwner().getUser())+"\n"
                 +LINESTART+"Location: "+(guild.getRegion().getEmoji()==null ? NO_REGION : guild.getRegion().getEmoji())+" **"+guild.getRegion().getName()+"**\n"
                 +LINESTART+"Creation: **"+guild.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME)+"**\n"
                 +LINESTART+"Users: **"+guild.getMemberCache().size()+"** ("+onlineCount+" online, "+botCount+" bots)\n"

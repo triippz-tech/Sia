@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity PollItems.
+    -->
+    <changeSet id="20190319163951-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="poll_items_id"
+                                 baseTableName="poll_items_discorduser"
+                                 constraintName="fk_poll_items_discorduser_poll_items_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="poll_items"/>
+        <addForeignKeyConstraint baseColumnNames="discorduser_id"
+                                 baseTableName="poll_items_discorduser"
+                                 constraintName="fk_poll_items_discorduser_discorduser_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="discord_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="poll_id"
+                                 baseTableName="poll_items"
+                                 constraintName="fk_poll_items_poll_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="poll"/>
+
+    </changeSet>
+</databaseChangeLog>

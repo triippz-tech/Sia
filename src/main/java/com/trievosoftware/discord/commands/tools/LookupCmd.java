@@ -15,9 +15,9 @@
  */
 package com.trievosoftware.discord.commands.tools;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.ChannelType;
@@ -34,18 +34,16 @@ import java.time.format.DateTimeFormatter;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class LookupCmd extends Command
+public class LookupCmd extends AbstractGenericCommand
 {
     private final static String BOT_EMOJI = "<:sia:553207744673349650>";
     private final static String USER_EMOJI = "\uD83D\uDC64"; // 👤
     private final static String GUILD_EMOJI = "\uD83D\uDDA5"; // 🖥
     private final static String LINESTART = "\u25AB"; // ▫
-    
-    private final Sia sia;
-    
+
     public LookupCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "lookup";
         this.arguments = "<ID | invite>";
         this.help = "finds information about a user or server";
@@ -54,7 +52,7 @@ public class LookupCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
         {

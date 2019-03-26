@@ -47,6 +47,10 @@ public class Constants
     public final static String XLM_DONATION_ADDR = "GDHX7GSK6T2VPUHECJERKW7PUAZ3X3NHIPFLJSRXZ6IZYNMO3FHHTBAT";
     public final static String NEED_PRO      = WARNING + " Sorry, this feature requires Sia Pro. Sia Pro is not available yet.";
     public final static String SEARCHING = "\uD83D\uDD0E"; //🔎
+    public final static String PARTY_EMOJI = "\uD83C\uDF89"; //🎉
+    public final static String[] NUMBERS = new String[]{"1\u20E3","2\u20E3","3\u20E3",
+        "4\u20E3","5\u20E3","6\u20E3","7\u20E3","8\u20E3","9\u20E3", "\uD83D\uDD1F"};
+    public final static String POLL_EMOJI = "\uD83D\uDCCA"; //📊
     
     public final static class Wiki
     {

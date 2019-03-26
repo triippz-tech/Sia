@@ -19,7 +19,6 @@ package com.trievosoftware.discord.commands.music.moderator;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.domain.PremiumInfo;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.meta.AbstractMusicCommand;
 import com.trievosoftware.discord.commands.meta.AbstractMusicModeratorCommand;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -37,7 +36,7 @@ public class MusicSettingsCommand extends AbstractMusicModeratorCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         PremiumInfo pi = sia.getServiceManagers().getPremiumService().getPremiumInfo(event.getGuild());
         event.getChannel().sendMessage(new MessageBuilder().append("**")

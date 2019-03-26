@@ -1,0 +1,18 @@
+entity Poll {
+	discordId Long required,
+    userId Long required,
+    textChannelId Long,
+    title String required,
+    finishTime Instant required
+}
+
+entity PollItems {
+	itemName String required,
+    votes Integer
+}
+
+relationship OneToMany {
+    Poll{pollitems} to PollItems{poll}
+}
+
+service all with serviceImpl

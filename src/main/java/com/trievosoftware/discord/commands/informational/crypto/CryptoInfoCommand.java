@@ -17,11 +17,11 @@
 package com.trievosoftware.discord.commands.informational.crypto;
 
 import com.beust.jcommander.ParameterException;
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.examples.doc.Author;
 import com.trievosoftware.application.exceptions.NoCoinFoundException;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPI;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.models.coin.CoinEntry;
@@ -42,7 +42,7 @@ import java.util.Map;
 @Component
 @SuppressWarnings("Duplicates")
 @Author("Mark Tripoli (Triippz)")
-public class CryptoInfoCommand extends Command {
+public class CryptoInfoCommand extends AbstractGenericCommand {
 
     private final Logger log = LoggerFactory.getLogger(CryptoInfoCommand.class);
     private static final String BASE_URL = "https://www.cryptocompare.com";
@@ -51,10 +51,10 @@ public class CryptoInfoCommand extends Command {
     private final String SCROLL_EMOJII = "<:scroll:550499361134608384>";
     private String LINK_TEMPLATE = "https://%s.com";
     private CryptoCompareAPI cryptoCompare;
-    private Sia sia;
 
     public CryptoInfoCommand(Sia sia)
     {
+        super(sia);
         this.name = "cryptoinfo";
         this.aliases = new String[]{"coininfo", "ci", "cinfo"};
         this.help = "Searches for information for a particular coin";
@@ -62,12 +62,11 @@ public class CryptoInfoCommand extends Command {
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
-        this.sia = sia;
         this.cryptoCompare = new CryptoCompareAPI(sia.getApplicationProperties().getApi().getCryptoCompare());
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void doCommand(CommandEvent event) {
         String[] arguments = event.getArgs().toUpperCase().split(" ");
         try {
             if (event.getArgs().isEmpty()) {

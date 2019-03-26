@@ -15,10 +15,11 @@
  */
 package com.trievosoftware.discord.commands.general;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.JDAUtilitiesInfo;
 import com.trievosoftware.discord.Constants;
+import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -32,10 +33,11 @@ import java.awt.*;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class AboutCmd extends Command
+public class AboutCmd extends AbstractGenericCommand
 {
-    public AboutCmd()
+    public AboutCmd(Sia sia)
     {
+        super(sia);
         this.name = "about";
         this.help = "shows info about the bot";
         this.guildOnly = false;
@@ -43,7 +45,7 @@ public class AboutCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         ShardManager sm = event.getJDA().asBot().getShardManager();
         event.reply(new MessageBuilder()

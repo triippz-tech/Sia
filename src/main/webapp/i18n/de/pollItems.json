@@ -1,0 +1,25 @@
+{
+  "siaApp": {
+    "pollItems": {
+      "home": {
+        "title": "Poll Items",
+        "createLabel": "Poll Items erstellen",
+        "createOrEditLabel": "Poll Items erstellen oder bearbeiten"
+      },
+      "created": "Poll Items erstellt mit ID {{ param }}",
+      "updated": "Poll Items aktualisiert mit ID {{ param }}",
+      "deleted": "Poll Items gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Poll Items {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Poll Items"
+      },
+      "itemName": "Item Name",
+      "reaction": "Reaction",
+      "votes": "Votes",
+      "poll": "Poll",
+      "discorduser": "Discord Users"
+    }
+  }
+}

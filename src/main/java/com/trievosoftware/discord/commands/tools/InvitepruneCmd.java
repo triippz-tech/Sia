@@ -15,13 +15,13 @@
  */
 package com.trievosoftware.discord.commands.tools;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.menu.ButtonMenu;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandErrorException;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandWarningException;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Invite;
 
@@ -33,16 +33,14 @@ import java.util.stream.Collectors;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class InvitepruneCmd extends Command
+public class InvitepruneCmd extends AbstractGenericCommand
 {
     private final static String CANCEL = "\u274C"; // ❌
     private final static String CONFIRM = "\u2611"; // ☑
-    
-    private final Sia sia;
-    
+
     public InvitepruneCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "inviteprune";
         this.arguments = "[max uses]";
         this.help = "deletes invites with up to a certain number of uses";
@@ -54,7 +52,7 @@ public class InvitepruneCmd extends Command
     }
     
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         int uses;
         if(event.getArgs().isEmpty())

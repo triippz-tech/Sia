@@ -18,14 +18,14 @@ package com.trievosoftware.discord.commands.moderation;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.ModCommand;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class RaidCmd extends ModCommand
+public class RaidCmd extends AbstractModeratorCommand
 {
     public RaidCmd(Sia sia)
     {
@@ -38,7 +38,7 @@ public class RaidCmd extends ModCommand
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         boolean active = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).isInRaidMode();
         String[] parts = event.getArgs().split("\\s+", 2);
@@ -65,8 +65,8 @@ public class RaidCmd extends ModCommand
         else
         {
             event.replySuccess("Anti-Raid Mode is currently `"+(active ? "ACTIVE" : "NOT ACTIVE")+"`\n\n"
-                    + "`"+Constants.PREFIX+name+" ON` to enable Anti-Raid Mode\n"
-                    + "`"+Constants.PREFIX+name+" OFF` to disable Anti-Raid Mode");
+                    + "`"+ Constants.PREFIX+name+" ON` to enable Anti-Raid Mode\n"
+                    + "`"+ Constants.PREFIX+name+" OFF` to disable Anti-Raid Mode");
         }
     }
 }

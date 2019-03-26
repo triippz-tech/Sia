@@ -17,11 +17,11 @@
 package com.trievosoftware.discord.commands.informational.crypto;
 
 import com.beust.jcommander.ParameterException;
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.doc.standard.CommandInfo;
 import com.jagrosh.jdautilities.examples.doc.Author;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import com.trievosoftware.discord.utils.ArgsUtil;
 import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPI;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
@@ -50,11 +50,10 @@ import java.util.Map;
 //        "Multiple Coins, Multiple Prices: /crypto -p -coin XLM -coin BTC -cur USD -cur EUR"
 )
 @Author("Mark Tripoli (Triippz)")
-public class CryptoCoinCommand extends Command {
+public class CryptoCoinCommand extends AbstractGenericCommand {
 
     private final Logger log = LoggerFactory.getLogger(CryptoCoinCommand.class);
 
-    private Sia sia;
     private CryptoCompareAPI cryptoCompare;
     private static final String BASE_URL = "https://www.cryptocompare.com";
     private static final String HELP = "Look up crypto specific information (Must use ticker):\n" +
@@ -66,6 +65,7 @@ public class CryptoCoinCommand extends Command {
 
     public CryptoCoinCommand(Sia sia)
     {
+        super(sia);
         this.name = "crypto";
         this.aliases = new String[]{"coin"};
         this.help = HELP;
@@ -73,13 +73,12 @@ public class CryptoCoinCommand extends Command {
         this.guildOnly = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
-        this.sia = sia;
         this.cryptoCompare = new CryptoCompareAPI(sia.getApplicationProperties().getApi().getCryptoCompare());
     }
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event) {
+    public void doCommand(CommandEvent event) {
         if(event.getArgs().isEmpty()) {
             event.reply("Stand-by, let me look it up . . .");
             try {

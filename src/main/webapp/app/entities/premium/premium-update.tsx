@@ -92,14 +92,14 @@ export class PremiumUpdate extends React.Component<IPremiumUpdateProps, IPremium
                   </AvGroup>
                 ) : null}
                 <AvGroup>
-                  <Label id="guildIdLabel" for="guildId">
-                    <Translate contentKey="siaApp.premium.guildId">Guild Id</Translate>
+                  <Label id="guildIdLabel" for="discordId">
+                    <Translate contentKey="siaApp.premium.discordId">Guild/User Id</Translate>
                   </Label>
                   <AvField
-                    id="premium-guildId"
+                    id="premium-discordId"
                     type="string"
                     className="form-control"
-                    name="guildId"
+                    name="discordId"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') },
                       number: { value: true, errorMessage: translate('entity.validation.number') }

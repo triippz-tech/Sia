@@ -15,24 +15,22 @@
  */
 package com.trievosoftware.discord.commands.automod;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.domain.Punishment;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class AntiduplicateCmd extends Command
+public class AntiduplicateCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public AntiduplicateCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "antiduplicate";
         this.aliases = new String[]{"antidupe","anti-duplicate","anti-dupe"};
         this.guildOnly = true;
@@ -43,12 +41,12 @@ public class AntiduplicateCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty() || event.getArgs().equalsIgnoreCase("help"))
         {
             event.replySuccess("The Anti-Duplicate system prevents and punishes users for sending the same message repeatedly.\n"
-                    + "Usage: `"+Constants.PREFIX+name+" "+arguments+"`\n"
+                    + "Usage: `"+ Constants.PREFIX+name+" "+arguments+"`\n"
                     + "`<strike threshold>` - the number of duplicates at which strikes should start being assigned\n"
                     + "`[delete threshold]` - the number of duplicates at which a user's messages should start being deleted\n"
                     + "`[strikes]` - the number of strikes to assign on each duplicate after the strike threshold is met");

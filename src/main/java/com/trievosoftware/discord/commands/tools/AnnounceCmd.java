@@ -15,12 +15,13 @@
  */
 package com.trievosoftware.discord.commands.tools;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.trievosoftware.discord.Constants;
+import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandErrorException;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandWarningException;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Role;
@@ -32,13 +33,14 @@ import java.util.List;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class AnnounceCmd extends Command
+public class AnnounceCmd extends AbstractGenericCommand
 {
     private final static String FORMAT = "Please include a channel and role name, a | as a separator, and a message to send!\n"
-            + "Please see the full command reference for examples - <"+Constants.Wiki.COMMANDS+"#-tools-commands>";
+            + "Please see the full command reference for examples - <"+ Constants.Wiki.COMMANDS+"#-tools-commands>";
     
-    public AnnounceCmd()
+    public AnnounceCmd(Sia sia)
     {
+        super(sia);
         this.name = "announce";
         this.aliases = new String[]{"announcement", "announcer"};
         this.arguments = "<#channel> <rolename> | <message>";
@@ -52,7 +54,7 @@ public class AnnounceCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
             throw new CommandErrorException(FORMAT);

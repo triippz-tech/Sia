@@ -19,7 +19,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandErrorException;
 import com.trievosoftware.discord.commands.CommandExceptionListener.CommandWarningException;
-import com.trievosoftware.discord.commands.ModCommand;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.LogUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  *
  * @author John Grosh (jagrosh)
  */
-public class CleanCmd extends ModCommand
+public class CleanCmd extends AbstractModeratorCommand
 {
     private final static String VIEW = "\uD83D\uDCC4"; // 📄
     private final static String DOWNLOAD = "\uD83D\uDCE9"; // 📩
@@ -78,7 +78,7 @@ public class CleanCmd extends ModCommand
     }
     
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty() || event.getArgs().equalsIgnoreCase("help"))
             throw new CommandWarningException(noparams);

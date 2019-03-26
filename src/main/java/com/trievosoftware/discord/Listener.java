@@ -16,13 +16,17 @@
 package com.trievosoftware.discord;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.Poll;
+import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.exceptions.NoBanFoundExcetion;
+import com.trievosoftware.application.exceptions.NoPollsFoundException;
 import com.trievosoftware.application.exceptions.UserNotMutedException;
 import com.trievosoftware.discord.logging.MessageCache.CachedMessage;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA.ShardInfo;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -39,6 +43,8 @@ import net.dv8tion.jda.core.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageUpdateEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateDiscriminatorEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateNameEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
@@ -53,6 +59,7 @@ import java.util.stream.Collectors;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
+@SuppressWarnings("Duplicates")
 public class Listener implements EventListener
 {
     private final static Logger LOG = LoggerFactory.getLogger("Listener");
@@ -237,6 +244,12 @@ public class Listener implements EventListener
                 ).build()
             ).queue();
 
+            for (Member member : ((GuildJoinEvent) event).getGuild().getMembers() )
+            {
+                if (! member.getUser().isBot())
+                    sia.getServiceManagers().getDiscordUserService().addNewUser(member.getUser().getIdLong());
+            }
+
             if ( sia.isDebugMode() )
                 sia.getLogWebhook().send(new MessageBuilder()
                     .setContent("Bot has joined Server: "
@@ -244,6 +257,82 @@ public class Listener implements EventListener
                         + ((GuildJoinEvent) event).getGuild().getIdLong())
                     .setEmbed(new EmbedBuilder().setThumbnail(((GuildJoinEvent) event).getGuild().getIconUrl()).build())
                     .build());
+        }
+        else if (event instanceof MessageReactionAddEvent)
+        {
+            if (((MessageReactionAddEvent) event).getUser().isBot()) return;
+
+            Poll poll;
+            try {
+                poll = sia.getServiceManagers().getPollService()
+                    .findByGuildIdAndMessageId(((MessageReactionAddEvent) event).getGuild().getIdLong(), ((MessageReactionAddEvent) event).getMessageIdLong());
+            } catch (NoPollsFoundException e) {
+                // Ignore it, probably wasnt a vote
+                return;
+            }
+
+            PollItems itemFound = null;
+            for (PollItems item : poll.getPollitems() )
+            {
+                String reaction = ((MessageReactionAddEvent) event).getReaction().getReactionEmote().getName();
+                if ( item.getReaction().equals((reaction)) )
+                {
+                    itemFound = item;
+                    break;
+                }
+            }
+
+            if ( itemFound == null )
+            {
+                LOG.error("Adding vote to Poll={}", poll.getTitle());
+                ((MessageReactionAddEvent) event).getUser().openPrivateChannel().complete()
+                    .sendMessage("Sorry, I was unable to add your vote, please try again.").queue();
+                return;
+            }
+
+            sia.getServiceManagers().getPollItemsService().addVote(itemFound.getId());
+            sia.getServiceManagers().getPollService().updatePollMessage(
+                poll,
+                event.getJDA().getTextChannelById(poll.getTextChannelId()).getMessageById(poll.getMessageId()).completeAfter(1, TimeUnit.SECONDS),
+                sia);
+        }
+        else if (event instanceof MessageReactionRemoveEvent)
+        {
+            if (((MessageReactionRemoveEvent) event).getUser().isBot()) return;
+            Poll poll;
+            try {
+                poll = sia.getServiceManagers().getPollService()
+                    .findByGuildIdAndMessageId(((MessageReactionRemoveEvent) event).getGuild().getIdLong(),
+                        ((MessageReactionRemoveEvent) event).getMessageIdLong());
+            } catch (NoPollsFoundException e) {
+                // Ignore it, probably wasnt a vote
+                return;
+            }
+
+            PollItems itemFound = null;
+            for (PollItems item : poll.getPollitems() )
+            {
+                String reaction = ((MessageReactionRemoveEvent) event).getReaction().getReactionEmote().getName();
+                if ( item.getReaction().equals((reaction)) )
+                {
+                    itemFound = item;
+                    break;
+                }
+            }
+
+            if ( itemFound == null )
+            {
+                LOG.error("Adding vote to Poll={}", poll.getTitle());
+                ((MessageReactionRemoveEvent) event).getUser().openPrivateChannel().complete()
+                    .sendMessage("Sorry, I was unable to add your vote, please try again.").queue();
+                return;
+            }
+
+            sia.getServiceManagers().getPollItemsService().removeVote(itemFound.getId());
+            sia.getServiceManagers().getPollService().updatePollMessage(
+                poll,
+                event.getJDA().getTextChannelById(poll.getTextChannelId()).getMessageById(poll.getMessageId()).completeAfter(1, TimeUnit.SECONDS),
+                sia);
         }
         else if (event instanceof ReadyEvent)
         {
@@ -253,10 +342,19 @@ public class Listener implements EventListener
             LOG.info("Shard "+shardinfo+" is ready.");
             sia.getLogWebhook().send("\uD83D\uDD3A Shard `"+shardinfo+"` has connected. Guilds: `" // 🔺
                     +event.getJDA().getGuildCache().size()+"` Users: `"+event.getJDA().getUserCache().size()+"`");
+
+            // Search for new users since last join
+            sia.checkForUserSinceShutdown();
+
+            // Launch up the threads schedulers
             sia.getThreadpool().scheduleWithFixedDelay(() ->
                 sia.getServiceManagers().getTempBansService().checkUnbans(event.getJDA()), 0, 2, TimeUnit.MINUTES);
             sia.getThreadpool().scheduleWithFixedDelay(() ->
                 sia.getServiceManagers().getTempMutesService().checkUnmutes(event.getJDA(), sia.getServiceManagers().getGuildSettingsService()), 0, 45, TimeUnit.SECONDS);
+            sia.getThreadpool().scheduleWithFixedDelay(() ->
+                sia.getServiceManagers().getPollService().checkExpiredPolls(event.getJDA()), 0, 30, TimeUnit.SECONDS);
+            sia.getThreadpool().scheduleWithFixedDelay(() ->
+                sia.getServiceManagers().getPollService().cleanExpiredPolls(sia.getLogWebhook()), 0, 30, TimeUnit.DAYS);
         }
     }
 }

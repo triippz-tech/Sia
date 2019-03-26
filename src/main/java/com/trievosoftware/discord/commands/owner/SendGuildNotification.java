@@ -38,7 +38,7 @@ public class SendGuildNotification extends AbstractOwnerCommand
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" Owner Notification Commands:\n");
         for(Command cmd: this.children)
@@ -58,7 +58,7 @@ public class SendGuildNotification extends AbstractOwnerCommand
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
 
         }
@@ -74,7 +74,7 @@ public class SendGuildNotification extends AbstractOwnerCommand
         }
 
         @Override
-        protected void execute(CommandEvent event)
+        public void doCommand(CommandEvent event)
         {
             event.reply("This command is in development");
             List<Guild> guildList = sia.getShardManager().getGuilds();

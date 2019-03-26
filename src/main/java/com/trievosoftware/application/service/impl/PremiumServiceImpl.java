@@ -7,6 +7,7 @@ import com.trievosoftware.application.service.PremiumService;
 import com.trievosoftware.application.domain.Premium;
 import com.trievosoftware.application.repository.PremiumRepository;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,7 @@ import java.util.Optional;
 /**
  * Service Implementation for managing Premium.
  */
+@SuppressWarnings("Duplicates")
 @Service
 @Transactional
 public class PremiumServiceImpl implements PremiumService {
@@ -84,15 +86,14 @@ public class PremiumServiceImpl implements PremiumService {
     }
 
     /**
-     * Get one premium by id.
-     *
-     * @param guildId the id of the guild
-     * @return the entity
+     * Get one premium by id
+     * @param discordId the id of the GUild or User
+     * @return
      */
     @Override
-    public Optional<Premium> findByGuildId(Long guildId) {
-        log.debug("Request to get Premium for Guild: {}", guildId);
-        return premiumRepository.findByGuildId(guildId);
+    public Optional<Premium> findByDiscordId(Long discordId) {
+        log.debug("Request to get Premium for : {}", discordId);
+        return premiumRepository.findByDiscordId(discordId);
     }
 
     /**
@@ -116,7 +117,22 @@ public class PremiumServiceImpl implements PremiumService {
     @Override
     public PremiumInfo getPremiumInfo(Guild guild) {
         log.debug("Request to get PremiumInfo for Guild : {}", guild.getName());
-        Optional<Premium> premiumOptional = findByGuildId(guild.getIdLong());
+        Optional<Premium> premiumOptional = findByDiscordId(guild.getIdLong());
+        return premiumOptional.map(premium ->
+            new PremiumInfo(premium.getLevel(),
+                premium.getUntil())).orElseGet(PremiumInfo::new);
+    }
+
+    /**
+     * Get the premium info of a User. If they dont have anything registered, give them a blank one.
+     *
+     * @param user the User of the entity
+     * @return PremiumInfo
+     */
+    @Override
+    public PremiumInfo getPremiumInfo(User user) {
+        log.debug("Request to get PremiumInfo for User : {}", user.getName());
+        Optional<Premium> premiumOptional = findByDiscordId(user.getIdLong());
         return premiumOptional.map(premium ->
             new PremiumInfo(premium.getLevel(),
                 premium.getUntil())).orElseGet(PremiumInfo::new);
@@ -131,19 +147,43 @@ public class PremiumServiceImpl implements PremiumService {
     @Override
     public void addPremiumForever(Guild guild, Level level) {
         log.debug("Request to add Premium Forever for Guild : {} with Level={}", guild.getName(), level.name);
-        Optional<Premium> premiumOptional = findByGuildId(guild.getIdLong());
+        Optional<Premium> premiumOptional = findByDiscordId(guild.getIdLong());
         if ( premiumOptional.isPresent() ) {
             premiumOptional.get().setUntil(Instant.MAX);
             premiumOptional.get().setLevel(level.ordinal());
             save(premiumOptional.get());
         } else {
             Premium premium = new Premium();
-            premium.setGuildId(guild.getIdLong());
+            premium.setDiscordId(guild.getIdLong());
             premium.setLevel(level.ordinal());
             premium.setUntil(Instant.MAX);
             save(premium);
         }
         log.info("Premium Forever added for Guild: {}", guild.getName());
+    }
+
+    /**
+     * Adds premium forever for a User
+     *
+     * @param user the User
+     * @param level the Level of premium
+     */
+    @Override
+    public void addPremiumForever(User user, Level level) {
+        log.debug("Request to add Premium Forever for User : {} with Level={}", user.getName(), level.name);
+        Optional<Premium> premiumOptional = findByDiscordId(user.getIdLong());
+        if ( premiumOptional.isPresent() ) {
+            premiumOptional.get().setUntil(Instant.MAX);
+            premiumOptional.get().setLevel(level.ordinal());
+            save(premiumOptional.get());
+        } else {
+            Premium premium = new Premium();
+            premium.setDiscordId(user.getIdLong());
+            premium.setLevel(level.ordinal());
+            premium.setUntil(Instant.MAX);
+            save(premium);
+        }
+        log.info("Premium Forever added for Guild: {}", user.getName());
     }
 
     /**
@@ -157,7 +197,7 @@ public class PremiumServiceImpl implements PremiumService {
     @Override
     public void addPremium(Guild guild, Level level, int time, TemporalUnit unit) {
         log.debug("Request to add Premium with Level={} for Guild={}", level.name, guild.getName());
-        Optional<Premium> premiumOptional = findByGuildId(guild.getIdLong());
+        Optional<Premium> premiumOptional = findByDiscordId(guild.getIdLong());
         if ( premiumOptional.isPresent() ) {
             premiumOptional.get().setLevel(level.ordinal());
             Instant current = premiumOptional.get().getUntil();
@@ -169,12 +209,43 @@ public class PremiumServiceImpl implements PremiumService {
             save(premiumOptional.get());
         } else {
             Premium premium = new Premium();
-            premium.setGuildId(guild.getIdLong());
+            premium.setDiscordId(guild.getIdLong());
             premium.setLevel(level.ordinal());
             premium.setUntil(Instant.now().plus(time, unit));
             save(premium);
         }
         log.info("Premium with Level={} added to Guild={}", level.name, guild.getName());
+    }
+
+    /**
+     * Add a premium level for a User
+     *
+     * @param user the User to add Premium to
+     * @param level the Level of premium to add
+     * @param time the time to add premium for
+     * @param unit The unit of time
+     */
+    @Override
+    public void addPremium(User user, Level level, int time, TemporalUnit unit) {
+        log.debug("Request to add Premium with Level={} for User={}", level.name, user.getName());
+        Optional<Premium> premiumOptional = findByDiscordId(user.getIdLong());
+        if ( premiumOptional.isPresent() ) {
+            premiumOptional.get().setLevel(level.ordinal());
+            Instant current = premiumOptional.get().getUntil();
+            if(current.getEpochSecond() != Instant.MAX.getEpochSecond())
+            {
+                Instant now = Instant.now();
+                premiumOptional.get().setUntil(now.isBefore(current) ? current.plus(time, unit) : now.plus(time, unit));
+            }
+            save(premiumOptional.get());
+        } else {
+            Premium premium = new Premium();
+            premium.setDiscordId(user.getIdLong());
+            premium.setLevel(level.ordinal());
+            premium.setUntil(Instant.now().plus(time, unit));
+            save(premium);
+        }
+        log.info("Premium with Level={} added to User={}", level.name, user.getName());
     }
 
     /**
@@ -184,13 +255,33 @@ public class PremiumServiceImpl implements PremiumService {
      */
     @Override
     public void cancelPremium(Guild guild) throws NoPremiumFoundException {
-        Optional<Premium> premiumOptional = findByGuildId(guild.getIdLong());
+        log.debug("Request to cancel Premium for Guild={}", guild.getName());
+        Optional<Premium> premiumOptional = findByDiscordId(guild.getIdLong());
         if ( premiumOptional.isPresent() ) {
             delete(premiumOptional.get().getId());
             log.info("Premium removed from Guild={}", guild.getName());
         } else {
             throw new NoPremiumFoundException(String.format("Cannot remove premium from Guild=%s:%d. No existing premium found"
                 , guild.getName(), guild.getIdLong()));
+        }
+    }
+
+    /**
+     * Cancels the premium membership of a user
+     *
+     * @param user the User to cancel
+     * @throws NoPremiumFoundException No premium membership was found for user
+     */
+    @Override
+    public void cancelPremium(User user) throws NoPremiumFoundException {
+        log.debug("Request to cancel Premium for User={}", user.getName());
+        Optional<Premium> premiumOptional = findByDiscordId(user.getIdLong());
+        if ( premiumOptional.isPresent() ) {
+            delete(premiumOptional.get().getId());
+            log.info("Premium removed from User={}", user.getName());
+        } else {
+            throw new NoPremiumFoundException(String.format("Cannot remove premium from User=%s:%d. No existing premium found"
+                , user.getName(), user.getIdLong()));
         }
     }
 
@@ -208,7 +299,7 @@ public class PremiumServiceImpl implements PremiumService {
 
         if (!premiumList.isEmpty()) {
             for ( Premium premium:  premiumList ) {
-                list.add(premium.getGuildId());
+                list.add(premium.getDiscordId());
                 delete(premium.getId());
             }
         }

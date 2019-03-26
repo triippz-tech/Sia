@@ -5,10 +5,10 @@
  */
 package com.trievosoftware.discord.commands.automod;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
@@ -21,13 +21,11 @@ import java.util.List;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class IgnoreCmd extends Command
+public class IgnoreCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public IgnoreCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.guildOnly = true;
         this.name = "ignore";
         this.aliases = new String[]{"addignore","ignored","ignores"};
@@ -39,7 +37,7 @@ public class IgnoreCmd extends Command
 
     @Override
     @SuppressWarnings("Duplicates")
-    protected void execute(CommandEvent event) {
+    public void doCommand(CommandEvent event) {
         if(event.getArgs().isEmpty())
         {
             EmbedBuilder ebuilder = new EmbedBuilder();

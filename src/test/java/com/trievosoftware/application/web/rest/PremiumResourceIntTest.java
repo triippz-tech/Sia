@@ -43,8 +43,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = SiaApp.class)
 public class PremiumResourceIntTest {
 
-    private static final Long DEFAULT_GUILD_ID = 1L;
-    private static final Long UPDATED_GUILD_ID = 2L;
+    private static final Long DEFAULT_DISCORD_ID = 1L;
+    private static final Long UPDATED_DISCORD_ID = 2L;
 
     private static final Instant DEFAULT_UNTIL = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_UNTIL = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -97,7 +97,7 @@ public class PremiumResourceIntTest {
      */
     public static Premium createEntity(EntityManager em) {
         Premium premium = new Premium()
-            .guildId(DEFAULT_GUILD_ID)
+            .discordId(DEFAULT_DISCORD_ID)
             .until(DEFAULT_UNTIL)
             .level(DEFAULT_LEVEL);
         return premium;
@@ -123,7 +123,7 @@ public class PremiumResourceIntTest {
         List<Premium> premiumList = premiumRepository.findAll();
         assertThat(premiumList).hasSize(databaseSizeBeforeCreate + 1);
         Premium testPremium = premiumList.get(premiumList.size() - 1);
-        assertThat(testPremium.getGuildId()).isEqualTo(DEFAULT_GUILD_ID);
+        assertThat(testPremium.getDiscordId()).isEqualTo(DEFAULT_DISCORD_ID);
         assertThat(testPremium.getUntil()).isEqualTo(DEFAULT_UNTIL);
         assertThat(testPremium.getLevel()).isEqualTo(DEFAULT_LEVEL);
     }
@@ -149,10 +149,10 @@ public class PremiumResourceIntTest {
 
     @Test
     @Transactional
-    public void checkGuildIdIsRequired() throws Exception {
+    public void checkDiscordIdIsRequired() throws Exception {
         int databaseSizeBeforeTest = premiumRepository.findAll().size();
         // set the field null
-        premium.setGuildId(null);
+        premium.setDiscordId(null);
 
         // Create the Premium, which fails.
 
@@ -212,11 +212,11 @@ public class PremiumResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(premium.getId().intValue())))
-            .andExpect(jsonPath("$.[*].guildId").value(hasItem(DEFAULT_GUILD_ID.intValue())))
+            .andExpect(jsonPath("$.[*].discordId").value(hasItem(DEFAULT_DISCORD_ID.intValue())))
             .andExpect(jsonPath("$.[*].until").value(hasItem(DEFAULT_UNTIL.toString())))
             .andExpect(jsonPath("$.[*].level").value(hasItem(DEFAULT_LEVEL)));
     }
-    
+
     @Test
     @Transactional
     public void getPremium() throws Exception {
@@ -228,7 +228,7 @@ public class PremiumResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(premium.getId().intValue()))
-            .andExpect(jsonPath("$.guildId").value(DEFAULT_GUILD_ID.intValue()))
+            .andExpect(jsonPath("$.discordId").value(DEFAULT_DISCORD_ID.intValue()))
             .andExpect(jsonPath("$.until").value(DEFAULT_UNTIL.toString()))
             .andExpect(jsonPath("$.level").value(DEFAULT_LEVEL));
     }
@@ -254,7 +254,7 @@ public class PremiumResourceIntTest {
         // Disconnect from session so that the updates on updatedPremium are not directly saved in db
         em.detach(updatedPremium);
         updatedPremium
-            .guildId(UPDATED_GUILD_ID)
+            .discordId(UPDATED_DISCORD_ID)
             .until(UPDATED_UNTIL)
             .level(UPDATED_LEVEL);
 
@@ -267,7 +267,7 @@ public class PremiumResourceIntTest {
         List<Premium> premiumList = premiumRepository.findAll();
         assertThat(premiumList).hasSize(databaseSizeBeforeUpdate);
         Premium testPremium = premiumList.get(premiumList.size() - 1);
-        assertThat(testPremium.getGuildId()).isEqualTo(UPDATED_GUILD_ID);
+        assertThat(testPremium.getDiscordId()).isEqualTo(UPDATED_DISCORD_ID);
         assertThat(testPremium.getUntil()).isEqualTo(UPDATED_UNTIL);
         assertThat(testPremium.getLevel()).isEqualTo(UPDATED_LEVEL);
     }

@@ -35,6 +35,9 @@ public class ServiceManagers {
     private GuildMusicSettingsService guildMusicSettingsService;
     private PlaylistService playlistService;
     private SongService songService;
+    private PollService pollService;
+    private PollItemsService pollItemsService;
+    private DiscordUserService discordUserService;
 
     private GuildSettingsServiceImpl guildSettingsServiceImpl;
 
@@ -44,7 +47,7 @@ public class ServiceManagers {
                            TempBansService tempBansService, TempMutesService tempMutesService,
                            GuildSettingsServiceImpl guildSettingsServiceImpl, NasaService nasaService,
                            OpenWeatherService openWeatherService, GuildMusicSettingsService guildMusicSettingsService,
-                           PlaylistService playlistService, SongService songService) {
+                           PlaylistService playlistService, SongService songService, PollService pollService, PollItemsService pollItemsService, DiscordUserService discordUserService) {
         this.actionsService = actionsService;
         this.auditCacheService = auditCacheService;
         this.autoModService = autoModService;
@@ -60,6 +63,9 @@ public class ServiceManagers {
         this.guildMusicSettingsService = guildMusicSettingsService;
         this.playlistService = playlistService;
         this.songService = songService;
+        this.pollService = pollService;
+        this.pollItemsService = pollItemsService;
+        this.discordUserService = discordUserService;
     }
 
     public ActionsService getActionsService() {
@@ -119,4 +125,10 @@ public class ServiceManagers {
     public SongService getSongService() {
         return songService;
     }
+
+    public PollService getPollService() { return pollService; }
+
+    public PollItemsService getPollItemsService() { return pollItemsService; }
+
+    public DiscordUserService getDiscordUserService() { return discordUserService; }
 }

@@ -15,10 +15,10 @@
  */
 package com.trievosoftware.discord.commands.settings;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Role;
@@ -29,13 +29,11 @@ import java.util.List;
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class ModroleCmd extends Command
+public class ModroleCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public ModroleCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.name = "modrole";
         this.help = "sets the moderator role";
         this.aliases = new String[]{"moderatorrole"};
@@ -46,7 +44,7 @@ public class ModroleCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         if(event.getArgs().isEmpty())
         {

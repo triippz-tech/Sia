@@ -15,24 +15,22 @@
  */
 package com.trievosoftware.discord.commands.automod;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class BlacklistCmd extends Command
+public class BlacklistCmd extends AbstractModeratorCommand
 {
-    private final Sia sia;
-    
     public BlacklistCmd(Sia sia)
     {
-        this.sia = sia;
+        super(sia);
         this.guildOnly = true;
-        this.name = "blacklist";
+        this.name = "blacklistword";
         this.category = new Category("AutoMod");
         this.arguments = "[word]";
         this.help = "shows/edits the word blacklist";
@@ -40,7 +38,7 @@ public class BlacklistCmd extends Command
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         
     }

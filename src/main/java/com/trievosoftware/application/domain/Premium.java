@@ -27,8 +27,8 @@ public class Premium implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "guild_id", nullable = false, unique = true)
-    private Long guildId;
+    @Column(name = "discord_id", nullable = false, unique = true)
+    private Long discordId;
 
     @NotNull
     @Column(name = "jhi_until", nullable = false)
@@ -47,17 +47,17 @@ public class Premium implements Serializable {
         this.id = id;
     }
 
-    public Long getGuildId() {
-        return guildId;
+    public Long getDiscordId() {
+        return discordId;
     }
 
-    public Premium guildId(Long guildId) {
-        this.guildId = guildId;
+    public Premium discordId(Long discordId) {
+        this.discordId = discordId;
         return this;
     }
 
-    public void setGuildId(Long guildId) {
-        this.guildId = guildId;
+    public void setDiscordId(Long discordId) {
+        this.discordId = discordId;
     }
 
     public Instant getUntil() {
@@ -111,7 +111,7 @@ public class Premium implements Serializable {
     public String toString() {
         return "Premium{" +
             "id=" + getId() +
-            ", guildId=" + getGuildId() +
+            ", discordId=" + getDiscordId() +
             ", until='" + getUntil() + "'" +
             ", level=" + getLevel() +
             "}";

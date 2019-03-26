@@ -17,14 +17,14 @@ package com.trievosoftware.discord.commands.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.discord.Sia;
-import com.trievosoftware.discord.commands.ModCommand;
+import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import net.dv8tion.jda.core.Permission;
 
 /**
  *
  * @author Mark Tripoli (mark.tripoli@trievosoftware.com)
  */
-public class ReasonCmd extends ModCommand
+public class ReasonCmd extends AbstractModeratorCommand
 {
     public ReasonCmd(Sia sia)
     {
@@ -36,7 +36,7 @@ public class ReasonCmd extends ModCommand
     }
 
     @Override
-    protected void execute(CommandEvent event)
+    public void doCommand(CommandEvent event)
     {
         
         int caseNum;
