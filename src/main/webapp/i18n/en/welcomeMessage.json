@@ -1,0 +1,28 @@
+{
+  "siaApp": {
+    "welcomeMessage": {
+      "home": {
+        "title": "Welcome Messages",
+        "createLabel": "Create a new Welcome Message",
+        "createOrEditLabel": "Create or edit a Welcome Message"
+      },
+      "created": "A new Welcome Message is created with identifier {{ param }}",
+      "updated": "A Welcome Message is updated with identifier {{ param }}",
+      "deleted": "A Welcome Message is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Welcome Message {{ id }}?"
+      },
+      "detail": {
+        "title": "Welcome Message"
+      },
+      "name": "Name",
+      "messageTitle": "Message Title",
+      "body": "Body",
+      "footer": "Footer",
+      "websiteUrl": "Website Url",
+      "logoUrl": "Logo Url",
+      "active": "Active",
+      "guildsettings": "Guildsettings"
+    }
+  }
+}

@@ -159,6 +159,7 @@ public class Sia
                             new ReasonCmd(this),
                             new SetGameCommand(this),
                             new PollCommand(this),
+                            new WelcomeMessageCommand(this),
 
 
                             // Settings
@@ -203,6 +204,7 @@ public class Sia
                             new TransferCmd(this),
                             new SendGuildNotification(this),
                             new SetBotStatus(this),
+                            new BlacklistCommand(this),
 
                             // Informational
                             new CryptoCoinCommand(this),

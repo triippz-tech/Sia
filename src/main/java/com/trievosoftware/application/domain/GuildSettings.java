@@ -12,9 +12,7 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.ZoneId;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A GuildSettings.
@@ -76,6 +74,10 @@ public class GuildSettings implements Serializable {
     @NotNull
     @Column(name = "mute_role", nullable = false)
     private Long muteRole;
+
+    @OneToMany(mappedBy = "guildsettings")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<WelcomeMessage> welcomemessages = new HashSet<>();
 
     public GuildSettings () {}
 
@@ -243,6 +245,31 @@ public class GuildSettings implements Serializable {
 
     public void setMuteRole(Long muteRole) {
         this.muteRole = muteRole;
+    }
+
+    public Set<WelcomeMessage> getWelcomemessages() {
+        return welcomemessages;
+    }
+
+    public GuildSettings welcomemessages(Set<WelcomeMessage> welcomeMessages) {
+        this.welcomemessages = welcomeMessages;
+        return this;
+    }
+
+    public GuildSettings addWelcomemessage(WelcomeMessage welcomeMessage) {
+        this.welcomemessages.add(welcomeMessage);
+        welcomeMessage.setGuildsettings(this);
+        return this;
+    }
+
+    public GuildSettings removeWelcomemessage(WelcomeMessage welcomeMessage) {
+        this.welcomemessages.remove(welcomeMessage);
+        welcomeMessage.setGuildsettings(null);
+        return this;
+    }
+
+    public void setWelcomemessages(Set<WelcomeMessage> welcomeMessages) {
+        this.welcomemessages = welcomeMessages;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

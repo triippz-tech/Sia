@@ -22,6 +22,7 @@
         "poll": "Poll",
         "pollItems": "Poll Items",
         "discordUser": "Discord User",
+        "welcomeMessage": "Welcome Message",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

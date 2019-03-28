@@ -19,6 +19,7 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.trievosoftware.application.domain.Poll;
 import com.trievosoftware.application.domain.PollItems;
+import com.trievosoftware.application.domain.WelcomeMessage;
 import com.trievosoftware.application.exceptions.StringNotIntegerException;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
@@ -28,6 +29,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 
 import java.awt.*;
 import java.util.Collections;
@@ -523,5 +525,25 @@ public class FormatUtil {
             "The Poll `" + poll.getTitle() + "` has concluded. Unfortunately no TextChannel was set to" +
             " display the results and it looks like there was an error sending this message to your \"default channel\". " +
             "When ready, please feel free to display the results of this poll in any TextChannel in your server!";
+    }
+
+    public static Message formatWelcomeMessage(WelcomeMessage message, Guild guild, User user)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setDescription(message.getBody());
+        builder.setFooter(message.getFooter(), null);
+        builder.setThumbnail( message.getLogoUrl().isEmpty() ? guild.getIconUrl() : message.getLogoUrl() );
+
+        if ( !message.getWebsiteUrl().equals("") )
+            builder.addField("", message.getWebsiteUrl(), false);
+
+        return new MessageBuilder()
+            .setContent(message.getMessageTitle() + " **" + user.getAsMention()+ "**")
+            .setEmbed(builder.build())
+            .build();
+    }
+    public static Message formatWelcomeMessage(WelcomeMessage message, GuildMemberJoinEvent event)
+    {
+        return formatWelcomeMessage(message, event.getGuild(), event.getUser());
     }
 }

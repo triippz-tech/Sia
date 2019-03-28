@@ -41,7 +41,7 @@ public class SoftbanCmd extends ModCommand
         this.name = "softban";
         this.arguments = "<@users> [reason]";
         this.help = "bans and unbans users";
-        this.botPermissions = new Permission[]{Permission.BAN_MEMBERS};
+//        this.botPermissions = new Permission[]{Permission.BAN_MEMBERS};
         this.guildOnly = true;
     }
 

@@ -20,6 +20,7 @@ import com.trievosoftware.application.domain.Poll;
 import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.exceptions.NoBanFoundExcetion;
 import com.trievosoftware.application.exceptions.NoPollsFoundException;
+import com.trievosoftware.application.exceptions.NoWelcomeMessageFound;
 import com.trievosoftware.application.exceptions.UserNotMutedException;
 import com.trievosoftware.discord.logging.MessageCache.CachedMessage;
 import com.trievosoftware.discord.utils.FormatUtil;
@@ -130,6 +131,15 @@ public class Listener implements EventListener
             
             // Perform automod on the newly-joined member
             sia.getAutoMod().memberJoin(gevent);
+
+            // Display welcome message
+            try {
+                Message message = sia.getServiceManagers().getWelcomeMessageService().displayActiveWelcomeMessage(
+                    (GuildMemberJoinEvent) event,
+                    sia.getServiceManagers().getGuildSettingsService().getSettings(((GuildMemberJoinEvent) event).getGuild()));
+
+                ((GuildMemberJoinEvent) event).getGuild().getDefaultChannel().sendMessage(message).complete();
+            } catch (NoWelcomeMessageFound | NullPointerException ignored) { }
         }
         else if (event instanceof GuildMemberLeaveEvent)
         {
@@ -262,39 +272,39 @@ public class Listener implements EventListener
         {
             if (((MessageReactionAddEvent) event).getUser().isBot()) return;
 
-            Poll poll;
-            try {
-                poll = sia.getServiceManagers().getPollService()
-                    .findByGuildIdAndMessageId(((MessageReactionAddEvent) event).getGuild().getIdLong(), ((MessageReactionAddEvent) event).getMessageIdLong());
-            } catch (NoPollsFoundException e) {
-                // Ignore it, probably wasnt a vote
-                return;
-            }
-
-            PollItems itemFound = null;
-            for (PollItems item : poll.getPollitems() )
-            {
-                String reaction = ((MessageReactionAddEvent) event).getReaction().getReactionEmote().getName();
-                if ( item.getReaction().equals((reaction)) )
-                {
-                    itemFound = item;
-                    break;
-                }
-            }
-
-            if ( itemFound == null )
-            {
-                LOG.error("Adding vote to Poll={}", poll.getTitle());
-                ((MessageReactionAddEvent) event).getUser().openPrivateChannel().complete()
-                    .sendMessage("Sorry, I was unable to add your vote, please try again.").queue();
-                return;
-            }
-
-            sia.getServiceManagers().getPollItemsService().addVote(itemFound.getId());
-            sia.getServiceManagers().getPollService().updatePollMessage(
-                poll,
-                event.getJDA().getTextChannelById(poll.getTextChannelId()).getMessageById(poll.getMessageId()).completeAfter(1, TimeUnit.SECONDS),
-                sia);
+//            Poll poll;
+//            try {
+//                poll = sia.getServiceManagers().getPollService()
+//                    .findByGuildIdAndMessageId(((MessageReactionAddEvent) event).getGuild().getIdLong(), ((MessageReactionAddEvent) event).getMessageIdLong());
+//            } catch (NoPollsFoundException e) {
+//                // Ignore it, probably wasnt a vote
+//                return;
+//            }
+//
+//            PollItems itemFound = null;
+//            for (PollItems item : poll.getPollitems() )
+//            {
+//                String reaction = ((MessageReactionAddEvent) event).getReaction().getReactionEmote().getName();
+//                if ( item.getReaction().equals((reaction)) )
+//                {
+//                    itemFound = item;
+//                    break;
+//                }
+//            }
+//
+//            if ( itemFound == null )
+//            {
+//                LOG.error("Adding vote to Poll={}", poll.getTitle());
+//                ((MessageReactionAddEvent) event).getUser().openPrivateChannel().complete()
+//                    .sendMessage("Sorry, I was unable to add your vote, please try again.").queue();
+//                return;
+//            }
+//
+//            sia.getServiceManagers().getPollItemsService().addVote(itemFound.getId());
+//            sia.getServiceManagers().getPollService().updatePollMessage(
+//                poll,
+//                event.getJDA().getTextChannelById(poll.getTextChannelId()).getMessageById(poll.getMessageId()).completeAfter(1, TimeUnit.SECONDS),
+//                sia);
         }
         else if (event instanceof MessageReactionRemoveEvent)
         {

@@ -19,6 +19,7 @@ import Songs from './songs';
 import Poll from './poll';
 import PollItems from './poll-items';
 import DiscordUser from './discord-user';
+import WelcomeMessage from './welcome-message';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -40,6 +41,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/poll`} component={Poll} />
       <ErrorBoundaryRoute path={`${match.url}/poll-items`} component={PollItems} />
       <ErrorBoundaryRoute path={`${match.url}/discord-user`} component={DiscordUser} />
+      <ErrorBoundaryRoute path={`${match.url}/welcome-message`} component={WelcomeMessage} />
       {/* jhipster-needle-add-route-path - JHipster will routes here */}
     </Switch>
   </div>
