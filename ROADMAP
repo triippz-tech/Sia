@@ -1,3 +1,6 @@
+Custom Commands (PRO)
+Support Messages
+Automatic Role Assignment
 Owner Settings - Database Driven
 Enhance Debug Tracing For Production
 Owner To Guilds Notifications
@@ -9,6 +12,9 @@ Specialized Annoucements (Streams, Annoucements, etc.) (PRO?)
 Send messages from outside of Discord (via API, website, etc. using multiple websockets)
 User Profiles (w/ badge, XP, ranking, etc.)
 Ecosystem
+
+Speech to Text - MAYBE
+Speech Commands - MAYBE
 
 
 LATER
