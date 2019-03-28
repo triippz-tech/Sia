@@ -25,7 +25,8 @@
       "prefix": "Prefix",
       "timezone": "Timezone",
       "raidMode": "Raid Mode",
-      "muteRole": "Mute Role"
+      "muteRole": "Mute Role",
+      "welcomeMessage": "Welcome Message"
     }
   }
 }

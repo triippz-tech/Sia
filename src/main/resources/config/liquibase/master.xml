@@ -20,9 +20,11 @@
     <include file="config/liquibase/changelog/20190319163950_added_entity_Poll.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190319163951_added_entity_PollItems.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190322192008_added_entity_DiscordUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190326213244_added_entity_WelcomeMessage.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20190311195325_added_entity_constraints_GuildMusicSettings.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190311195327_added_entity_constraints_Songs.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190319163951_added_entity_constraints_PollItems.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190326213244_added_entity_constraints_WelcomeMessage.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

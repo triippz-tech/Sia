@@ -66,7 +66,8 @@ public class SearchCommand extends AbstractMusicCommand {
             return;
         }
         event.reply(searchingEmoji+" Searching... `["+event.getArgs()+"]`",
-            m -> sia.getPlayerManager().loadItemOrdered(event.getGuild(), searchPrefix + event.getArgs(), new ResultHandler(m,event)));
+            m -> sia.getPlayerManager().loadItemOrdered(event.getGuild(), searchPrefix + event.getArgs(),
+                new ResultHandler(m,event)));
     }
 
     private class ResultHandler implements AudioLoadResultHandler

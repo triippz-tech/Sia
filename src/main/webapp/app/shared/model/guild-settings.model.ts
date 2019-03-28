@@ -1,3 +1,5 @@
+import { IWelcomeMessage } from 'app/shared/model/welcome-message.model';
+
 export interface IGuildSettings {
   id?: number;
   guildId?: number;
@@ -11,6 +13,7 @@ export interface IGuildSettings {
   timezone?: string;
   raidMode?: number;
   muteRole?: number;
+  welcomemessages?: IWelcomeMessage[];
 }
 
 export const defaultValue: Readonly<IGuildSettings> = {};

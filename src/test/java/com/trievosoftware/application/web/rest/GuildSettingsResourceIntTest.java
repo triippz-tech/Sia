@@ -65,8 +65,8 @@
 //    private static final String DEFAULT_PREFIX = "AAAAAAAAAA";
 //    private static final String UPDATED_PREFIX = "BBBBBBBBBB";
 //
-//    private static final String DEFAULT_TIMEZONE = "America/New_York";
-//    private static final String UPDATED_TIMEZONE = "GMT+4";
+//    private static final String DEFAULT_TIMEZONE = "AAAAAAAAAA";
+//    private static final String UPDATED_TIMEZONE = "BBBBBBBBBB";
 //
 //    private static final Integer DEFAULT_RAID_MODE = 1;
 //    private static final Integer UPDATED_RAID_MODE = 2;
@@ -147,13 +147,13 @@
 //        restGuildSettingsMockMvc.perform(post("/api/guild-settings")
 //            .contentType(TestUtil.APPLICATION_JSON_UTF8)
 //            .content(TestUtil.convertObjectToJsonBytes(guildSettings)))
-//            .andExpect(status().isBadRequest());
+//            .andExpect(status().isCreated());
 //
 //        // Validate the GuildSettings in the database
 //        List<GuildSettings> guildSettingsList = guildSettingsRepository.findAll();
 //        assertThat(guildSettingsList).hasSize(databaseSizeBeforeCreate + 1);
 //        GuildSettings testGuildSettings = guildSettingsList.get(guildSettingsList.size() - 1);
-//        assertThat(testGuildSettings.getDiscordId()).isEqualTo(DEFAULT_GUILD_ID);
+//        assertThat(testGuildSettings.getGuildId()).isEqualTo(DEFAULT_GUILD_ID);
 //        assertThat(testGuildSettings.getModRoleId()).isEqualTo(DEFAULT_MOD_ROLE_ID);
 //        assertThat(testGuildSettings.getModLogId()).isEqualTo(DEFAULT_MOD_LOG_ID);
 //        assertThat(testGuildSettings.getServerLogId()).isEqualTo(DEFAULT_SERVER_LOG_ID);
@@ -187,10 +187,10 @@
 //
 //    @Test
 //    @Transactional
-//    public void checkDiscordIdIsRequired() throws Exception {
+//    public void checkGuildIdIsRequired() throws Exception {
 //        int databaseSizeBeforeTest = guildSettingsRepository.findAll().size();
 //        // set the field null
-//        guildSettings.setDiscordId(null);
+//        guildSettings.setGuildId(null);
 //
 //        // Create the GuildSettings, which fails.
 //
@@ -431,13 +431,13 @@
 //        restGuildSettingsMockMvc.perform(put("/api/guild-settings")
 //            .contentType(TestUtil.APPLICATION_JSON_UTF8)
 //            .content(TestUtil.convertObjectToJsonBytes(updatedGuildSettings)))
-//            .andExpect(status().isBadRequest());
+//            .andExpect(status().isOk());
 //
 //        // Validate the GuildSettings in the database
 //        List<GuildSettings> guildSettingsList = guildSettingsRepository.findAll();
 //        assertThat(guildSettingsList).hasSize(databaseSizeBeforeUpdate);
 //        GuildSettings testGuildSettings = guildSettingsList.get(guildSettingsList.size() - 1);
-//        assertThat(testGuildSettings.getDiscordId()).isEqualTo(UPDATED_GUILD_ID);
+//        assertThat(testGuildSettings.getGuildId()).isEqualTo(UPDATED_GUILD_ID);
 //        assertThat(testGuildSettings.getModRoleId()).isEqualTo(UPDATED_MOD_ROLE_ID);
 //        assertThat(testGuildSettings.getModLogId()).isEqualTo(UPDATED_MOD_LOG_ID);
 //        assertThat(testGuildSettings.getServerLogId()).isEqualTo(UPDATED_SERVER_LOG_ID);
