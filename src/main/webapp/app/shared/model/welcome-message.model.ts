@@ -4,7 +4,7 @@ export interface IWelcomeMessage {
   id?: number;
   name?: string;
   messageTitle?: string;
-  body?: string;
+  body?: any;
   footer?: string;
   websiteUrl?: string;
   logoUrl?: string;

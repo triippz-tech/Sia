@@ -12,6 +12,7 @@ export const ACTION_TYPES = {
   CREATE_WELCOMEMESSAGE: 'welcomeMessage/CREATE_WELCOMEMESSAGE',
   UPDATE_WELCOMEMESSAGE: 'welcomeMessage/UPDATE_WELCOMEMESSAGE',
   DELETE_WELCOMEMESSAGE: 'welcomeMessage/DELETE_WELCOMEMESSAGE',
+  SET_BLOB: 'welcomeMessage/SET_BLOB',
   RESET: 'welcomeMessage/RESET'
 };
 
@@ -88,6 +89,16 @@ export default (state: WelcomeMessageState = initialState, action): WelcomeMessa
         updateSuccess: true,
         entity: {}
       };
+    case ACTION_TYPES.SET_BLOB:
+      const { name, data, contentType } = action.payload;
+      return {
+        ...state,
+        entity: {
+          ...state.entity,
+          [name]: data,
+          [name + 'ContentType']: contentType
+        }
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -144,6 +155,15 @@ export const deleteEntity: ICrudDeleteAction<IWelcomeMessage> = id => async disp
   dispatch(getEntities());
   return result;
 };
+
+export const setBlob = (name, data, contentType?) => ({
+  type: ACTION_TYPES.SET_BLOB,
+  payload: {
+    name,
+    data,
+    contentType
+  }
+});
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET

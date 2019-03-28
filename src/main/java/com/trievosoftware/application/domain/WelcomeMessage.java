@@ -39,6 +39,7 @@ public class WelcomeMessage implements Serializable {
     @Column(name = "message_title", nullable = false)
     private String messageTitle;
 
+    @Lob
     @NotNull
     @Column(name = "jhi_body", nullable = false)
     private String body;

@@ -155,7 +155,7 @@
 //        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
 //        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeCreate + 1);
 //        GuildMusicSettings testGuildMusicSettings = guildMusicSettingsList.get(guildMusicSettingsList.size() - 1);
-//        assertThat(testGuildMusicSettings.getDiscordId()).isEqualTo(DEFAULT_GUILD_ID);
+//        assertThat(testGuildMusicSettings.getGuildId()).isEqualTo(DEFAULT_GUILD_ID);
 //        assertThat(testGuildMusicSettings.getTextChannelId()).isEqualTo(DEFAULT_TEXT_CHANNEL_ID);
 //        assertThat(testGuildMusicSettings.getVoiceChannelId()).isEqualTo(DEFAULT_VOICE_CHANNEL_ID);
 //        assertThat(testGuildMusicSettings.getDjRoleId()).isEqualTo(DEFAULT_DJ_ROLE_ID);
@@ -192,7 +192,7 @@
 //    public void checkDiscordIdIsRequired() throws Exception {
 //        int databaseSizeBeforeTest = guildMusicSettingsRepository.findAll().size();
 //        // set the field null
-//        guildMusicSettings.setDiscordId(DEFAULT_GUILD_ID);
+//        guildMusicSettings.setGuildId(DEFAULT_GUILD_ID);
 //
 //        // Create the GuildMusicSettings, which fails.
 //
@@ -476,7 +476,7 @@
 //        List<GuildMusicSettings> guildMusicSettingsList = guildMusicSettingsRepository.findAll();
 //        assertThat(guildMusicSettingsList).hasSize(databaseSizeBeforeUpdate);
 //        GuildMusicSettings testGuildMusicSettings = guildMusicSettingsList.get(guildMusicSettingsList.size() - 1);
-//        assertThat(testGuildMusicSettings.getDiscordId()).isEqualTo(UPDATED_GUILD_ID);
+//        assertThat(testGuildMusicSettings.getGuildId()).isEqualTo(UPDATED_GUILD_ID);
 //        assertThat(testGuildMusicSettings.getTextChannelId()).isEqualTo(UPDATED_TEXT_CHANNEL_ID);
 //        assertThat(testGuildMusicSettings.getVoiceChannelId()).isEqualTo(UPDATED_VOICE_CHANNEL_ID);
 //        assertThat(testGuildMusicSettings.getDjRoleId()).isEqualTo(UPDATED_DJ_ROLE_ID);

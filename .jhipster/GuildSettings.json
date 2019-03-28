@@ -1,7 +1,14 @@
 {
     "fluentMethods": true,
     "clientRootFolder": "",
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "welcomeMessage",
+            "otherEntityRelationshipName": "guildsettings",
+            "relationshipName": "welcomemessage"
+        }
+    ],
     "fields": [
         {
             "fieldName": "guildId",

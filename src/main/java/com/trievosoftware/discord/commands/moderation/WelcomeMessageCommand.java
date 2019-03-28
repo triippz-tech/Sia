@@ -23,6 +23,8 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
 {
     private final String CANCEL = "\u274C"; // ❌
     private final String CONFIRM = "\u2611"; // ☑
+    private final String CREATE_HELP =
+        "<name> | <message title> | <message body> | <message footer> | [website url] | [logo url] | <active (YES/NO)>";
 
     public WelcomeMessageCommand(Sia sia) {
         super(sia, Permission.ADMINISTRATOR);
@@ -57,7 +59,7 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
         CreateWelcomeMessage(Sia sia, Permission... altPerms) {
             super(sia, altPerms);
             this.name = "create";
-            this.arguments = "<name> | <message title> | <message body> | <message footer> | [website url] | [logo url] | <active (YES/NO)>";
+            this.arguments = CREATE_HELP;
             this.aliases = new String[]{"new"};
             this.help = "Creates a new welcome message for new users";
         }
@@ -76,10 +78,14 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
                 return;
             }
 
+            String[] args = event.getArgs().split("\\|");
+            if (args.length != 7)
+            {
+                event.replyError("A Welcome Message must contain: " + CREATE_HELP);
+                return;
+            }
 
             WelcomeMessage welcomeMessage;
-
-            String[] args = event.getArgs().split("\\|");
             String name         =   args[0].trim().replaceAll(" ", "_").toUpperCase();
             String title        =   args[1].trim();
             String body         =   args[2].trim();
@@ -96,7 +102,7 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
             waitForConfirmation(event, "Please confirm that the message looks ok", () -> {
                 sia.getServiceManagers().getWelcomeMessageService().createWelcomeMessage(welcomeMessage);
                 event.getMessage().delete().complete();
-                event.replySuccess("New Welcome Message created" + (welcomeMessage.isActive() ? "" : " and is set as active"));
+                event.replySuccess("New Welcome Message created" + (welcomeMessage.isActive() ? " and is set as active" : ""));
             });
         }
     }
@@ -169,7 +175,7 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
             super(sia, altPerms);
             this.name = "change";
             this.aliases = new String[]{"modify"};
-            this.arguments = "<message name>";
+            this.arguments = CREATE_HELP;
             this.help = "Changes a Guild's Welcome Message";
         }
 
@@ -186,9 +192,14 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
                 return;
             }
 
-            WelcomeMessage welcomeMessage;
-
             String[] args = event.getArgs().split("\\|");
+            if ( args.length != 7 )
+            {
+                event.replyError("A Welcome Message must contain: " + CREATE_HELP);
+                return;
+            }
+
+            WelcomeMessage welcomeMessage;
             String name         =   args[0].trim().replaceAll(" ", "_").toUpperCase();
             String title        =   args[1].trim();
             String body         =   args[2].trim();
@@ -196,6 +207,7 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
             String url          =   args[4].trim();
             String logo         =   args[5].trim();
             String activeStr    =   args[6].trim().toUpperCase();
+
 
             GuildSettings guildSettings = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild());
             welcomeMessage = sia.getServiceManagers().getWelcomeMessageService()
@@ -205,7 +217,7 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
             waitForConfirmation(event, "Please confirm that the modified message looks ok", () -> {
                 sia.getServiceManagers().getWelcomeMessageService().createWelcomeMessage(welcomeMessage);
                 event.getMessage().delete().complete();
-                event.replySuccess("Modified Welcome Message " + (welcomeMessage.isActive() ? "" : " and is set as active"));
+                event.replySuccess("Modified Welcome Message " + (welcomeMessage.isActive() ? " and is set as active" : ""));
             });
         }
     }

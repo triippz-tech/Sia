@@ -4,13 +4,13 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate, ICrudGetAction, ICrudGetAllAction, setFileData, byteSize, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { IGuildSettings } from 'app/shared/model/guild-settings.model';
 import { getEntities as getGuildSettings } from 'app/entities/guild-settings/guild-settings.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './welcome-message.reducer';
+import { getEntity, updateEntity, createEntity, setBlob, reset } from './welcome-message.reducer';
 import { IWelcomeMessage } from 'app/shared/model/welcome-message.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
@@ -48,6 +48,14 @@ export class WelcomeMessageUpdate extends React.Component<IWelcomeMessageUpdateP
     this.props.getGuildSettings();
   }
 
+  onBlobChange = (isAnImage, name) => event => {
+    setFileData(event, (contentType, data) => this.props.setBlob(name, data, contentType), isAnImage);
+  };
+
+  clearBlob = name => () => {
+    this.props.setBlob(name, undefined, undefined);
+  };
+
   saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
       const { welcomeMessageEntity } = this.props;
@@ -71,6 +79,8 @@ export class WelcomeMessageUpdate extends React.Component<IWelcomeMessageUpdateP
   render() {
     const { welcomeMessageEntity, guildSettings, loading, updating } = this.props;
     const { isNew } = this.state;
+
+    const { body } = welcomeMessageEntity;
 
     return (
       <div>
@@ -125,9 +135,9 @@ export class WelcomeMessageUpdate extends React.Component<IWelcomeMessageUpdateP
                   <Label id="bodyLabel" for="body">
                     <Translate contentKey="siaApp.welcomeMessage.body">Body</Translate>
                   </Label>
-                  <AvField
+                  <AvInput
                     id="welcome-message-body"
-                    type="text"
+                    type="textarea"
                     name="body"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') }
@@ -214,6 +224,7 @@ const mapDispatchToProps = {
   getGuildSettings,
   getEntity,
   updateEntity,
+  setBlob,
   createEntity,
   reset
 };

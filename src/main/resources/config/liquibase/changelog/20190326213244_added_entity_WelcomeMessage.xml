@@ -29,7 +29,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="jhi_body" type="varchar(255)">
+            <column name="jhi_body" type="clob">
                 <constraints nullable="false" />
             </column>
 

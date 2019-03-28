@@ -10,6 +10,8 @@ import com.trievosoftware.application.repository.WelcomeMessageRepository;
 import com.trievosoftware.application.service.WelcomeMessageService;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.utils.FormatUtil;
+import com.trievosoftware.discord.utils.Pair;
+import com.trievosoftware.discord.utils.Validate;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -119,7 +121,7 @@ public class WelcomeMessageServiceImpl implements WelcomeMessageService {
 
     @Override
     public Boolean hasActiveMessage(GuildSettings guildSettings) {
-        log.debug("Request to see if Guild={} has Active WelcomeMessage");
+        log.debug("Request to see if Guild={} has Active WelcomeMessage", guildSettings.getGuildId());
         Optional<WelcomeMessage> welcomeMessage = findByGuildsettingsAndActive(guildSettings);
         return welcomeMessage.isPresent();
     }
@@ -197,20 +199,27 @@ public class WelcomeMessageServiceImpl implements WelcomeMessageService {
         WelcomeMessage.WelcomeMessageBuilder builder = new WelcomeMessage.WelcomeMessageBuilder();
         if ( welcomeMessageExists(sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()), name) )
             throw new IncorrectWelcomeMessageParamsException("A Welcome Message with that name already exists");
-        if ( body.length() > 255 )
+        if ( body.length() > 2000 )
             throw new IncorrectWelcomeMessageParamsException("The body of a Welcome Message must not be longer than " +
-                "255 character. Current Length `" + body.length() + "`");
-        if ( !url.equals("") && ( !url.contains("https") || !url.contains("http") ) )
-            throw new IncorrectWelcomeMessageParamsException("A website must contain the full path url. " +
-                "Good: https://trievosoftware.com | Bad: www.trievosoftware.com");
-        if ( !url.equals("") )
-            if ( url.length() > 255 )
-                throw new IncorrectWelcomeMessageParamsException("Your website url is long. "+
+                "2000 characters. Current Length `" + body.length() + "`");
+        if ( !url.equals("")  ) {
+            if (url.length() > 255)
+                throw new IncorrectWelcomeMessageParamsException("Your website url is long. " +
                     "Please shorten the URL using a service like https://bitly.com/");
-        if ( !logo.equals(""))
-            if ( logo.length() > 255 )
-                throw new IncorrectWelcomeMessageParamsException("Your logo url is long. "+
+            Pair<Boolean, String> result = Validate.validateUrl(url);
+            if (!result.getKey())
+                throw new IncorrectWelcomeMessageParamsException(result.getValue());
+        }
+
+        if ( !logo.equals("")) {
+            if (logo.length() > 255)
+                throw new IncorrectWelcomeMessageParamsException("Your logo url is long. " +
                     "Please shorten the URL using a service like https://bitly.com/");
+            // validate the url
+            Pair<Boolean, String> result = Validate.validateUrl(logo);
+            if ( !result.getKey() )
+                throw new IncorrectWelcomeMessageParamsException(result.getValue());
+        }
 
 
         Boolean active = parseBoolean(activeStr);
@@ -239,9 +248,9 @@ public class WelcomeMessageServiceImpl implements WelcomeMessageService {
         Optional<WelcomeMessage> welcomeMessage = findByGuildsettingsAndActive(guildSettings);
         if ( !welcomeMessage.isPresent() ) throw new NoActiveWelcomeMessage("Error getting greeting `" + name + "`");
 
-        if ( body.length() > 255 )
+        if ( body.length() > 2000 )
             throw new IncorrectWelcomeMessageParamsException("The body of a Welcome Message must not be longer than " +
-                "255 character. Current Length `" + body.length() + "`");
+                "2000 characters. Current Length `" + body.length() + "`");
         if ( !url.equals("") && ( !url.contains("https") || !url.contains("http") ) )
             throw new IncorrectWelcomeMessageParamsException("A website must contain the full path url. " +
                 "Good: https://trievosoftware.com | Bad: www.trievosoftware.com");
