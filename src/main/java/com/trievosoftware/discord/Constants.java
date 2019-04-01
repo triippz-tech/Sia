@@ -74,4 +74,97 @@ public class Constants
             Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_MANAGE, Permission.MESSAGE_EXT_EMOJI,
             Permission.MANAGE_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK, Permission.NICKNAME_CHANGE};
     }
+
+
+    public final static String MARKDOWN =
+        "```fix\n" +
+            "#---------------> DISCORD TEXT FORMATTING <---------------#\n" +
+            "        This is a guide to easy formatting in discord\n" +
+            "You can use this formatting guide for saving text with the Sia Bot\n" +
+            "```\n" +
+            "__***Images and Links:***__\n" +
+            "```\n" +
+            "    Links = [My Link](www.mylink.com)\n" +
+            "    Images = \n" +
+            "```\n" +
+            "__***outside a code block:***__\n" +
+            " \n" +
+            "```\n" +
+            "italics = *italics*\n" +
+            "bold  = **bold**\n" +
+            "bold italics = ***bold italics***\n" +
+            "strikeout = ~~strikeout~~\n" +
+            "underline = __underline__\n" +
+            "underline italics = __*underline italics*__\n" +
+            "underline bold = __**underline bold**__\n" +
+            "underline bold italics = __***underline bold italics***__\n" +
+            "code block =  ``text here`` (3 backticks --> alt + 7 for me)\n" +
+            "```\n" +
+            " \n" +
+            "___***code block formating:***___\n" +
+            " \n" +
+            "```java\n" +
+            " To enable code highlighting:\n" +
+            "    (three backticks `) java/c/c++/python/etc\n" +
+            "        your code\n" +
+            "    (three backticks `)\n" +
+            "```\n" +
+            "\n" +
+            " ```c\n" +
+            "#include <stdio.h>\n" +
+            "int addNumbers(int n);\n" +
+            "\n" +
+            "int main()\n" +
+            "{\n" +
+            "    int num;\n" +
+            "    printf(\"Enter a positive integer: \");\n" +
+            "    scanf(\"%d\", &num);\n" +
+            "    printf(\"Sum = %d\",addNumbers(num));\n" +
+            "    return 0;\n" +
+            "}\n" +
+            "\n" +
+            "int addNumbers(int n)\n" +
+            "{\n" +
+            "    if(n != 0)\n" +
+            "        return n + addNumbers(n-1);\n" +
+            "    else\n" +
+            "        return n;\n" +
+            "}\n" +
+            " ```\n" +
+            " \n" +
+            "```md\n" +
+            " \n" +
+            "(3 backticks)markdown\n" +
+            "or just:\n" +
+            "(3 backticks)md\n" +
+            " \n" +
+            "#lines starting with # are blue(?),\n" +
+            "[murky blue][red?] --------------------> anywhere in the code block\n" +
+            "[murky blue](red?) --------------------> anywhere in the code block\n" +
+            "<first_word_blue and the rest orange> -> anywhere in the code block\n" +
+            "(3 backticks)\n" +
+            "```\n" +
+            " \n" +
+            "```diff\n" +
+            "(3 backticks)diff uses the first character on a line for color:\n" +
+            " \n" +
+            "+ for green,\n" +
+            "- for red,\n" +
+            "--- for grey\n" +
+            "! for green(? should be orange)\n" +
+            "(3 backticks)\n" +
+            "```\n" +
+            " \n" +
+            "```css\n" +
+            " \n" +
+            "(3 backticks)css makes almost everything green,\n" +
+            "numbers are white (0123456789),\n" +
+            "has some weird cases around some specific characters like colons and quotes\n" +
+            "(3 backticks)\n" +
+            "```\n" +
+            " \n" +
+            "```fix\n" +
+            "(3 backticks)fix makes everything orange\n" +
+            "(3 backticks)\n" +
+            "```\n";
 }

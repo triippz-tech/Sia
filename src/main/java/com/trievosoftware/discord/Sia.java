@@ -141,6 +141,7 @@ public class Sia
                             new RoleinfoCmd(this),
                             new ServerinfoCmd(this),
                             new UserinfoCmd(this),
+                            new MarkdownHelpCommand(this),
 
                             // Moderation
                             new KickCmd(this),
