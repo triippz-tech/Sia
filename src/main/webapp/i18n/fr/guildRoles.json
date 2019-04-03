@@ -1,0 +1,23 @@
+{
+  "siaApp": {
+    "guildRoles": {
+      "home": {
+        "title": "GuildRoles",
+        "createLabel": "Créer un nouveau Guild Roles",
+        "createOrEditLabel": "Créer ou éditer un Guild Roles"
+      },
+      "created": "Un nouveau Guild Roles a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Guild Roles avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Guild Roles avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Guild Roles {{ id }} ?"
+      },
+      "detail": {
+        "title": "Guild Roles"
+      },
+      "guildId": "Guild Id",
+      "roleId": "Role Id",
+      "roleName": "Role Name"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "siaApp": {
+    "customCommand": {
+      "home": {
+        "title": "Custom Commands",
+        "createLabel": "Custom Command erstellen",
+        "createOrEditLabel": "Custom Command erstellen oder bearbeiten"
+      },
+      "created": "Custom Command erstellt mit ID {{ param }}",
+      "updated": "Custom Command aktualisiert mit ID {{ param }}",
+      "deleted": "Custom Command gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Custom Command {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Custom Command"
+      },
+      "guildId": "Guild Id",
+      "commandName": "Command Name",
+      "message": "Message",
+      "guildroles": "Guildroles"
+    }
+  }
+}

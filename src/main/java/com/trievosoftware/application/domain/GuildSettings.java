@@ -25,7 +25,7 @@ public class GuildSettings implements Serializable {
     private static final long serialVersionUID = 1L;
     public final static int PREFIX_MAX_LENGTH = 40;
     private static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("GMT-4");
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -75,9 +75,14 @@ public class GuildSettings implements Serializable {
     @Column(name = "mute_role", nullable = false)
     private Long muteRole;
 
-    @OneToMany(mappedBy = "guildsettings")
+    @OneToMany(mappedBy = "guildsettings", fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<WelcomeMessage> welcomemessages = new HashSet<>();
+
+    @OneToMany(mappedBy = "guildsettings", fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CustomCommand> customcommands = new HashSet<>();
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
     public GuildSettings () {}
 
@@ -90,12 +95,11 @@ public class GuildSettings implements Serializable {
         this.messageLogId = 0L;
         this.voiceLogId = 0L;
         this.avatarLogId = 0L;
-        this.prefix = null;
+        this.prefix = "";
         this.timezone = DEFAULT_TIMEZONE.toString();
         this.raidMode = -2;
     }
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -271,6 +275,31 @@ public class GuildSettings implements Serializable {
     public void setWelcomemessages(Set<WelcomeMessage> welcomeMessages) {
         this.welcomemessages = welcomeMessages;
     }
+
+    public Set<CustomCommand> getCustomcommands() {
+        return customcommands;
+    }
+
+    public GuildSettings customcommands(Set<CustomCommand> customCommands) {
+        this.customcommands = customCommands;
+        return this;
+    }
+
+    public GuildSettings addCustomcommand(CustomCommand customCommand) {
+        this.customcommands.add(customCommand);
+        customCommand.setGuildsettings(this);
+        return this;
+    }
+
+    public GuildSettings removeCustomcommand(CustomCommand customCommand) {
+        this.customcommands.remove(customCommand);
+        customCommand.setGuildsettings(null);
+        return this;
+    }
+
+    public void setCustomcommands(Set<CustomCommand> customCommands) {
+        this.customcommands = customCommands;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -360,7 +389,7 @@ public class GuildSettings implements Serializable {
             ", voiceLogId=" + getVoiceLogId() +
             ", avatarLogId=" + getAvatarLogId() +
             ", prefix='" + getPrefix() + "'" +
-            ", timezone='" + getTimezoneStr() + "'" +
+            ", timezone='" + getTimezone() + "'" +
             ", raidMode=" + getRaidMode() +
             ", muteRole=" + getMuteRole() +
             "}";

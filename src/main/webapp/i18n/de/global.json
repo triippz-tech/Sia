@@ -23,6 +23,9 @@
         "pollItems": "Poll Items",
         "discordUser": "Discord User",
         "welcomeMessage": "Welcome Message",
+        "guildRoles": "Guild Roles",
+        "customCommand": "Custom Command",
+        "guildSettings": "Guild Settings",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
