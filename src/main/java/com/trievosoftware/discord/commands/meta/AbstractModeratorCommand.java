@@ -18,6 +18,7 @@ package com.trievosoftware.discord.commands.meta;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.exceptions.CustomCommandException;
 import com.trievosoftware.application.exceptions.IncorrectWelcomeMessageParamsException;
 import com.trievosoftware.application.exceptions.NoActiveWelcomeMessage;
 import com.trievosoftware.discord.Constants;
@@ -79,12 +80,14 @@ public abstract class AbstractModeratorCommand extends Command {
         sia.getServiceManagers().getDiscordUserService().addCommand(event.getAuthor());
         try {
             doCommand(event);
-        } catch (IncorrectWelcomeMessageParamsException | NoActiveWelcomeMessage e) {
+        } catch (IncorrectWelcomeMessageParamsException | NoActiveWelcomeMessage |
+            CustomCommandException.CommandInvalidParamException | CustomCommandException.CommandExistsException |
+            CustomCommandException.NoCommandExistsException e) {
             event.replyError(e.getMessage());
         }
     }
 
-    public abstract void doCommand(CommandEvent event) throws IncorrectWelcomeMessageParamsException, NoActiveWelcomeMessage;
+    public abstract void doCommand(CommandEvent event) throws IncorrectWelcomeMessageParamsException, NoActiveWelcomeMessage, CustomCommandException.CommandInvalidParamException, CustomCommandException.CommandExistsException, CustomCommandException.NoCommandExistsException;
 
     private static String listPerms(Permission... perms)
     {

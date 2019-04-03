@@ -73,7 +73,8 @@ public class PrefixCmd extends AbstractModeratorCommand
         try {
             sia.getServiceManagers().getGuildSettingsService().setPrefix(event.getGuild(), event.getArgs());
             event.replySuccess("The server prefix has been set to `"+event.getArgs()+"`\n"
-                + "Note that the default prefix (`"+ Constants.PREFIX+"`) cannot be removed and will work in addition to the custom prefix.");
+                + "Note that the default prefix (`"+ Constants.PREFIX+"`) cannot be removed and will work in addition to the custom prefix." +
+                " You may now create and use Custom Commands");
         } catch (SetPrefixException e) {
             if ( sia.isDebugMode() )
                 sia.getLogWebhook().send(String.format("Exception encountered in GUILD=%s/%d. %s",

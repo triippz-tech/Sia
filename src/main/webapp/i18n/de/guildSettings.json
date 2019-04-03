@@ -26,7 +26,8 @@
       "timezone": "Timezone",
       "raidMode": "Raid Mode",
       "muteRole": "Mute Role",
-      "welcomeMessage": "Welcome Message"
+      "welcomemessage": "Welcomemessage",
+      "customcommand": "Customcommand"
     }
   }
 }

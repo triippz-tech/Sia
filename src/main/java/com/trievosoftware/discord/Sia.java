@@ -18,7 +18,7 @@ package com.trievosoftware.discord;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import com.jagrosh.jdautilities.examples.command.*;
+import com.jagrosh.jdautilities.examples.command.PingCommand;
 import com.trievosoftware.application.config.ApplicationProperties;
 import com.trievosoftware.application.service.ServiceManagers;
 import com.trievosoftware.discord.automod.AutoMod;
@@ -35,12 +35,10 @@ import com.trievosoftware.discord.commands.informational.weather.WeatherCommand;
 import com.trievosoftware.discord.commands.moderation.*;
 import com.trievosoftware.discord.commands.music.dj.*;
 import com.trievosoftware.discord.commands.music.generic.*;
-import com.trievosoftware.discord.commands.music.moderator.MusicSettingsCommand;
 import com.trievosoftware.discord.commands.music.moderator.*;
 import com.trievosoftware.discord.commands.owner.*;
 import com.trievosoftware.discord.commands.settings.*;
 import com.trievosoftware.discord.commands.tools.*;
-import com.trievosoftware.discord.commands.tools.LookupCmd;
 import com.trievosoftware.discord.logging.BasicLogger;
 import com.trievosoftware.discord.logging.MessageCache;
 import com.trievosoftware.discord.logging.ModLogger;
@@ -161,6 +159,7 @@ public class Sia
                             new SetGameCommand(this),
                             new PollCommand(this),
                             new WelcomeMessageCommand(this),
+                            new CustomCommandCommand(this),
 
 
                             // Settings
@@ -246,7 +245,7 @@ public class Sia
                             new LyricsCommand(this),
                             new SkipCommand(this)
                         )
-                        .setHelpConsumer(event -> event.replyInDm(FormatUtil.formatHelp(event, this), m -> 
+                        .setHelpConsumer(event -> event.replyInDm(FormatUtil.formatHelp(event, this), m ->
                         {
                             if(event.isFromType(ChannelType.TEXT))
                                 try

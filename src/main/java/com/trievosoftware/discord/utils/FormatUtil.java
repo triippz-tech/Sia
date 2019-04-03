@@ -17,6 +17,7 @@ package com.trievosoftware.discord.utils;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.CustomCommand;
 import com.trievosoftware.application.domain.Poll;
 import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.domain.WelcomeMessage;
@@ -288,15 +289,15 @@ public class FormatUtil {
         
         if(commandsInCategory.isEmpty())
         {
-            builder.addField(CMD_EMOJI+" General Commands", "[**"+Constants.PREFIX+"help general**]("+Constants.Wiki.COMMANDS+"#-general-commands)\n\u200B", false);
+            builder.addField(CMD_EMOJI+" General Commands", "[**"+ Constants.PREFIX+"help general**]("+ Constants.Wiki.COMMANDS+"#-general-commands)\n\u200B", false);
             event.getClient().getCommands().stream().filter(cmd -> cmd.getCategory()!=null).map(cmd -> cmd.getCategory().getName()).distinct()
-                    .forEach(cat -> builder.addField(CMD_EMOJI+" "+cat+" Commands", "[**"+Constants.PREFIX+"help "+cat.toLowerCase()+"**]("
-                            +Constants.Wiki.COMMANDS+"#-"+cat.toLowerCase()+"-commands)\n\u200B", false));
+                    .forEach(cat -> builder.addField(CMD_EMOJI+" "+cat+" Commands", "[**"+ Constants.PREFIX+"help "+cat.toLowerCase()+"**]("
+                            + Constants.Wiki.COMMANDS+"#-"+cat.toLowerCase()+"-commands)\n\u200B", false));
         }
         else
         {
-            commandsInCategory.forEach(cmd -> builder.addField(Constants.PREFIX+cmd.getName()+(cmd.getArguments()==null ? "" : " "+cmd.getArguments()), 
-                    "[**"+cmd.getHelp()+"**]("+Constants.Wiki.COMMANDS+"#-"+(cmd.getCategory()==null?"general":cmd.getCategory().getName().toLowerCase())+"-commands)\n\u200B", false));
+            commandsInCategory.forEach(cmd -> builder.addField(Constants.PREFIX+cmd.getName()+(cmd.getArguments()==null ? "" : " "+cmd.getArguments()),
+                    "[**"+cmd.getHelp()+"**]("+ Constants.Wiki.COMMANDS+"#-"+(cmd.getCategory()==null?"general":cmd.getCategory().getName().toLowerCase())+"-commands)\n\u200B", false));
         }
         
         builder.addField("Additional Help", helpLinks(event), false);
@@ -306,19 +307,19 @@ public class FormatUtil {
     
     public static String helpLinks(CommandEvent event)
     {
-        return "\uD83D\uDD17 ["+event.getSelfUser().getName()+" Wiki]("+Constants.Wiki.WIKI_BASE+")\n" // 🔗
+        return "\uD83D\uDD17 ["+event.getSelfUser().getName()+" Wiki]("+ Constants.Wiki.WIKI_BASE+")\n" // 🔗
                 + "<:discord:553202383774285825> [Support Server]("+event.getClient().getServerInvite()+")\n"
-                +  CMD_EMOJI + " [Full Command Reference]("+Constants.Wiki.COMMANDS+")\n"
-                + "<:PayPal:553201177467289600> [Donations]("+Constants.DONATION_LINK+")\n"
+                +  CMD_EMOJI + " [Full Command Reference]("+ Constants.Wiki.COMMANDS+")\n"
+                + "<:PayPal:553201177467289600> [Donations]("+ Constants.DONATION_LINK+")\n"
                 + "<:xlm:555192428815056896> Donate XLM: " + Constants.XLM_DONATION_ADDR;
     }
 
     public static String helpLinksJoin(GuildJoinEvent event)
     {
-        return "\uD83D\uDD17 ["+event.getJDA().getSelfUser().getName()+" Wiki]("+Constants.Wiki.WIKI_BASE+")\n" // 🔗
+        return "\uD83D\uDD17 ["+event.getJDA().getSelfUser().getName()+" Wiki]("+ Constants.Wiki.WIKI_BASE+")\n" // 🔗
             + "<:discord:553202383774285825> [Support Server]("+ Constants.SERVER_INVITE+")\n"
-            +  CMD_EMOJI + " [Full Command Reference]("+Constants.Wiki.COMMANDS+")\n"
-            + "<:PayPal:553201177467289600> [Donations]("+Constants.DONATION_LINK+")\n"
+            +  CMD_EMOJI + " [Full Command Reference]("+ Constants.Wiki.COMMANDS+")\n"
+            + "<:PayPal:553201177467289600> [Donations]("+ Constants.DONATION_LINK+")\n"
             + "<:xlm:555192428815056896> Donate XLM: " + Constants.XLM_DONATION_ADDR;
     }
 
@@ -545,5 +546,15 @@ public class FormatUtil {
     public static Message formatWelcomeMessage(WelcomeMessage message, GuildMemberJoinEvent event)
     {
         return formatWelcomeMessage(message, event.getGuild(), event.getUser());
+    }
+
+    public static Message formatCustomCommand(CustomCommand customCommand)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setDescription(customCommand.getMessage());
+
+        return new MessageBuilder()
+            .setEmbed(builder.build())
+            .build();
     }
 }

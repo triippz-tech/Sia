@@ -15,8 +15,10 @@
  */
 package com.trievosoftware.discord.utils;
 
+import com.trievosoftware.discord.Sia;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +44,7 @@ public class OtherUtil
         '&',      '\'',     '(',      ')',      '*',      '+',      ',',      '-',      '.',      '/'};
     public final static char[] DEHOIST_REPLACEMENTS = {'\u01C3', '\u201C', '\u2D4C', '\uFF04', '\u2105',     // visually
         '\u214B', '\u2018', '\u2768', '\u2769', '\u2217', '\u2722', '\u201A', '\u2013', '\uFBB3', '\u2044'}; // similar
-    public final static String DEHOIST_JOINED = "`"+FormatUtil.join("`, `", DEHOIST_ORIGINAL)+"`";
+    public final static String DEHOIST_JOINED = "`"+ FormatUtil.join("`, `", DEHOIST_ORIGINAL)+"`";
     
     public static boolean dehoist(Member m, char symbol)
     {
@@ -131,5 +134,17 @@ public class OtherUtil
             LOG.error("Failed to read: '"+filename+"':"+ e);
             return new String[0];
         }
+    }
+
+    public static List<Role> roleIdToRole(Sia sia, Guild guild, String[] roles)
+    {
+        List<Role> roleList = new ArrayList<>();
+
+        for ( String roleId : roles )
+        {
+            if (!roleId.equalsIgnoreCase("@everyone"))
+                roleList.add(sia.getJDA(guild.getIdLong()).getRoleById(roleId));
+        }
+        return roleList;
     }
 }

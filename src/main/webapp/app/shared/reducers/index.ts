@@ -71,6 +71,14 @@ import discordUser, {
 import welcomeMessage, {
   WelcomeMessageState
 } from 'app/entities/welcome-message/welcome-message.reducer';
+// prettier-ignore
+import guildRoles, {
+  GuildRolesState
+} from 'app/entities/guild-roles/guild-roles.reducer';
+// prettier-ignore
+import customCommand, {
+  CustomCommandState
+} from 'app/entities/custom-command/custom-command.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -95,6 +103,8 @@ export interface IRootState {
   readonly pollItems: PollItemsState;
   readonly discordUser: DiscordUserState;
   readonly welcomeMessage: WelcomeMessageState;
+  readonly guildRoles: GuildRolesState;
+  readonly customCommand: CustomCommandState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -121,6 +131,8 @@ const rootReducer = combineReducers<IRootState>({
   pollItems,
   discordUser,
   welcomeMessage,
+  guildRoles,
+  customCommand,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

@@ -6,7 +6,15 @@
             "relationshipType": "one-to-many",
             "otherEntityName": "welcomeMessage",
             "otherEntityRelationshipName": "guildsettings",
-            "relationshipName": "welcomemessage"
+            "relationshipName": "welcomemessage",
+            "otherEntityRelationshipNameUndefined": false
+        },
+        {
+            "relationshipName": "customcommand",
+            "otherEntityName": "customCommand",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "guildsettings",
+            "otherEntityRelationshipNameUndefined": false
         }
     ],
     "fields": [

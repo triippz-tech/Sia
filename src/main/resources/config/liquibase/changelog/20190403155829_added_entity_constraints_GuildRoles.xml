@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity GuildRoles.
+    -->
+    <changeSet id="20190401181403-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="customcommand_id"
+                                 baseTableName="guild_roles"
+                                 constraintName="fk_guild_roles_customcommand_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="custom_command"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -39,6 +39,8 @@ public class ServiceManagers {
     private PollItemsService pollItemsService;
     private DiscordUserService discordUserService;
     private WelcomeMessageService welcomeMessageService;
+    private GuildRolesService guildRolesService;
+    private CustomCommandService customCommandService;
 
     private GuildSettingsServiceImpl guildSettingsServiceImpl;
 
@@ -50,7 +52,7 @@ public class ServiceManagers {
                            OpenWeatherService openWeatherService, GuildMusicSettingsService guildMusicSettingsService,
                            PlaylistService playlistService, SongService songService, PollService pollService,
                            PollItemsService pollItemsService, DiscordUserService discordUserService,
-                           WelcomeMessageService welcomeMessageService) {
+                           WelcomeMessageService welcomeMessageService, GuildRolesService guildRolesService, CustomCommandService customCommandService) {
         this.actionsService = actionsService;
         this.auditCacheService = auditCacheService;
         this.autoModService = autoModService;
@@ -70,6 +72,8 @@ public class ServiceManagers {
         this.pollItemsService = pollItemsService;
         this.discordUserService = discordUserService;
         this.welcomeMessageService = welcomeMessageService;
+        this.guildRolesService = guildRolesService;
+        this.customCommandService = customCommandService;
     }
 
     public ActionsService getActionsService() {
@@ -137,4 +141,8 @@ public class ServiceManagers {
     public DiscordUserService getDiscordUserService() { return discordUserService; }
 
     public  WelcomeMessageService getWelcomeMessageService() { return welcomeMessageService; }
+
+    public CustomCommandService getCustomCommandService() { return customCommandService; }
+
+    public GuildRolesService guildRolesService() { return guildRolesService; }
 }

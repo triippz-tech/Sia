@@ -15,13 +15,10 @@
  */
 package com.trievosoftware.discord;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.domain.Poll;
 import com.trievosoftware.application.domain.PollItems;
-import com.trievosoftware.application.exceptions.NoBanFoundExcetion;
-import com.trievosoftware.application.exceptions.NoPollsFoundException;
-import com.trievosoftware.application.exceptions.NoWelcomeMessageFound;
-import com.trievosoftware.application.exceptions.UserNotMutedException;
+import com.trievosoftware.application.exceptions.*;
 import com.trievosoftware.discord.logging.MessageCache.CachedMessage;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -46,6 +43,9 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageUpdateEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
+import net.dv8tion.jda.core.events.role.RoleCreateEvent;
+import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
+import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateDiscriminatorEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateNameEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
@@ -53,6 +53,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -85,6 +86,33 @@ public class Listener implements EventListener
                 
                 // Run automod on the message
                 sia.getAutoMod().performAutomod(m);
+
+                // See if the message is a CustomCommand
+                GuildSettings guildSettings = sia.getServiceManagers().getGuildSettingsService().getSettings(((GuildMessageReceivedEvent) event).getGuild());
+                if ( guildSettings.getPrefix().isEmpty() )
+                    return;
+
+                Message message = null;
+                try {
+                    message = sia.getServiceManagers().getCustomCommandService()
+                        .checkCustomCommand(sia,
+                            ((GuildMessageReceivedEvent) event).getMember().getRoles(),
+                            ((GuildMessageReceivedEvent) event).getGuild(),
+                            sia.getServiceManagers().getGuildSettingsService().getSettings(((GuildMessageReceivedEvent) event).getGuild()),
+                            m);
+                    ((GuildMessageReceivedEvent) event).getChannel().sendMessage(message).queue();
+                }
+                catch (CustomCommandException.NoCommandExistsException e) {
+                    ((GuildMessageReceivedEvent) event).getChannel().sendMessage( Constants.ERROR + " `" + m.getContentStripped() + "`"
+                        + " is not a valid custom command").queue();
+                    return;
+                }
+                catch (CustomCommandException.NoPrefixSetException e1) { return; } //ignore it since its not a command
+                catch (CustomCommandException.InvalidRolePermissionException e) {
+                    ((GuildMessageReceivedEvent) event).getChannel().sendMessage(Constants.ERROR + " " + e.getMessage()).queue();
+                    return;
+                }
+
             }
         }
         else if (event instanceof GuildMessageUpdateEvent)
@@ -116,11 +144,23 @@ public class Listener implements EventListener
             // Get the messages we had cached
             List<CachedMessage> logged = gevent.getMessageIds().stream()
                     .map(id -> sia.getMessageCache().pullMessage(gevent.getGuild(), Long.parseLong(id)))
-                    .filter(m -> m!=null)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
             
             // Log the deletion
             sia.getBasicLogger().logMessageBulkDelete(logged, gevent.getMessageIds().size(), gevent.getChannel());
+        }
+        else if (event instanceof RoleCreateEvent)
+        {
+            sia.getServiceManagers().guildRolesService().addRole(((RoleCreateEvent) event).getRole());
+        }
+        else if (event instanceof RoleDeleteEvent)
+        {
+            sia.getServiceManagers().guildRolesService().removeRole(((RoleDeleteEvent) event).getRole());
+        }
+        else if (event instanceof RoleUpdateNameEvent)
+        {
+            sia.getServiceManagers().guildRolesService().updateRole(((RoleUpdateNameEvent) event).getRole());
         }
         else if (event instanceof GuildMemberJoinEvent)
         {
@@ -254,11 +294,15 @@ public class Listener implements EventListener
                 ).build()
             ).queue();
 
+            // add the members
             for (Member member : ((GuildJoinEvent) event).getGuild().getMembers() )
             {
                 if (! member.getUser().isBot())
                     sia.getServiceManagers().getDiscordUserService().addNewUser(member.getUser().getIdLong());
             }
+
+            //add the roles
+            sia.getServiceManagers().guildRolesService().addAllRoles(((GuildJoinEvent) event).getGuild().getRoles());
 
             if ( sia.isDebugMode() )
                 sia.getLogWebhook().send(new MessageBuilder()
