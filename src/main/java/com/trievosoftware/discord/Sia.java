@@ -31,6 +31,7 @@ import com.trievosoftware.discord.commands.informational.crypto.CryptoAdminComma
 import com.trievosoftware.discord.commands.informational.crypto.CryptoCoinCommand;
 import com.trievosoftware.discord.commands.informational.crypto.CryptoInfoCommand;
 import com.trievosoftware.discord.commands.informational.crypto.CryptoNewsCommand;
+import com.trievosoftware.discord.commands.informational.stocks.StocksCommand;
 import com.trievosoftware.discord.commands.informational.weather.WeatherCommand;
 import com.trievosoftware.discord.commands.moderation.*;
 import com.trievosoftware.discord.commands.music.dj.*;
@@ -119,7 +120,6 @@ public class Sia
 
         CommandClient client = new CommandClientBuilder()
                         .setPrefix(this.applicationProperties.getDiscord().getPrefix())
-                        //.setGame(Game.watching("Type "+Constants.PREFIX+"help"))
                         .setGame(Game.playing(Constants.Wiki.SHORT_WIKI))
                         .setOwnerId(Constants.OWNER_ID)
                         .setServerInvite(Constants.SERVER_INVITE)
@@ -140,6 +140,7 @@ public class Sia
                             new ServerinfoCmd(this),
                             new UserinfoCmd(this),
                             new MarkdownHelpCommand(this),
+                            new StocksCommand(this),
 
                             // Moderation
                             new KickCmd(this),
