@@ -138,13 +138,13 @@ jhipster:
 
 application:
     api:
-        openweathermap: 471755ecdc6530072c463318f7756f4a
+        openweathermap: 
         google:
-        giphy: 4zFUl8QxMZbhRSHnbSMmM6fUhyrke5eb # will need a production key
-        cryptoCompare: ab134d00401076bef5c3074fbcfb8edc498583dbe2fe9775066ba5ed78be7159
-        nasa: AFwaryW58QrmrTDbAtrfljdmuxoPpPavXcVT2OtC
+        giphy:  # will need a production key
+        cryptoCompare: 
+        nasa: 
     discord:
-        token: NTUxNDYyMTI2OTg5MDgyNjI3.XKysrg.pG_rPLNbsoQaSo1kqr8LHtHK_EQ
+        token: 
         authorId: 110926644876689408
         prefix: /
         alternatePrefix: "<<"
@@ -152,5 +152,5 @@ application:
         guildId: 484462646763061249 #Trievo Server ID
         categoryId: 547415713418182665
         schedulerPoolSize: 50
-        logWebookUrl: "https://discordapp.com/api/webhooks/561312157640163352/OJrZhkIzq9XaFFv_898QXMlwhr7T7BtmYRKVABT3I2aqmJa2GXczkzxZFn-xq_X5VJzu"
+        logWebookUrl: 
 
