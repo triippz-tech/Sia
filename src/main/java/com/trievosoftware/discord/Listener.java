@@ -21,6 +21,7 @@ import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.exceptions.*;
 import com.trievosoftware.discord.logging.MessageCache.CachedMessage;
 import com.trievosoftware.discord.utils.FormatUtil;
+import net.dv8tion.jda.bot.entities.ApplicationInfo;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA.ShardInfo;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -66,10 +67,12 @@ public class Listener implements EventListener
 {
     private final static Logger LOG = LoggerFactory.getLogger("Listener");
     private final Sia sia;
+    private final String defaultPrefix;
     
-    public Listener(Sia sia)
+    Listener(Sia sia)
     {
         this.sia = sia;
+        this.defaultPrefix = sia.getApplicationProperties().getDiscord().getPrefix();
     }
 
     @Override
@@ -90,6 +93,11 @@ public class Listener implements EventListener
                 // See if the message is a CustomCommand
                 GuildSettings guildSettings = sia.getServiceManagers().getGuildSettingsService().getSettings(((GuildMessageReceivedEvent) event).getGuild());
                 if ( guildSettings.getPrefix().isEmpty() )
+                    return;
+
+                // Make sure we dont pick up the bot's prefix
+                String msgPrefix = m.getContentStripped().substring(0, defaultPrefix.length());
+                if ( msgPrefix.equalsIgnoreCase(defaultPrefix))
                     return;
 
                 Message message = null;
