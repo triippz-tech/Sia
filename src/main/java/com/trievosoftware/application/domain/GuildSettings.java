@@ -82,6 +82,10 @@ public class GuildSettings implements Serializable {
     @OneToMany(mappedBy = "guildsettings", fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CustomCommand> customcommands = new HashSet<>();
+
+    @OneToMany(mappedBy = "guildsettings")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<GuildEvent> guildevents = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
     public GuildSettings () {}
@@ -297,8 +301,29 @@ public class GuildSettings implements Serializable {
         return this;
     }
 
-    public void setCustomcommands(Set<CustomCommand> customCommands) {
-        this.customcommands = customCommands;
+    public Set<GuildEvent> getGuildevents() {
+        return guildevents;
+    }
+
+    public GuildSettings guildevents(Set<GuildEvent> guildEvents) {
+        this.guildevents = guildEvents;
+        return this;
+    }
+
+    public GuildSettings addGuildevent(GuildEvent guildEvent) {
+        this.guildevents.add(guildEvent);
+        guildEvent.setGuildsettings(this);
+        return this;
+    }
+
+    public GuildSettings removeGuildevent(GuildEvent guildEvent) {
+        this.guildevents.remove(guildEvent);
+        guildEvent.setGuildsettings(null);
+        return this;
+    }
+
+    public void setGuildevents(Set<GuildEvent> guildEvents) {
+        this.guildevents = guildEvents;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

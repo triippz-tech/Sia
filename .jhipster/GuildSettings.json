@@ -15,6 +15,13 @@
             "relationshipType": "one-to-many",
             "otherEntityRelationshipName": "guildsettings",
             "otherEntityRelationshipNameUndefined": false
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "guildEvent",
+            "otherEntityRelationshipName": "guildsettings",
+            "otherEntityRelationshipNameUndefined": false,
+            "relationshipName": "guildevent"
         }
     ],
     "fields": [

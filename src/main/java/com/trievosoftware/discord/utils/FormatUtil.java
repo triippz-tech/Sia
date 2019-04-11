@@ -17,10 +17,7 @@ package com.trievosoftware.discord.utils;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.trievosoftware.application.domain.CustomCommand;
-import com.trievosoftware.application.domain.Poll;
-import com.trievosoftware.application.domain.PollItems;
-import com.trievosoftware.application.domain.WelcomeMessage;
+import com.trievosoftware.application.domain.*;
 import com.trievosoftware.application.exceptions.StringNotIntegerException;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
@@ -29,10 +26,13 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 
 import java.awt.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -556,5 +556,40 @@ public class FormatUtil {
         return new MessageBuilder()
             .setEmbed(builder.build())
             .build();
+    }
+
+    public static Message formatGuildEvent(Guild guild, GuildEvent guildEvent, boolean started)
+    {
+
+        EmbedBuilder builder = new EmbedBuilder();
+        MessageBuilder messageBuilder = new MessageBuilder();
+
+        if ( started )
+            messageBuilder.setContent("@everyone \n" + guildEvent.getEventName().replaceAll("_", " ") + " Has started!!!!" );
+        else {
+            Duration diff = Duration.between(Instant.now(), guildEvent.getEventStart());
+            String timeUntil;
+
+            if ( diff.toDays() != 0 )
+                timeUntil = String.format("%d Day(s)", diff.toDays());
+            if ( diff.toHours() != 0 )
+                timeUntil = String.format("%d Hours %02d Minutes",
+                    diff.toHours(),
+                    (Math.abs(diff.getSeconds()) % 3600) / 60);
+            else
+                timeUntil = String.format("%02d Minutes", diff.toMinutes());
+
+            messageBuilder.setContent("@everyone \nREMINDER: `" + guildEvent.getEventName().replaceAll("_", " ") + "` Begins in " +
+                timeUntil);
+        }
+
+        builder.setDescription(guildEvent.getEventMessage());
+        builder.setThumbnail(guildEvent.getEventImageUrl().equals("") ? guild.getIconUrl() : guildEvent.getEventImageUrl());
+
+        if ( !started )
+            builder.setFooter("Start Time: " + OtherUtil.formatDateTime(guild, guildEvent.getEventStart()), null);
+
+        messageBuilder.setEmbed(builder.build());
+        return messageBuilder.build();
     }
 }

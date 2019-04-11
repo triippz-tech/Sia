@@ -79,6 +79,10 @@ import guildRoles, {
 import customCommand, {
   CustomCommandState
 } from 'app/entities/custom-command/custom-command.reducer';
+// prettier-ignore
+import guildEvent, {
+  GuildEventState
+} from 'app/entities/guild-event/guild-event.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -105,6 +109,7 @@ export interface IRootState {
   readonly welcomeMessage: WelcomeMessageState;
   readonly guildRoles: GuildRolesState;
   readonly customCommand: CustomCommandState;
+  readonly guildEvent: GuildEventState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -133,6 +138,7 @@ const rootReducer = combineReducers<IRootState>({
   welcomeMessage,
   guildRoles,
   customCommand,
+  guildEvent,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

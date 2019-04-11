@@ -27,7 +27,8 @@
       "raidMode": "Raid Mode",
       "muteRole": "Mute Role",
       "welcomemessage": "Welcomemessage",
-      "customcommand": "Customcommand"
+      "customcommand": "Customcommand",
+      "guildEvent": "Guild Event"
     }
   }
 }

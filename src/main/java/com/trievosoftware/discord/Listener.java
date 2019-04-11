@@ -417,6 +417,10 @@ public class Listener implements EventListener
                 sia.getServiceManagers().getPollService().checkExpiredPolls(event.getJDA()), 0, 30, TimeUnit.SECONDS);
             sia.getThreadpool().scheduleWithFixedDelay(() ->
                 sia.getServiceManagers().getPollService().cleanExpiredPolls(sia.getLogWebhook()), 0, 30, TimeUnit.DAYS);
+            sia.getThreadpool().scheduleWithFixedDelay(() ->
+                sia.getServiceManagers().getGuildEventService().checkExpiredGuildEvents(event.getJDA()), 0 , 1, TimeUnit.MINUTES);
+            sia.getThreadpool().scheduleWithFixedDelay(() ->
+                sia.getServiceManagers().getGuildEventService().cleanExpiredGuildEvents(), 0 , 1, TimeUnit.DAYS);
         }
     }
 }

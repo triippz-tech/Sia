@@ -26,6 +26,7 @@
         "guildRoles": "Guild Roles",
         "customCommand": "Custom Command",
         "guildSettings": "Guild Settings",
+        "guildEvent": "Guild Event",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

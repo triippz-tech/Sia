@@ -158,7 +158,7 @@ export class PollUpdate extends React.Component<IPollUpdateProps, IPollUpdateSta
                     <AvInput id="poll-expired" type="checkbox" className="form-control" name="expired" />
                     <Translate contentKey="siaApp.poll.expired">Is Expired</Translate>
                   </Label>
-                  <AvField id="poll-expired" type="boolean" className="form-control" name="expired" />
+                  {/*<AvField id="poll-expired" type="boolean" className="form-control" name="expired" />*/}
                 </AvGroup>
                 <AvGroup>
                   <Label id="finishTimeLabel" for="finishTime">

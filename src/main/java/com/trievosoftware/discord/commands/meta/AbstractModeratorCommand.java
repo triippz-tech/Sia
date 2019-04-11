@@ -18,9 +18,7 @@ package com.trievosoftware.discord.commands.meta;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.trievosoftware.application.exceptions.CustomCommandException;
-import com.trievosoftware.application.exceptions.IncorrectWelcomeMessageParamsException;
-import com.trievosoftware.application.exceptions.NoActiveWelcomeMessage;
+import com.trievosoftware.application.exceptions.*;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
 import net.dv8tion.jda.core.Permission;
@@ -82,12 +80,13 @@ public abstract class AbstractModeratorCommand extends Command {
             doCommand(event);
         } catch (IncorrectWelcomeMessageParamsException | NoActiveWelcomeMessage |
             CustomCommandException.CommandInvalidParamException | CustomCommandException.CommandExistsException |
-            CustomCommandException.NoCommandExistsException e) {
+            CustomCommandException.NoCommandExistsException | NonTimeInputException | InvalidTimeUnitException |
+            GuildEventException.IncorrectGuildEventParamsException | StringNotIntegerException e) {
             event.replyError(e.getMessage());
         }
     }
 
-    public abstract void doCommand(CommandEvent event) throws IncorrectWelcomeMessageParamsException, NoActiveWelcomeMessage, CustomCommandException.CommandInvalidParamException, CustomCommandException.CommandExistsException, CustomCommandException.NoCommandExistsException;
+    public abstract void doCommand(CommandEvent event) throws IncorrectWelcomeMessageParamsException, NoActiveWelcomeMessage, CustomCommandException.CommandInvalidParamException, CustomCommandException.CommandExistsException, CustomCommandException.NoCommandExistsException, NonTimeInputException, InvalidTimeUnitException, GuildEventException.IncorrectGuildEventParamsException, StringNotIntegerException;
 
     private static String listPerms(Permission... perms)
     {
