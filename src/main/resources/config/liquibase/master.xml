@@ -23,6 +23,7 @@
     <include file="config/liquibase/changelog/20190326213244_added_entity_WelcomeMessage.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190403155829_added_entity_GuildRoles.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190403160322_added_entity_CustomCommand.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190410175650_added_entity_GuildEvent.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20190311195325_added_entity_constraints_GuildMusicSettings.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190311195327_added_entity_constraints_Songs.xml" relativeToChangelogFile="false"/>
@@ -30,5 +31,6 @@
     <include file="config/liquibase/changelog/20190326213244_added_entity_constraints_WelcomeMessage.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190403155829_added_entity_constraints_GuildRoles.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190403160322_added_entity_constraints_CustomCommand.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190410175650_added_entity_constraints_GuildEvent.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

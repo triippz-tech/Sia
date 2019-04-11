@@ -13,5 +13,5 @@
 - Guild Recruitment
 - Open API to interact with your Discord Server via Sia
 - Enhanced Music Commands / User playlists
-- Guild Events (Scheduled Events)
+- Guild Events (Scheduled Events) - FINISHED
 - 

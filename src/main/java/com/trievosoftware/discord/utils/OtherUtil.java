@@ -15,6 +15,9 @@
  */
 package com.trievosoftware.discord.utils;
 
+import com.trievosoftware.application.exceptions.InvalidTimeUnitException;
+import com.trievosoftware.application.exceptions.NonTimeInputException;
+import com.trievosoftware.application.exceptions.StringNotIntegerException;
 import com.trievosoftware.discord.Sia;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -28,8 +31,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -146,5 +156,89 @@ public class OtherUtil
                 roleList.add(sia.getJDA(guild.getIdLong()).getRoleById(roleId));
         }
         return roleList;
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static Instant getTime(String time)
+        throws StringNotIntegerException, InvalidTimeUnitException, NonTimeInputException
+    {
+        int timeLen;
+        try {
+            timeLen = FormatUtil.getMinutes(time);
+            if (timeLen <= 0)
+                throw new NonTimeInputException("Time may not be `0` or a `Negative` number");
+        } catch (StringNotIntegerException e) {
+            LOG.error("{}", e.getMessage());
+            throw new StringNotIntegerException(e.getMessage());
+        }
+
+        String timeType = time.substring(time.length() - 1);
+        switch (timeType) {
+            case "S":
+                return Instant.now().plus(timeLen, ChronoUnit.SECONDS);
+            case "M":
+                return Instant.now().plus(timeLen, ChronoUnit.MINUTES);
+            case "H":
+                return Instant.now().plus(timeLen, ChronoUnit.HOURS);
+            case "D":
+                return Instant.now().plus(timeLen, ChronoUnit.DAYS);
+            default:
+                throw new InvalidTimeUnitException("`" + timeType + "`: Is an invalid Time Type. " +
+                    "Please only use `S (seconds), M (minutes), H (hours), D (days)`");
+        }
+    }
+
+    public static String formatDateTime ( Guild guild, Instant time )
+    {
+        Pair<Locale, ZoneId> localTime = getLocale(guild.getRegion().getName());
+
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
+                .withLocale( localTime.getKey() )
+                .withZone( localTime.getValue() );
+
+        return formatter.format(time) + " " + localTime.getValue().getId();
+    }
+
+    public static Pair<Locale, ZoneId> getLocale(String discordRegion)
+    {
+        Locale local;
+        ZoneId dateTime;
+
+        switch (discordRegion.toUpperCase())
+        {
+            case "AMSTERDAM":
+                local = Locale.GERMANY;
+                dateTime = ZoneId.of("Europe/Paris");
+                break;
+            case "EU CENTRAL":
+                local = Locale.GERMANY;
+                dateTime = ZoneId.of("Europe/Paris");
+                break;
+            case "EU WEST":
+                local = Locale.GERMANY;
+                dateTime = ZoneId.of("Europe/Paris");
+                break;
+            case "FRANKFURT":
+                local = Locale.GERMANY;
+                dateTime = ZoneId.of("Europe/Paris");
+                break;
+            case "HONG KONG":
+                local = Locale.CHINA;
+                dateTime = ZoneId.of("Asia/Shanghai");
+                break;
+            case "JAPAN":
+                local = Locale.JAPAN;
+                dateTime = ZoneId.of("Asia/Tokyo");
+                break;
+            case "LONDON":
+                local = Locale.UK;
+                dateTime = ZoneId.of("Europe/Paris");
+                break;
+            default:
+                local = Locale.US;
+                dateTime = ZoneId.of("America/New_York");
+        }
+        return new Pair<Locale, ZoneId>(local, dateTime);
     }
 }

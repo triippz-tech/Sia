@@ -161,6 +161,7 @@ public class Sia
                             new PollCommand(this),
                             new WelcomeMessageCommand(this),
                             new CustomCommandCommand(this),
+                            new GuildEventCommand(this),
 
 
                             // Settings

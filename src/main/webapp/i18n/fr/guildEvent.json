@@ -1,0 +1,26 @@
+{
+  "siaApp": {
+    "guildEvent": {
+      "home": {
+        "title": "GuildEvents",
+        "createLabel": "Créer un nouveau Guild Event",
+        "createOrEditLabel": "Créer ou éditer un Guild Event"
+      },
+      "created": "Un nouveau Guild Event a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Guild Event avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Guild Event avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Guild Event {{ id }} ?"
+      },
+      "detail": {
+        "title": "Guild Event"
+      },
+      "eventName": "Event Name",
+      "eventImageUrl": "Event Image Url",
+      "eventMessage": "Event Message",
+      "eventStart": "Event Start",
+      "expired": "Is Expired",
+      "guildsettings": "Guild Settings"
+    }
+  }
+}
