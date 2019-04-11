@@ -9,6 +9,7 @@ import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.exceptions.*;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
+import com.trievosoftware.discord.commands.meta.AbstractGenericCommand;
 import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
 import com.trievosoftware.discord.utils.OtherUtil;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -30,15 +31,15 @@ public class GuildEventCommand extends AbstractModeratorCommand
             "Raid Temple | We will be raiding the Temple on US-EAST server at 7PM Saturday | www.example.com/example.jpg | 5H";
 
     public GuildEventCommand(Sia sia, Permission... altPerms) {
-        super(sia, altPerms);
+        super(sia);
         this.name = "event";
         this.aliases = new String[]{"guildevent"};
         this.help = "Guild Event Commands";
         this.arguments = "create|delete|change";
         this.guildOnly = true;
-        this.children = new AbstractModeratorCommand[]{
-            new CreateGuildEventCommand(sia),
-            new DeleteGuildEventCommand(sia),
+        this.children = new Command[]{
+            new CreateGuildEventCommand(sia, Permission.MANAGE_SERVER),
+            new DeleteGuildEventCommand(sia, Permission.MANAGE_SERVER),
             new ShowGuildEventsCommand(sia)
         };
     }
@@ -95,7 +96,7 @@ public class GuildEventCommand extends AbstractModeratorCommand
             GuildEvent guildEvent = sia.getServiceManagers().getGuildEventService()
                 .generateGuildEvent(guildSettings, eventName, eventMessage, eventImageUrl, timeStr);
 
-            event.reply(guildEvent.getGuildEventMessage(event.getGuild()));
+            event.reply(guildEvent.getGuildEventMessage(event.getGuild(), true));
             waitForConfirmation(event, "Please confirm that the message looks ok", () -> {
                 sia.getServiceManagers().getGuildEventService().createGuildEvent(guildEvent);
                 event.getMessage().delete().complete();
@@ -138,7 +139,7 @@ public class GuildEventCommand extends AbstractModeratorCommand
 
             List<Message> messages = new ArrayList<>();
             for ( GuildEvent message : guildEventList )
-                messages.add(message.getGuildEventMessage(event.getGuild()));
+                messages.add(message.getGuildEventMessage(event.getGuild(), true));
             messages.forEach( message -> event.getTextChannel()
                 .sendMessage(message).queue( sentMsg -> sentMsg.delete().queueAfter(30, TimeUnit.SECONDS)));
 
@@ -168,11 +169,11 @@ public class GuildEventCommand extends AbstractModeratorCommand
         }
     }
 
-    public class ShowGuildEventsCommand extends AbstractModeratorCommand
+    public class ShowGuildEventsCommand extends AbstractGenericCommand
     {
 
-        ShowGuildEventsCommand(Sia sia, Permission... altPerms) {
-            super(sia, altPerms);
+        ShowGuildEventsCommand(Sia sia) {
+            super(sia);
             this.name = "display";
             this.aliases = new String[] {"show"};
             this.help = "Displays saved Guild Events for a Guild/Server";
@@ -200,7 +201,7 @@ public class GuildEventCommand extends AbstractModeratorCommand
 
             List<Message> messages = new ArrayList<>();
             for ( GuildEvent guildEvent : guildEventList )
-                messages.add(guildEvent.getGuildEventMessage(event.getGuild()));
+                messages.add(guildEvent.getGuildEventMessage(event.getGuild(), true));
             messages.forEach( message -> event.getTextChannel()
                 .sendMessage(message).queue( sentMsg -> sentMsg.delete().queueAfter(5, TimeUnit.MINUTES)));
         }

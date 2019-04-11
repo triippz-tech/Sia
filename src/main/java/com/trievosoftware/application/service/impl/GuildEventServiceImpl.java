@@ -272,10 +272,10 @@ public class GuildEventServiceImpl implements GuildEventService {
 
                 // Attempt to send to a default channel
                 try {
-                    guild.getDefaultChannel().sendMessage(FormatUtil.formatGuildEvent(guild, guildEvent, true)).complete();
+                    guild.getDefaultChannel().sendMessage(FormatUtil.formatGuildEvent(guild, guildEvent, true, false)).complete();
                 } catch (NullPointerException e) {
                     // if No default found, send message in private channel to the owner
-                    guild.getOwner().getUser().openPrivateChannel().complete().sendMessage(FormatUtil.formatGuildEvent(guild, guildEvent, true)).complete();
+                    guild.getOwner().getUser().openPrivateChannel().complete().sendMessage(FormatUtil.formatGuildEvent(guild, guildEvent, true, false)).complete();
                     guild.getOwner().getUser().openPrivateChannel().complete().sendMessage("This message was sent to you here because your server does not have" +
                         " a default channel set up.").complete();
                 }

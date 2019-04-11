@@ -59,7 +59,7 @@ public abstract class AbstractModeratorCommand extends Command {
             if(!missingPerms)
                 return true;
             if(event.getMember().getRoles().isEmpty())
-                event.getMessage().addReaction(Constants.ERROR_REACTION).queue();
+                event.replyError("You must have the following permissions to use that: "+listPerms(altPerms));
             else
                 event.replyError("You must have the following permissions to use that: "+listPerms(altPerms));
             return false;

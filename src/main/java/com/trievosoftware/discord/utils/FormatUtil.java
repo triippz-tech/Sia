@@ -558,14 +558,19 @@ public class FormatUtil {
             .build();
     }
 
-    public static Message formatGuildEvent(Guild guild, GuildEvent guildEvent, boolean started)
+    public static Message formatGuildEvent(Guild guild, GuildEvent guildEvent, boolean started, boolean sample)
     {
 
         EmbedBuilder builder = new EmbedBuilder();
         MessageBuilder messageBuilder = new MessageBuilder();
 
         if ( started )
-            messageBuilder.setContent("@everyone \n" + guildEvent.getEventName().replaceAll("_", " ") + " Has started!!!!" );
+            if ( !sample )
+                messageBuilder.setContent("@everyone \n" + guildEvent.getEventName()
+                    .replaceAll("_", " ") + " Has started!!!!" );
+            else
+                messageBuilder.setContent(guildEvent.getEventName()
+                    .replaceAll("_", " ") + " Has started!!!!" );
         else {
             Duration diff = Duration.between(Instant.now(), guildEvent.getEventStart());
             String timeUntil;
@@ -579,8 +584,12 @@ public class FormatUtil {
             else
                 timeUntil = String.format("%02d Minutes", diff.toMinutes());
 
-            messageBuilder.setContent("@everyone \nREMINDER: `" + guildEvent.getEventName().replaceAll("_", " ") + "` Begins in " +
-                timeUntil);
+            if ( !sample )
+                messageBuilder.setContent("@everyone \nREMINDER: `" + guildEvent.getEventName()
+                    .replaceAll("_", " ") + "` Begins in " + timeUntil);
+            else
+                messageBuilder.setContent("REMINDER: `" + guildEvent.getEventName()
+                    .replaceAll("_", " ") + "` Begins in " + timeUntil);
         }
 
         builder.setDescription(guildEvent.getEventMessage());

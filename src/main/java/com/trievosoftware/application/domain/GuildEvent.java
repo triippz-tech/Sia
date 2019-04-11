@@ -168,9 +168,9 @@ public class GuildEvent implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
-    public Message getGuildEventMessage(Guild guild)
+    public Message getGuildEventMessage(Guild guild, Boolean sample)
     {
-        return FormatUtil.formatGuildEvent(guild, this, false);
+        return FormatUtil.formatGuildEvent(guild, this, false, sample);
     }
 
     @Override
