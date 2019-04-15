@@ -85,6 +85,9 @@ export class GuildEvent extends React.Component<IGuildEventProps, IGuildEventSta
                 <th className="hand" onClick={this.sort('eventMessage')}>
                   <Translate contentKey="siaApp.guildEvent.eventMessage">Event Message</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th>
+                  <Translate contentKey="siaApp.guildEvent.textChannelId">Text Channel</Translate>
+                </th>
                 <th className="hand" onClick={this.sort('eventStart')}>
                   <Translate contentKey="siaApp.guildEvent.eventStart">Event Start</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -108,6 +111,7 @@ export class GuildEvent extends React.Component<IGuildEventProps, IGuildEventSta
                   <td>{guildEvent.eventName}</td>
                   <td>{guildEvent.eventImageUrl}</td>
                   <td>{guildEvent.eventMessage}</td>
+                  <td>{guildEvent.textChannelId}</td>
                   <td>
                     <TextFormat type="date" value={guildEvent.eventStart} format={APP_DATE_FORMAT} />
                   </td>

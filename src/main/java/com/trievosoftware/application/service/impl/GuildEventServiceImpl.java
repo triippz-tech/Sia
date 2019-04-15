@@ -232,7 +232,7 @@ public class GuildEventServiceImpl implements GuildEventService {
             throw new GuildEventException.IncorrectGuildEventParamsException("The message of the event must not be longer than" +
                 " 1500 characters. Length of message was `" + eventMessage.length() + "`");
 
-        return new GuildEvent(eventName, eventImageUrl, eventMessage, eventStart, guildSettings);
+        return new GuildEvent(eventName, eventImageUrl, eventMessage, eventStart, 0L, guildSettings);
     }
 
     /**
@@ -270,14 +270,19 @@ public class GuildEventServiceImpl implements GuildEventService {
             {
                 Guild guild = jda.getGuildById(guildEvent.getGuildsettings().getGuildId());
 
-                // Attempt to send to a default channel
+                // Attempt to send to chosen channel
                 try {
-                    guild.getDefaultChannel().sendMessage(FormatUtil.formatGuildEvent(guild, guildEvent, true, false)).complete();
+                    guild.getTextChannelById(guildEvent.getTextChannelId())
+                        .sendMessage(FormatUtil.formatGuildEvent(guild, guildEvent, true, false)).complete();
                 } catch (NullPointerException e) {
-                    // if No default found, send message in private channel to the owner
-                    guild.getOwner().getUser().openPrivateChannel().complete().sendMessage(FormatUtil.formatGuildEvent(guild, guildEvent, true, false)).complete();
-                    guild.getOwner().getUser().openPrivateChannel().complete().sendMessage("This message was sent to you here because your server does not have" +
-                        " a default channel set up.").complete();
+                    try {
+                        guild.getDefaultChannel().sendMessage(FormatUtil.formatGuildEvent(guild, guildEvent, true, false)).complete();
+                    } catch (NullPointerException e1) {
+                        // if No default found, send message in private channel to the owner
+                        guild.getOwner().getUser().openPrivateChannel().complete().sendMessage(FormatUtil.formatGuildEvent(guild, guildEvent, true, false)).complete();
+                        guild.getOwner().getUser().openPrivateChannel().complete().sendMessage("This message was sent to you here because your server does not have" +
+                            " a default channel set up.").complete();
+                    }
                 }
 
                 log.info("GuildEvent={} completed, message sent", guildEvent.getEventName());

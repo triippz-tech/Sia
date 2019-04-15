@@ -14,4 +14,5 @@
 - Open API to interact with your Discord Server via Sia
 - Enhanced Music Commands / User playlists
 - Guild Events (Scheduled Events) - FINISHED
-- 
+- Twitch Integration
+- Streaming

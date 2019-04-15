@@ -47,6 +47,12 @@ export class GuildEventDetail extends React.Component<IGuildEventDetailProps> {
             </dt>
             <dd>{guildEventEntity.eventMessage}</dd>
             <dt>
+              <span id="textChannelId">
+                <Translate contentKey="siaApp.guildEvent.textChannelId">Text Channel</Translate>
+              </span>
+            </dt>
+            <dd>{guildEventEntity.textChannelId}</dd>
+            <dt>
               <span id="eventStart">
                 <Translate contentKey="siaApp.guildEvent.eventStart">Event Start</Translate>
               </span>

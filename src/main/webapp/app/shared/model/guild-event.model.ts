@@ -6,6 +6,7 @@ export interface IGuildEvent {
   eventName?: string;
   eventImageUrl?: string;
   eventMessage?: any;
+  textChannelId?: number;
   eventStart?: Moment;
   expired?: boolean;
   guildsettings?: IGuildSettings;
