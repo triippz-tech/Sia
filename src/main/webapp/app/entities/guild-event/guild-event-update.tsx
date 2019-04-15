@@ -149,6 +149,19 @@ export class GuildEventUpdate extends React.Component<IGuildEventUpdateProps, IG
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label id="textChannelIdLabel" for="textChannelId">
+                    <Translate contentKey="siaApp.guildEvent.textChannelId">Text Channel</Translate>
+                  </Label>
+                  <AvField
+                    id="guild-event-textChannelId"
+                    type="text"
+                    name="textChannelId"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
+                <AvGroup>
                   <Label id="eventStartLabel" for="eventStart">
                     <Translate contentKey="siaApp.guildEvent.eventStart">Event Start</Translate>
                   </Label>

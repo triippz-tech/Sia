@@ -18,6 +18,7 @@
       "eventName": "Event Name",
       "eventImageUrl": "Event Image Url",
       "eventMessage": "Event Message",
+      "textChannelId": "Text Channel",
       "eventStart": "Event Start",
       "expired": "Is Expired",
       "guildsettings": "Guild Settings"

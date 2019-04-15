@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.menu.ButtonMenu;
 import com.jagrosh.jdautilities.menu.OrderedMenu;
+import com.jagrosh.jdautilities.menu.SelectionDialog;
 import com.trievosoftware.application.domain.GuildEvent;
 import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.exceptions.*;
@@ -15,10 +16,9 @@ import com.trievosoftware.discord.utils.OtherUtil;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("Duplicates")
@@ -27,7 +27,7 @@ public class GuildEventCommand extends AbstractModeratorCommand
     private final String CANCEL = "\u274C"; // ❌
     private final String CONFIRM = "\u2611"; // ☑
     private final String CREATE_HELP =
-        "<event name> | <message> | [message image url] | <time until start>\n\n" +
+        "<event name> | <message> | [message image url] | <text channel> | <time until start>\n\n" +
             "Raid Temple | We will be raiding the Temple on US-EAST server at 7PM Saturday | www.example.com/example.jpg | 5H";
 
     public GuildEventCommand(Sia sia, Permission... altPerms) {
@@ -98,10 +98,11 @@ public class GuildEventCommand extends AbstractModeratorCommand
 
             event.reply(guildEvent.getGuildEventMessage(event.getGuild(), true));
             waitForConfirmation(event, "Please confirm that the message looks ok", () -> {
-                sia.getServiceManagers().getGuildEventService().createGuildEvent(guildEvent);
-                event.getMessage().delete().complete();
-                event.replySuccess("New Guild Event created and will send a notification to this guild's default channel" +
-                    " at: " + OtherUtil.formatDateTime(event.getGuild(), guildEvent.getEventStart()));
+                waitForSelection(event, "What text channel would you like to announce this in?", guildEvent,
+                    () -> {
+                        event.getMessage().delete().complete();
+                        event.replyWarning("Guild Event discarded.");
+                    });
             });
         }
     }
@@ -223,5 +224,46 @@ public class GuildEventCommand extends AbstractModeratorCommand
                 if(re.getName().equals(CONFIRM))
                     confirm.run();
             }).build().display(event.getChannel());
+    }
+
+    private void waitForSelection(CommandEvent event, String message, GuildEvent guildEvent, Runnable cancel)
+    {
+        SelectionDialog.Builder builder = new SelectionDialog.Builder()
+            .setEventWaiter(sia.getEventWaiter())
+            .setTimeout(1, TimeUnit.MINUTES)
+            .setUsers(event.getAuthor())
+            .useLooping(true)
+            .setSelectedEnds("➡️", "⬅️")
+            .setText(Constants.WARNING + message + "\n\n Please use the arrow keys to scroll to your selection")
+            .setCanceled( re -> {
+                re.delete().complete();
+                cancel.run();
+            } );
+
+        Map<String, Long> channels = new HashMap<>();
+        for (TextChannel channel : event.getGuild().getTextChannels())
+            channels.put(channel.getAsMention(), channel.getIdLong());
+
+        List<String> channelsAsMention = new ArrayList<>();
+        channels.forEach( (k,v) -> channelsAsMention.add(k));
+        String[] choices = channelsAsMention.toArray(new String[0]);
+
+        builder.setChoices(choices);
+        builder.setSelectionConsumer( (messageObj, selection) ->
+        {
+            String channelId = choices[selection-1]
+                .replaceAll("<", "")
+                .replaceAll("#", "")
+                .replaceAll(">","");
+            TextChannel textChannel = event.getGuild().getTextChannelById(channelId);
+            guildEvent.setTextChannelId(textChannel.getIdLong());
+            sia.getServiceManagers().getGuildEventService().save(guildEvent);
+
+            event.getMessage().delete().complete();
+            messageObj.delete().complete();
+            event.replySuccess("New Guild Event created and will send a notification to " + textChannel.getAsMention() +
+                " at: " + OtherUtil.formatDateTime(event.getGuild(), guildEvent.getEventStart()));
+        });
+        builder.build().display(event.getChannel());
     }
 }

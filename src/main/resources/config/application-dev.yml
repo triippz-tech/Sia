@@ -138,13 +138,13 @@ jhipster:
 
 application:
     api:
-        openweathermap: 
+        openweathermap:
         google:
         giphy:  # will need a production key
-        cryptoCompare: 
-        nasa: 
+        cryptoCompare:
+        nasa:
     discord:
-        token: 
+        token:
         authorId: 110926644876689408
         prefix: /
         alternatePrefix: "<<"
@@ -152,5 +152,4 @@ application:
         guildId: 484462646763061249 #Trievo Server ID
         categoryId: 547415713418182665
         schedulerPoolSize: 50
-        logWebookUrl: 
-
+        logWebookUrl:

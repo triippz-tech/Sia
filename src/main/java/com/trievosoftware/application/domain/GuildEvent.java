@@ -50,6 +50,10 @@ public class GuildEvent implements Serializable {
     @Column(name = "event_start", nullable = false)
     private Instant eventStart;
 
+    @NotNull
+    @Column(name = "text_channel_id", nullable = false)
+    private Long textChannelId;
+
     @Column(name = "expired", nullable = false)
     private Boolean expired;
 
@@ -58,21 +62,24 @@ public class GuildEvent implements Serializable {
     private GuildSettings guildsettings;
 
     public GuildEvent(@NotNull @Size(max = 250) String eventName, @NotNull @Size(max = 250) String eventImageUrl,
-                      String eventMessage, @NotNull Instant eventStart, GuildSettings guildsettings) {
+                      String eventMessage, @NotNull Instant eventStart, @NotNull Long textChannelId,
+                      GuildSettings guildsettings) {
         this.eventName = eventName;
         this.eventImageUrl = eventImageUrl;
         this.eventMessage = eventMessage;
         this.eventStart = eventStart;
+        this.textChannelId = textChannelId;
         this.guildsettings = guildsettings;
         this.expired = false;
     }
 
     public GuildEvent(@NotNull @Size(max = 250) String eventName, @NotNull @Size(max = 250) String eventImageUrl,
-                      String eventMessage, @NotNull Instant eventStart) {
+                      String eventMessage, @NotNull Instant eventStart, @NotNull Long textChannelId) {
         this.eventName = eventName;
         this.eventImageUrl = eventImageUrl;
         this.eventMessage = eventMessage;
         this.eventStart = eventStart;
+        this.textChannelId = textChannelId;
         this.expired = false;
     }
 
@@ -166,6 +173,20 @@ public class GuildEvent implements Serializable {
     public void setGuildsettings(GuildSettings guildSettings) {
         this.guildsettings = guildSettings;
     }
+
+    public Long getTextChannelId() {
+        return textChannelId;
+    }
+
+    public void setTextChannelId(Long textChannelId) {
+        this.textChannelId = textChannelId;
+    }
+
+    public GuildEvent textChannelId(Long textChannelId) {
+        this.textChannelId = textChannelId;
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     public Message getGuildEventMessage(Guild guild, Boolean sample)
