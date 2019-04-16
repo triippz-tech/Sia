@@ -51,6 +51,11 @@ public class DiscordUser implements Serializable {
     @JsonIgnore
     private Set<PollItems> pollitems = new HashSet<>();
 
+    @ManyToMany(mappedBy = "discordusers", fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
+    private Set<GiveAway> giveAways = new HashSet<>();
+
     public DiscordUser() {
     }
 
@@ -162,6 +167,31 @@ public class DiscordUser implements Serializable {
 
     public void setPollitems(Set<PollItems> pollItems) {
         this.pollitems = pollItems;
+    }
+
+    public Set<GiveAway> getGiveAways() {
+        return giveAways;
+    }
+
+    public DiscordUser giveAways(Set<GiveAway> giveAways) {
+        this.giveAways = giveAways;
+        return this;
+    }
+
+    public DiscordUser addGiveAway(GiveAway giveAway) {
+        this.giveAways.add(giveAway);
+        giveAway.getDiscordusers().add(this);
+        return this;
+    }
+
+    public DiscordUser removeGiveAway(GiveAway giveAway) {
+        this.giveAways.remove(giveAway);
+        giveAway.getDiscordusers().remove(this);
+        return this;
+    }
+
+    public void setGiveAways(Set<GiveAway> giveAways) {
+        this.giveAways = giveAways;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

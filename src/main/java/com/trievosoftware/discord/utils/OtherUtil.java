@@ -15,6 +15,7 @@
  */
 package com.trievosoftware.discord.utils;
 
+import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.exceptions.InvalidTimeUnitException;
 import com.trievosoftware.application.exceptions.NonTimeInputException;
 import com.trievosoftware.application.exceptions.StringNotIntegerException;
@@ -37,9 +38,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -240,5 +239,21 @@ public class OtherUtil
                 dateTime = ZoneId.of("America/New_York");
         }
         return new Pair<Locale, ZoneId>(local, dateTime);
+    }
+
+    public static DiscordUser randomUser(Set<DiscordUser> discordUsers)
+    {
+        int size = discordUsers.size();
+        if (size == 0 )
+            return null;
+        int item = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
+        int i = 0;
+        for(DiscordUser obj : discordUsers)
+        {
+            if (i == item)
+                return obj;
+            i++;
+        }
+        return null;
     }
 }

@@ -23,6 +23,7 @@ import WelcomeMessage from './welcome-message';
 import GuildRoles from './guild-roles';
 import CustomCommand from './custom-command';
 import GuildEvent from './guild-event';
+import GiveAway from './give-away';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -48,6 +49,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/guild-roles`} component={GuildRoles} />
       <ErrorBoundaryRoute path={`${match.url}/custom-command`} component={CustomCommand} />
       <ErrorBoundaryRoute path={`${match.url}/guild-event`} component={GuildEvent} />
+      <ErrorBoundaryRoute path={`${match.url}/give-away`} component={GiveAway} />
       {/* jhipster-needle-add-route-path - JHipster will routes here */}
     </Switch>
   </div>

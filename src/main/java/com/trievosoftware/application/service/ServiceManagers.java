@@ -43,6 +43,7 @@ public class ServiceManagers {
     private CustomCommandService customCommandService;
     private IEXService iexService;
     private GuildEventService guildEventService;
+    private GiveAwayService giveAwayService;
 
     private GuildSettingsServiceImpl guildSettingsServiceImpl;
 
@@ -55,7 +56,8 @@ public class ServiceManagers {
                            PlaylistService playlistService, SongService songService, PollService pollService,
                            PollItemsService pollItemsService, DiscordUserService discordUserService,
                            WelcomeMessageService welcomeMessageService, GuildRolesService guildRolesService,
-                           CustomCommandService customCommandService, IEXService iexService, GuildEventService guildEventService) {
+                           CustomCommandService customCommandService, IEXService iexService,
+                           GuildEventService guildEventService, GiveAwayService giveAwayService) {
         this.actionsService = actionsService;
         this.auditCacheService = auditCacheService;
         this.autoModService = autoModService;
@@ -79,6 +81,7 @@ public class ServiceManagers {
         this.customCommandService = customCommandService;
         this.iexService = iexService;
         this.guildEventService = guildEventService;
+        this.giveAwayService = giveAwayService;
     }
 
     public ActionsService getActionsService() {
@@ -156,4 +159,6 @@ public class ServiceManagers {
     public GuildEventService getGuildEventService() {
         return guildEventService;
     }
+
+    public GiveAwayService getGiveAwayService() { return giveAwayService; }
 }

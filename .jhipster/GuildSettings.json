@@ -22,6 +22,12 @@
             "otherEntityRelationshipName": "guildsettings",
             "otherEntityRelationshipNameUndefined": false,
             "relationshipName": "guildevent"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "giveAway",
+            "otherEntityRelationshipName": "guildsettings",
+            "relationshipName": "giveaway"
         }
     ],
     "fields": [

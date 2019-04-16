@@ -27,13 +27,13 @@ public class Constants
 {
     public final static OffsetDateTime STARTUP = OffsetDateTime.now();
     public final static String PREFIX          = "/";
-    public final static String SUCCESS         = "<a:success:547954162562760745>";
-    public final static String WARNING         = "<:Warning:547954125409615873>";
-    public final static String ERROR           = "<:Error:547954145932476458>";
-    public final static String LOADING         = "<a:typing:553204321383350283>";
+    public final static String SUCCESS         = "✅"; //✅
+    public final static String WARNING         = "⚠️"; // ⚠️
+    public final static String ERROR           = "\uD83D\uDED1"; //🛑
+    public final static String LOADING         = ". . .";
     public final static String HELP_REACTION   = SUCCESS.replaceAll("<a?:(.+):(\\d+)>", "$1:$2");
     public final static String ERROR_REACTION  = ERROR.replaceAll("<a?:(.+):(\\d+)>", "$1:$2");
-    public final static String SIA_EMOJII      = "<:sia:553207744673349650>";
+    public final static String SIA_EMOJII      = "\uD83D\uDD3A"; //🔺
     public final static Permission[] PERMISSIONS = {Permission.ADMINISTRATOR, Permission.BAN_MEMBERS, Permission.KICK_MEMBERS, Permission.MANAGE_ROLES,
                                         Permission.MANAGE_SERVER, Permission.MESSAGE_ADD_REACTION, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_READ,
                                         Permission.MESSAGE_WRITE,Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_HISTORY, Permission.MESSAGE_EXT_EMOJI,

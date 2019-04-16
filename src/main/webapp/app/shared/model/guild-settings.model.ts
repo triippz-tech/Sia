@@ -1,6 +1,7 @@
 import { IWelcomeMessage } from 'app/shared/model/welcome-message.model';
 import { ICustomCommand } from 'app/shared/model/custom-command.model';
 import { IGuildEvent } from 'app/shared/model/guild-event.model';
+import { IGiveAway } from 'app/shared/model/give-away.model';
 
 export interface IGuildSettings {
   id?: number;
@@ -18,6 +19,7 @@ export interface IGuildSettings {
   welcomemessages?: IWelcomeMessage[];
   customcommands?: ICustomCommand[];
   guildevents?: IGuildEvent[];
+  giveaways?: IGiveAway[];
 }
 
 export const defaultValue: Readonly<IGuildSettings> = {};
