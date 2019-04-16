@@ -102,7 +102,7 @@ public class GiveAwayQueryService extends QueryService<GiveAway> {
             }
             if (criteria.getDiscordUserId() != null) {
                 specification = specification.and(buildSpecification(criteria.getDiscordUserId(),
-                    root -> root.join(GiveAway_.discordUsers, JoinType.LEFT).get(DiscordUser_.id)));
+                    root -> root.join(GiveAway_.discordusers, JoinType.LEFT).get(DiscordUser_.id)));
             }
             if (criteria.getGuildsettingsId() != null) {
                 specification = specification.and(buildSpecification(criteria.getGuildsettingsId(),
