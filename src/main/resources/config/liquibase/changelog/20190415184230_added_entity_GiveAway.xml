@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity GiveAway.
+    -->
+    <changeSet id="20190415184230-1" author="jhipster">
+        <createTable tableName="give_away">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(250)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="message" type="clob">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="message_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="text_channel_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="finish" type="datetime">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="winner" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="expired" type="boolean">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="guildsettings_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <dropDefaultValue tableName="give_away" columnName="finish" columnDataType="datetime"/>
+        
+        <createTable tableName="give_away_discorduser">
+            <column name="discorduser_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="give_away_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="give_away_id, discorduser_id" tableName="give_away_discorduser"/>
+        
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

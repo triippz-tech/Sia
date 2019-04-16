@@ -601,4 +601,54 @@ public class FormatUtil {
         messageBuilder.setEmbed(builder.build());
         return messageBuilder.build();
     }
+
+    public static Message formatGiveAwayMessage(GiveAway giveAway, Guild guild, Boolean isLive)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        MessageBuilder messageBuilder = new MessageBuilder();
+
+        if ( isLive )
+            messageBuilder.setContent("@everyone \n" + "There is a new Give Away! React with " + Constants.PARTY_EMOJI + " to enter!" );
+        else
+            messageBuilder.setContent("There is a new Give Away! React with " + Constants.PARTY_EMOJI + " to enter!" );
+
+        builder.setTitle(giveAway.getName().replaceAll("_", " "));
+        builder.setDescription(giveAway.getMessage());
+        builder.setFooter("End Time: " + OtherUtil.formatDateTime(guild, giveAway.getFinish()), null);
+
+        messageBuilder.setEmbed(builder.build());
+
+        return messageBuilder.build();
+    }
+
+    public static Message formatGiveAwayWinner(GiveAway giveAway, User user)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        MessageBuilder messageBuilder = new MessageBuilder();
+
+        messageBuilder.setContent( Constants.PARTY_EMOJI + " @everyone " + Constants.PARTY_EMOJI);
+
+        builder.setTitle(giveAway.getName().replaceAll("_", " ") + " Has ended");
+        builder.setDescription("The winner is **" + user.getAsMention() + "**! Congratulations!");
+
+        messageBuilder.setEmbed(builder.build());
+
+        return messageBuilder.build();
+    }
+
+    public static Message formatNoGiveAwayWinner(GiveAway giveAway)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        MessageBuilder messageBuilder = new MessageBuilder();
+
+        messageBuilder.setContent( "\uD83D\uDE1E " + "@everyone" + " \uD83D\uDE1E");
+
+        builder.setTitle(giveAway.getName().replaceAll("_", " ") + " Has ended");
+        builder.setDescription("No user(s) entered the giveaway, so no winner has been declared");
+
+        messageBuilder.setEmbed(builder.build());
+
+        return messageBuilder.build();
+    }
+
 }

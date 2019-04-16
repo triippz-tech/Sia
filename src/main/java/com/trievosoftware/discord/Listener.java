@@ -15,6 +15,7 @@
  */
 package com.trievosoftware.discord;
 
+import com.trievosoftware.application.domain.GiveAway;
 import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.domain.Poll;
 import com.trievosoftware.application.domain.PollItems;
@@ -322,79 +323,30 @@ public class Listener implements EventListener
         }
         else if (event instanceof MessageReactionAddEvent)
         {
+
             if (((MessageReactionAddEvent) event).getUser().isBot()) return;
 
-//            Poll poll;
-//            try {
-//                poll = sia.getServiceManagers().getPollService()
-//                    .findByGuildIdAndMessageId(((MessageReactionAddEvent) event).getGuild().getIdLong(), ((MessageReactionAddEvent) event).getMessageIdLong());
-//            } catch (NoPollsFoundException e) {
-//                // Ignore it, probably wasnt a vote
-//                return;
-//            }
-//
-//            PollItems itemFound = null;
-//            for (PollItems item : poll.getPollitems() )
-//            {
-//                String reaction = ((MessageReactionAddEvent) event).getReaction().getReactionEmote().getName();
-//                if ( item.getReaction().equals((reaction)) )
-//                {
-//                    itemFound = item;
-//                    break;
-//                }
-//            }
-//
-//            if ( itemFound == null )
-//            {
-//                LOG.error("Adding vote to Poll={}", poll.getTitle());
-//                ((MessageReactionAddEvent) event).getUser().openPrivateChannel().complete()
-//                    .sendMessage("Sorry, I was unable to add your vote, please try again.").queue();
-//                return;
-//            }
-//
-//            sia.getServiceManagers().getPollItemsService().addVote(itemFound.getId());
-//            sia.getServiceManagers().getPollService().updatePollMessage(
-//                poll,
-//                event.getJDA().getTextChannelById(poll.getTextChannelId()).getMessageById(poll.getMessageId()).completeAfter(1, TimeUnit.SECONDS),
-//                sia);
+            GuildSettings guildSettings =
+                sia.getServiceManagers().getGuildSettingsService().getSettings(((MessageReactionAddEvent) event).getGuild());
+            GiveAway giveAway = sia.getServiceManagers().getGiveAwayService().getGiveAway(
+                    guildSettings,
+                    ((MessageReactionAddEvent) event).getMessageIdLong());
+            if ( giveAway == null )
+                return; // message is not a giveaway ignore
+            if ( !((MessageReactionAddEvent) event).getReaction().getReactionEmote().getName().equalsIgnoreCase(Constants.PARTY_EMOJI))
+                return; // incorrect emote, ignore
+            if ( giveAway.isExpired() )
+                return;
+
+            sia.getServiceManagers().getGiveAwayService().enterVote(
+                sia,
+                giveAway,
+                ((MessageReactionAddEvent) event).getMember().getUser());
+
         }
         else if (event instanceof MessageReactionRemoveEvent)
         {
             if (((MessageReactionRemoveEvent) event).getUser().isBot()) return;
-            Poll poll;
-            try {
-                poll = sia.getServiceManagers().getPollService()
-                    .findByGuildIdAndMessageId(((MessageReactionRemoveEvent) event).getGuild().getIdLong(),
-                        ((MessageReactionRemoveEvent) event).getMessageIdLong());
-            } catch (NoPollsFoundException e) {
-                // Ignore it, probably wasnt a vote
-                return;
-            }
-
-            PollItems itemFound = null;
-            for (PollItems item : poll.getPollitems() )
-            {
-                String reaction = ((MessageReactionRemoveEvent) event).getReaction().getReactionEmote().getName();
-                if ( item.getReaction().equals((reaction)) )
-                {
-                    itemFound = item;
-                    break;
-                }
-            }
-
-            if ( itemFound == null )
-            {
-                LOG.error("Adding vote to Poll={}", poll.getTitle());
-                ((MessageReactionRemoveEvent) event).getUser().openPrivateChannel().complete()
-                    .sendMessage("Sorry, I was unable to add your vote, please try again.").queue();
-                return;
-            }
-
-            sia.getServiceManagers().getPollItemsService().removeVote(itemFound.getId());
-            sia.getServiceManagers().getPollService().updatePollMessage(
-                poll,
-                event.getJDA().getTextChannelById(poll.getTextChannelId()).getMessageById(poll.getMessageId()).completeAfter(1, TimeUnit.SECONDS),
-                sia);
         }
         else if (event instanceof ReadyEvent)
         {
@@ -421,6 +373,10 @@ public class Listener implements EventListener
                 sia.getServiceManagers().getGuildEventService().checkExpiredGuildEvents(event.getJDA()), 0 , 1, TimeUnit.MINUTES);
             sia.getThreadpool().scheduleWithFixedDelay(() ->
                 sia.getServiceManagers().getGuildEventService().cleanExpiredGuildEvents(), 0 , 1, TimeUnit.DAYS);
+            sia.getThreadpool().scheduleWithFixedDelay(() ->
+                sia.getServiceManagers().getGiveAwayService().checkForExpiredGiveAways(event.getJDA()), 0, 30, TimeUnit.SECONDS);
+            sia.getThreadpool().scheduleWithFixedDelay(() ->
+                sia.getServiceManagers().getGiveAwayService().cleanExpiredGiveAways(sia), 0, 30, TimeUnit.DAYS);
         }
     }
 }

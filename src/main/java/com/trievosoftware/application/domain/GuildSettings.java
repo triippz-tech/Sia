@@ -83,9 +83,14 @@ public class GuildSettings implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CustomCommand> customcommands = new HashSet<>();
 
-    @OneToMany(mappedBy = "guildsettings")
+    @OneToMany(mappedBy = "guildsettings", fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<GuildEvent> guildevents = new HashSet<>();
+
+    @OneToMany(mappedBy = "guildsettings", fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<GiveAway> giveaways = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
     public GuildSettings () {}
@@ -324,6 +329,31 @@ public class GuildSettings implements Serializable {
 
     public void setGuildevents(Set<GuildEvent> guildEvents) {
         this.guildevents = guildEvents;
+    }
+
+    public Set<GiveAway> getGiveaways() {
+        return giveaways;
+    }
+
+    public GuildSettings giveaways(Set<GiveAway> giveAways) {
+        this.giveaways = giveAways;
+        return this;
+    }
+
+    public GuildSettings addGiveaway(GiveAway giveAway) {
+        this.giveaways.add(giveAway);
+        giveAway.setGuildsettings(this);
+        return this;
+    }
+
+    public GuildSettings removeGiveaway(GiveAway giveAway) {
+        this.giveaways.remove(giveAway);
+        giveAway.setGuildsettings(null);
+        return this;
+    }
+
+    public void setGiveaways(Set<GiveAway> giveAways) {
+        this.giveaways = giveAways;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

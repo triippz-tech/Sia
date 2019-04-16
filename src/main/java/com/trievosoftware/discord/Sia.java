@@ -129,9 +129,8 @@ public class Sia
                         .setListener(new CommandExceptionListener())
                         .setScheduleExecutor(threadpool)
 //                        .setShutdownAutomatically(false)
-                        .addCommands(// General
-                            //new AboutCommand(Color.CYAN, "and I'm here to keep your Discord server safe and make moderating easy!", 
-                            //                            new String[]{"Moderation commands","Configurable automoderation","Very easy setup"},Constants.PERMISSIONS),
+                        .addCommands(
+
                             // General
                             new AboutCmd(this),
                             new InviteCmd(this),
@@ -141,6 +140,7 @@ public class Sia
                             new UserinfoCmd(this),
                             new MarkdownHelpCommand(this),
                             new StocksCommand(this),
+                            new GiveAwayCommand(this),
 
                             // Moderation
                             new KickCmd(this),

@@ -98,6 +98,11 @@ export const EntitiesMenu = props => (
       &nbsp;
       <Translate contentKey="global.menu.entities.customCommand" />
     </DropdownItem>
+    <DropdownItem tag={Link} to="/entity/give-away">
+      <FontAwesomeIcon icon="asterisk" fixedWidth />
+      &nbsp;
+      <Translate contentKey="global.menu.entities.giveAway" />
+    </DropdownItem>
     <DropdownItem tag={Link} to="/entity/guild-event">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;

@@ -147,7 +147,7 @@ public class PollServiceImpl implements PollService {
     @Override
     public List<Poll> findAllByGuildIdAndFinishTimeIsLessThan(Long guildId, Instant now)
     {
-        log.debug("Request to find all expired Polls for Guild={}");
+        log.debug("Request to find all expired Polls for Guild={}", guildId);
         return pollRepository.findAllByGuildIdAndFinishTimeIsLessThan(guildId, now);
     }
 

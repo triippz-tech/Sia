@@ -1,0 +1,29 @@
+{
+  "siaApp": {
+    "giveAway": {
+      "home": {
+        "title": "GiveAways",
+        "createLabel": "Créer un nouveau Give Away",
+        "createOrEditLabel": "Créer ou éditer un Give Away"
+      },
+      "created": "Un nouveau Give Away a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Give Away avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Give Away avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Give Away {{ id }} ?"
+      },
+      "detail": {
+        "title": "Give Away"
+      },
+      "name": "Name",
+      "message": "Message",
+      "messageId": "Message Id",
+      "textChannelId": "Text Channel Id",
+      "finish": "Finish",
+      "winner": "Winner",
+      "expired": "Expired",
+      "discordUser": "Discord User",
+      "guildsettings": "Guild Settings"
+    }
+  }
+}

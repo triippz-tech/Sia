@@ -28,7 +28,8 @@
       "muteRole": "Mute Role",
       "welcomemessage": "Welcomemessage",
       "customcommand": "Customcommand",
-      "guildEvent": "Guild Event"
+      "guildEvent": "Guild Event",
+      "giveaway": "Give Aways"
     }
   }
 }
