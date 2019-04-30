@@ -70,18 +70,21 @@ public class GiveAway implements Serializable {
     @JsonIgnoreProperties("giveaways")
     private GuildSettings guildsettings;
 
+    @ManyToOne
+    @JsonIgnoreProperties("giveAway")
+    private DiscordGuild discordGuild;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
 
     public GiveAway() {
     }
 
-    public GiveAway(@NotNull @Size(max = 250) String name, String message, @NotNull Instant finish, GuildSettings guildsettings)
+    public GiveAway(@NotNull @Size(max = 250) String name, String message, @NotNull Instant finish, DiscordGuild discordGuild)
     {
         this.name = name;
         this.message = message;
         this.finish = finish;
-        this.guildsettings = guildsettings;
+        this.discordGuild = discordGuild;
 
         this.expired = false;
         this.textChannelId = 0L;
@@ -91,7 +94,7 @@ public class GiveAway implements Serializable {
 
     public GiveAway(@NotNull @Size(max = 250) String name, String message, @NotNull Long messageId,
                     @NotNull Long textChannelId, @NotNull Instant finish, @NotNull Long winner,
-                    @NotNull Boolean expired, Set<DiscordUser> discordusers, GuildSettings guildsettings) {
+                    @NotNull Boolean expired, Set<DiscordUser> discordusers, DiscordGuild discordGuild) {
         this.name = name;
         this.message = message;
         this.messageId = messageId;
@@ -100,7 +103,7 @@ public class GiveAway implements Serializable {
         this.winner = winner;
         this.expired = expired;
         this.discordusers = discordusers;
-        this.guildsettings = guildsettings;
+        this.discordGuild = discordGuild;
     }
 
     public Long getId() {
@@ -238,6 +241,19 @@ public class GiveAway implements Serializable {
 
     public void setGuildsettings(GuildSettings guildSettings) {
         this.guildsettings = guildSettings;
+    }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public GiveAway discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

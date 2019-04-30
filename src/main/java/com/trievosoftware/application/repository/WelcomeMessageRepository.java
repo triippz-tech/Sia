@@ -1,6 +1,6 @@
 package com.trievosoftware.application.repository;
 
-import com.trievosoftware.application.domain.GuildSettings;
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.WelcomeMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -16,7 +16,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface WelcomeMessageRepository extends JpaRepository<WelcomeMessage, Long>, JpaSpecificationExecutor<WelcomeMessage> {
-    List<WelcomeMessage> findAllByGuildsettings(GuildSettings guildSettings);
-    Optional<WelcomeMessage> findByGuildsettingsAndActive(GuildSettings guildSettings, Boolean active);
-    Optional<WelcomeMessage> findByGuildsettingsAndName(GuildSettings guildSettings, String name);
+    List<WelcomeMessage> findAllByDiscordGuild(DiscordGuild discordGuild);
+    Optional<WelcomeMessage> findByDiscordGuildAndActive(DiscordGuild discordGuild, Boolean active);
+    Optional<WelcomeMessage> findByDiscordGuildAndName(DiscordGuild discordGuild, String name);
 }

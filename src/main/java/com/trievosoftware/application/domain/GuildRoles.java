@@ -40,7 +40,9 @@ public class GuildRoles implements Serializable {
     @JsonIgnoreProperties("guildroles")
     private CustomCommand customcommand;
 
-
+    @ManyToOne
+    @JsonIgnoreProperties("guildRoles")
+    private DiscordGuild discordGuild;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
     public GuildRoles(@NotNull Long guildId, @NotNull Long roleId, String roleName) {
@@ -115,6 +117,19 @@ public class GuildRoles implements Serializable {
 
     public void setCustomcommand(CustomCommand customCommand) {
         this.customcommand = customCommand;
+    }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public GuildRoles discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

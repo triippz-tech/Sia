@@ -27,6 +27,7 @@
         "customCommand": "Custom Command",
         "guildEvent": "Guild Event",
         "giveAway": "Give Away",
+        "discordGuild": "Discord Guild",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

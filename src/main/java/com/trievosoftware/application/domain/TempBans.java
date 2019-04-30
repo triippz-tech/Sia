@@ -1,6 +1,7 @@
 package com.trievosoftware.application.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -37,6 +38,10 @@ public class TempBans implements Serializable {
     @NotNull
     @Column(name = "finish", nullable = false)
     private Instant finish;
+
+    @ManyToOne
+    @JsonIgnoreProperties("tempBans")
+    private DiscordGuild discordGuild;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -84,6 +89,19 @@ public class TempBans implements Serializable {
 
     public void setFinish(Instant finish) {
         this.finish = finish;
+    }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public TempBans discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -19,6 +19,7 @@ package com.trievosoftware.discord.commands.general;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.domain.Poll;
 import com.trievosoftware.application.domain.PollItems;
@@ -79,9 +80,6 @@ public class PollCommand extends AbstractModeratorCommand
 
     public class CreatePollCommand extends AbstractModeratorCommand
     {
-//        private final OrderedMenu.Builder builder;
-        private Integer amountOfTime;
-        private TimeUnit timeUnits;
 
         CreatePollCommand(Sia sia)
         {
@@ -146,20 +144,12 @@ public class PollCommand extends AbstractModeratorCommand
             switch (timeType)
             {
                 case "S":
-                    amountOfTime = timeLen;
-                    timeUnits = TimeUnit.SECONDS;
                     return Instant.now().plus(timeLen, ChronoUnit.SECONDS);
                 case "M":
-                    amountOfTime = timeLen;
-                    timeUnits = TimeUnit.MINUTES;
                     return Instant.now().plus(timeLen, ChronoUnit.MINUTES);
                 case "H":
-                    amountOfTime = timeLen;
-                    timeUnits = TimeUnit.HOURS;
                     return Instant.now().plus(timeLen, ChronoUnit.HOURS);
                 case "D":
-                    amountOfTime = timeLen;
-                    timeUnits = TimeUnit.DAYS;
                     return Instant.now().plus(timeLen, ChronoUnit.DAYS);
                 default:
                     throw new InvalidTimeUnitException("`" + timeType + "`: Is an invalid Time Type. " +
@@ -167,9 +157,11 @@ public class PollCommand extends AbstractModeratorCommand
             }
         }
 
-        private Poll createNewPoll(CommandEvent event, String question, Instant finishTime, List<String> answers) throws NoPollsFoundException, PollExpiredException {
+        private Poll createNewPoll(CommandEvent event, String question, Instant finishTime, List<String> answers)
+            throws NoPollsFoundException, PollExpiredException {
+            DiscordGuild discordGuild = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild());
             Poll poll = sia.getServiceManagers().getPollService()
-                .createPoll(event.getGuild().getIdLong(), event.getAuthor().getIdLong(), question, finishTime);
+                .createPoll(discordGuild, event.getAuthor().getIdLong(), question, finishTime);
 
             for ( String answer : answers )
             {

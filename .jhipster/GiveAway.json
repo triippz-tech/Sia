@@ -69,6 +69,13 @@
             "otherEntityRelationshipName": "giveaway",
             "relationshipName": "guildsettings",
             "otherEntityField": "guildId"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "discordGuild",
+            "otherEntityRelationshipName": "giveaway",
+            "relationshipName": "discordGuild",
+            "otherEntityField": "guildName"
         }
     ],
     "changelogDate": "20190415184230",

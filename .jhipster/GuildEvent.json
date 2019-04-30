@@ -8,6 +8,13 @@
             "otherEntityRelationshipName": "guildevent",
             "relationshipName": "guildsettings",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "discordGuild",
+            "otherEntityRelationshipName": "guildevent",
+            "relationshipName": "discordGuild",
+            "otherEntityField": "guildName"
         }
     ],
     "fields": [
@@ -42,6 +49,20 @@
         {
             "fieldName": "eventStart",
             "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "textChannelId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "expired",
+            "fieldType": "Boolean",
             "fieldValidateRules": [
                 "required"
             ]

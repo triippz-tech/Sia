@@ -63,5 +63,5 @@ public interface TempMutesService {
 
     int timeUntilUnmute(Guild guild, long userId);
 
-    void checkUnmutes(JDA jda, GuildSettingsService guildSettingsService);
+    void checkUnmutes(JDA jda, DiscordGuildService discordGuildService);
 }

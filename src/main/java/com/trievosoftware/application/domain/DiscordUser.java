@@ -56,6 +56,12 @@ public class DiscordUser implements Serializable {
     @JsonIgnore
     private Set<GiveAway> giveAways = new HashSet<>();
 
+    @ManyToOne
+    @JsonIgnoreProperties("discordUser")
+    private DiscordGuild discordGuild;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
     public DiscordUser() {
     }
 
@@ -71,7 +77,7 @@ public class DiscordUser implements Serializable {
         this.commandsIssued = 0;
     }
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
     public Long getId() {
         return id;
     }
@@ -192,6 +198,19 @@ public class DiscordUser implements Serializable {
 
     public void setGiveAways(Set<GiveAway> giveAways) {
         this.giveAways = giveAways;
+    }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public DiscordUser discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

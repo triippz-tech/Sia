@@ -52,6 +52,13 @@
             "otherEntityRelationshipName": "welcomemessage",
             "relationshipName": "guildsettings",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "discordGuild",
+            "otherEntityRelationshipName": "welcomemessage",
+            "relationshipName": "discordGuild",
+            "otherEntityField": "guildName"
         }
     ],
     "changelogDate": "20190326185712",

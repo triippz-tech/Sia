@@ -1,0 +1,39 @@
+{
+  "siaApp": {
+    "discordGuild": {
+      "home": {
+        "title": "DiscordGuilds",
+        "createLabel": "Créer un nouveau Discord Guild",
+        "createOrEditLabel": "Créer ou éditer un Discord Guild"
+      },
+      "created": "Un nouveau Discord Guild a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Discord Guild avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Discord Guild avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Discord Guild {{ id }} ?"
+      },
+      "detail": {
+        "title": "Discord Guild"
+      },
+      "guildId": "Guild Id",
+      "guildName": "Guild Name",
+      "inviteLink": "Invite Link",
+      "guildSettings": "Guild Settings",
+      "auditCache": "Audit Cache",
+      "autoMod": "Auto Mod",
+      "guildMusicSettings": "Guild Music Settings",
+      "discordUser": "Discord User",
+      "ignored": "Ignored",
+      "tempMutes": "Temp Mutes",
+      "tempBans": "Temp Bans",
+      "poll": "Poll",
+      "guildRoles": "Guild Roles",
+      "customCommand": "Custom Command",
+      "actions": "Actions",
+      "strikes": "Strikes",
+      "welcomeMessage": "Welcome Message",
+      "guildEvent": "Guild Event",
+      "giveAway": "Give Away"
+    }
+  }
+}

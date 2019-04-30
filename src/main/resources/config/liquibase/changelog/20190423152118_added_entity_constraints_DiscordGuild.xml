@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity DiscordGuild.
+    -->
+    <changeSet id="20190423152118-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="guild_settings_id"
+                                 baseTableName="discord_guild"
+                                 constraintName="fk_discord_guild_guild_settings_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="guild_settings"/>
+
+        <addForeignKeyConstraint baseColumnNames="audit_cache_id"
+                                 baseTableName="discord_guild"
+                                 constraintName="fk_discord_guild_audit_cache_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="audit_cache"/>
+
+        <addForeignKeyConstraint baseColumnNames="auto_mod_id"
+                                 baseTableName="discord_guild"
+                                 constraintName="fk_discord_guild_auto_mod_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="auto_mod"/>
+
+        <addForeignKeyConstraint baseColumnNames="guild_music_settings_id"
+                                 baseTableName="discord_guild"
+                                 constraintName="fk_discord_guild_guild_music_settings_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="guild_music_settings"/>
+
+    </changeSet>
+</databaseChangeLog>

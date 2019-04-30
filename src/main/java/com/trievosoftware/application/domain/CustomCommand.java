@@ -51,22 +51,25 @@ public class CustomCommand implements Serializable {
     @JsonIgnoreProperties("customcommands")
     private GuildSettings guildsettings;
 
+    @ManyToOne
+    @JsonIgnoreProperties("customCommand")
+    private DiscordGuild discordGuild;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
 
-    public CustomCommand(@NotNull Long guildId, @NotNull String commandName, String message, Set<GuildRoles> guildroles, GuildSettings guildsettings) {
+    public CustomCommand(@NotNull Long guildId, @NotNull String commandName, String message, Set<GuildRoles> guildroles, DiscordGuild discordGuild) {
         this.guildId = guildId;
         this.commandName = commandName;
         this.message = message;
         this.guildroles = guildroles;
-        this.guildsettings = guildsettings;
+        this.discordGuild = discordGuild;
     }
 
-    public CustomCommand(@NotNull Long guildId, @NotNull String commandName, String message, GuildSettings guildsettings) {
+    public CustomCommand(@NotNull Long guildId, @NotNull String commandName, String message, DiscordGuild discordGuild) {
         this.guildId = guildId;
         this.commandName = commandName;
         this.message = message;
-        this.guildsettings = guildsettings;
+        this.discordGuild = discordGuild;
     }
 
     public CustomCommand() {
@@ -156,6 +159,20 @@ public class CustomCommand implements Serializable {
     public void setGuildsettings(GuildSettings guildSettings) {
         this.guildsettings = guildSettings;
     }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public CustomCommand discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
 //    public Message getFormattedMessage()

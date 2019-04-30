@@ -1,8 +1,8 @@
 package com.trievosoftware.application.service;
 
 import com.trievosoftware.application.domain.CustomCommand;
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.GuildRoles;
-import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.exceptions.CustomCommandException;
 import com.trievosoftware.discord.Sia;
 import net.dv8tion.jda.core.entities.Guild;
@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Service Interface for managing CustomCommand.
@@ -58,7 +57,7 @@ public interface CustomCommandService {
 
     CustomCommand getCommand(Guild guild, String commandName) throws CustomCommandException.NoCommandExistsException;
 
-    CustomCommand addNewCommand(Sia sia, Guild guild, String commandName, List<Role> roles, String message, GuildSettings guildsettings)
+    CustomCommand addNewCommand(Sia sia, Guild guild, String commandName, List<Role> roles, String message, DiscordGuild discordGuild)
         throws CustomCommandException.CommandExistsException, CustomCommandException.CommandInvalidParamException;
 
     void removeCommand(Guild guild, String commandName) throws CustomCommandException.NoCommandExistsException;
@@ -78,6 +77,6 @@ public interface CustomCommandService {
     CustomCommand changeCommandMessage(Guild guild, String commandName, String message)
         throws CustomCommandException.CommandInvalidParamException, CustomCommandException.NoCommandExistsException;
 
-    Message checkCustomCommand(Sia sia, List<Role> role, Guild guild, GuildSettings settings, Message m)
+    Message checkCustomCommand(Sia sia, List<Role> role, Guild guild, DiscordGuild discordGuild, Message m)
         throws CustomCommandException.NoCommandExistsException, CustomCommandException.NoPrefixSetException, CustomCommandException.InvalidRolePermissionException;
 }

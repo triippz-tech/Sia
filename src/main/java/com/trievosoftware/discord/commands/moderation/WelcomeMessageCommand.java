@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.menu.ButtonMenu;
 import com.jagrosh.jdautilities.menu.OrderedMenu;
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.domain.WelcomeMessage;
 import com.trievosoftware.application.exceptions.IncorrectWelcomeMessageParamsException;
@@ -68,8 +69,8 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
         public void doCommand(CommandEvent event) throws IncorrectWelcomeMessageParamsException
         {
             List<WelcomeMessage> welcomeMessages =
-                sia.getServiceManagers().getWelcomeMessageService().findAllByGuildsettings(
-                    sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild())
+                sia.getServiceManagers().getWelcomeMessageService().findAllByDiscordGuild(
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
                 );
             // limit them to 4 per for now
             if ( welcomeMessages.size() > 4 )
@@ -94,9 +95,9 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
             String logo         =   args[5].trim();
             String activeStr    =   args[6].trim().toUpperCase();
 
-            GuildSettings guildSettings = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild());
+            DiscordGuild discordGuild = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild());
             welcomeMessage = sia.getServiceManagers().getWelcomeMessageService()
-                    .generateWelcomeMessage(event, sia, name, title, body, footer, url, logo, activeStr, guildSettings);
+                    .generateWelcomeMessage(event, name, title, body, footer, url, logo, activeStr, discordGuild);
 
             event.reply(welcomeMessage.getWelcomeMessage(event.getGuild(), event.getAuthor()));
             waitForConfirmation(event, "Please confirm that the message looks ok", () -> {
@@ -121,8 +122,8 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
         public void doCommand(CommandEvent event)
         {
             List<WelcomeMessage> welcomeMessages =
-                sia.getServiceManagers().getWelcomeMessageService().findAllByGuildsettings(
-                    sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild())
+                sia.getServiceManagers().getWelcomeMessageService().findAllByDiscordGuild(
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
                 );
 
             if ( welcomeMessages.isEmpty() )
@@ -182,8 +183,8 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
         @Override
         public void doCommand(CommandEvent event) throws IncorrectWelcomeMessageParamsException, NoActiveWelcomeMessage {
             List<WelcomeMessage> welcomeMessages =
-                sia.getServiceManagers().getWelcomeMessageService().findAllByGuildsettings(
-                    sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild())
+                sia.getServiceManagers().getWelcomeMessageService().findAllByDiscordGuild(
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
                 );
 
             if ( welcomeMessages.isEmpty() )
@@ -209,9 +210,9 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
             String activeStr    =   args[6].trim().toUpperCase();
 
 
-            GuildSettings guildSettings = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild());
+            DiscordGuild discordGuild = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild());
             welcomeMessage = sia.getServiceManagers().getWelcomeMessageService()
-                .modifyWelcomeMessage(event, sia, name, title, body, footer, url, logo, activeStr, guildSettings);
+                .modifyWelcomeMessage(event, name, title, body, footer, url, logo, activeStr, discordGuild);
 
             event.reply(welcomeMessage.getWelcomeMessage(event.getGuild(), event.getAuthor()));
             waitForConfirmation(event, "Please confirm that the modified message looks ok", () -> {
@@ -235,8 +236,8 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
         public void doCommand(CommandEvent event)
         {
             List<WelcomeMessage> welcomeMessages =
-                sia.getServiceManagers().getWelcomeMessageService().findAllByGuildsettings(
-                    sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild())
+                sia.getServiceManagers().getWelcomeMessageService().findAllByDiscordGuild(
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
                 );
 
             if ( welcomeMessages.isEmpty() )
@@ -294,8 +295,8 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
         public void doCommand(CommandEvent event)
         {
             List<WelcomeMessage> welcomeMessages =
-                sia.getServiceManagers().getWelcomeMessageService().findAllByGuildsettings(
-                    sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild())
+                sia.getServiceManagers().getWelcomeMessageService().findAllByDiscordGuild(
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
                 );
 
             if ( welcomeMessages.isEmpty() )
@@ -329,8 +330,8 @@ public class WelcomeMessageCommand extends AbstractModeratorCommand
 
         @Override
         public void doCommand(CommandEvent event) throws NoActiveWelcomeMessage {
-            GuildSettings guildSettings = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild());
-            WelcomeMessage welcomeMessage = sia.getServiceManagers().getWelcomeMessageService().getActiveWelcome(guildSettings);
+            DiscordGuild discordGuild = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild());
+            WelcomeMessage welcomeMessage = sia.getServiceManagers().getWelcomeMessageService().getActiveWelcome(discordGuild);
 
             event.reply(welcomeMessage.getWelcomeMessage(event.getGuild(), event.getAuthor()));
         }

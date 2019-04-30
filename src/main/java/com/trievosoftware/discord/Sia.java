@@ -273,7 +273,7 @@ public class Sia
         
         modlog.start();
 
-        // Load all active polls into cache. THis should only be done on startup
+        // Load all active polls into cache. This should only be done on startup
         serviceManagers.getPollService().loadPollCache();
         
         threadpool.scheduleWithFixedDelay(this::cleanPremium, 0, 2, TimeUnit.HOURS);
@@ -331,7 +331,7 @@ public class Sia
         return strikehandler;
     }
 
-    public void checkForUserSinceShutdown()
+    void checkForUserSinceShutdown()
     {
         log.info("Searching for new users joined since last shutdown");
         Integer newUsers = 0;
@@ -348,7 +348,7 @@ public class Sia
         log.info("Added {} new users", newUsers);
     }
 
-    public void cleanPremium()
+    private void cleanPremium()
     {
         serviceManagers.getPremiumService().cleanPremiumList().forEach((gid) ->
         {
@@ -357,7 +357,7 @@ public class Sia
         });
     }
     
-    public void leavePointlessGuilds()
+    private void leavePointlessGuilds()
     {
         shards.getGuilds().stream().filter(g -> 
         {

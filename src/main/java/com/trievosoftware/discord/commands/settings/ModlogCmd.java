@@ -38,7 +38,8 @@ public class ModlogCmd extends LogCommand
     @Override
     protected void showCurrentChannel(CommandEvent event)
     {
-        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getModLogChannel(event.getGuild());
         if(tc==null)
             event.replyWarning("Moderation Logs are not currently enabled on the server. Please include a channel name.");
         else

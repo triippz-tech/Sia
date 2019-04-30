@@ -78,7 +78,8 @@ public class StrikeCmd extends AbstractModeratorCommand
             return;
         }
         StringBuilder builder = new StringBuilder();
-        Role modrole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getModeratorRole(event.getGuild());
         
         args.members.forEach(m -> 
         {

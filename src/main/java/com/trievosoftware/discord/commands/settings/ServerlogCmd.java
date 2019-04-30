@@ -36,7 +36,8 @@ public class ServerlogCmd extends LogCommand
     @Override
     protected void showCurrentChannel(CommandEvent event)
     {
-        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getServerLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getServerLogChannel(event.getGuild());
         if(tc==null)
             event.replyWarning("Server Logs are not currently enabled on the server. Please include a channel name.");
         else

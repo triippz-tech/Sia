@@ -40,7 +40,8 @@ public class RaidCmd extends AbstractModeratorCommand
     @Override
     public void doCommand(CommandEvent event)
     {
-        boolean active = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).isInRaidMode();
+        boolean active = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().isInRaidMode();
         String[] parts = event.getArgs().split("\\s+", 2);
         if(parts[0].equalsIgnoreCase("off") || parts[0].equalsIgnoreCase("stop") || parts[0].equalsIgnoreCase("disable"))
         {

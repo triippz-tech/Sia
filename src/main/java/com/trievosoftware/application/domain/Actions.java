@@ -1,6 +1,7 @@
 package com.trievosoftware.application.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -40,6 +41,10 @@ public class Actions implements Serializable {
     @NotNull
     @Column(name = "jhi_time", nullable = false)
     private Integer time;
+
+    @ManyToOne
+    @JsonIgnoreProperties("actions")
+    private DiscordGuild discordGuild;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -100,6 +105,19 @@ public class Actions implements Serializable {
 
     public void setTime(Integer time) {
         this.time = time;
+    }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public Actions discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

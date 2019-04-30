@@ -1,6 +1,7 @@
 package com.trievosoftware.application.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -40,6 +41,10 @@ public class AuditCache implements Serializable {
     @NotNull
     @Column(name = "oldest", nullable = false)
     private Long oldest;
+
+    @OneToOne(mappedBy = "auditCache")
+    @JsonIgnore
+    private DiscordGuild discordGuild;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -100,6 +105,19 @@ public class AuditCache implements Serializable {
 
     public void setOldest(Long oldest) {
         this.oldest = oldest;
+    }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public AuditCache discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

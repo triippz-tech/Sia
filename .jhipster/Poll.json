@@ -32,6 +32,20 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "expired",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "messageId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "relationships": [
@@ -40,6 +54,13 @@
             "relationshipName": "pollitems",
             "otherEntityName": "pollItems",
             "otherEntityRelationshipName": "poll"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "discordGuild",
+            "otherEntityRelationshipName": "poll",
+            "relationshipName": "discordGuild",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20190319163950",

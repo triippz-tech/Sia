@@ -1,5 +1,6 @@
 package com.trievosoftware.application.service;
 
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.exceptions.SetPrefixException;
 import net.dv8tion.jda.core.entities.Guild;
@@ -54,7 +55,7 @@ public interface GuildSettingsService {
      * @param guild the guild of the entity
      * @return the entity
      */
-    MessageEmbed.Field getSettingsDisplay(Guild guild);
+    MessageEmbed.Field getSettingsDisplay(DiscordGuild discordGuild, Guild guild);
 
     GuildSettings getSettings(Guild guild);
 
@@ -81,6 +82,12 @@ public interface GuildSettingsService {
     void enableRaidMode(Guild guild);
 
     Guild.VerificationLevel disableRaidMode(Guild guild);
+
+    GuildSettings guildSettings(DiscordGuild discordGuild, Guild guild);
+
+    GuildSettings getGuildSettings(DiscordGuild discordGuild);
+
+    void setDefaultSettings(DiscordGuild discordGuild);
 
     boolean hasSettings(Guild guild);
 

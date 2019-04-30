@@ -25,5 +25,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="guild_settings"/>
 
+        <addForeignKeyConstraint baseColumnNames="discord_guild_id"
+                                 baseTableName="give_away"
+                                 constraintName="fk_give_away_discord_guild_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="discord_guild"/>
+
     </changeSet>
 </databaseChangeLog>

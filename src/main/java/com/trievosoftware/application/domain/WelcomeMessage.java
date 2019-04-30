@@ -62,6 +62,10 @@ public class WelcomeMessage implements Serializable {
     @JsonIgnoreProperties("welcomemessages")
     private GuildSettings guildsettings;
 
+    @ManyToOne
+    @JsonIgnoreProperties("welcomeMessage")
+    private DiscordGuild discordGuild;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -174,6 +178,19 @@ public class WelcomeMessage implements Serializable {
     public void setGuildsettings(GuildSettings guildSettings) {
         this.guildsettings = guildSettings;
     }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public WelcomeMessage discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     public Message getWelcomeMessage(Guild guild, User user)
@@ -229,7 +246,7 @@ public class WelcomeMessage implements Serializable {
         private String websiteUrl;
         private String logoUrl;
         private Boolean active;
-        private GuildSettings guildsettings;
+        private DiscordGuild discordGuild;
 
         public WelcomeMessageBuilder()
         {
@@ -280,9 +297,9 @@ public class WelcomeMessage implements Serializable {
             return this;
         }
 
-        public WelcomeMessageBuilder guildSettings(GuildSettings guildSettings)
+        public WelcomeMessageBuilder discordGuild(DiscordGuild discordGuild)
         {
-            this.guildsettings = guildSettings;
+            this.discordGuild = discordGuild;
             return this;
         }
 
@@ -296,7 +313,7 @@ public class WelcomeMessage implements Serializable {
             welcomeMessage.footer = footer;
             welcomeMessage.websiteUrl = websiteUrl;
             welcomeMessage.logoUrl = logoUrl;
-            welcomeMessage.guildsettings = guildsettings;
+            welcomeMessage.discordGuild = discordGuild;
 
             return welcomeMessage;
         }

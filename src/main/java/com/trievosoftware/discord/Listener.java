@@ -15,13 +15,11 @@
  */
 package com.trievosoftware.discord;
 
-import com.trievosoftware.application.domain.GiveAway;
-import com.trievosoftware.application.domain.GuildSettings;
-import com.trievosoftware.application.domain.Poll;
-import com.trievosoftware.application.domain.PollItems;
+import com.trievosoftware.application.domain.*;
 import com.trievosoftware.application.exceptions.*;
 import com.trievosoftware.discord.logging.MessageCache.CachedMessage;
 import com.trievosoftware.discord.utils.FormatUtil;
+import com.trievosoftware.discord.utils.Pair;
 import net.dv8tion.jda.bot.entities.ApplicationInfo;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA.ShardInfo;
@@ -92,9 +90,13 @@ public class Listener implements EventListener
                 sia.getAutoMod().performAutomod(m);
 
                 // See if the message is a CustomCommand
-                GuildSettings guildSettings = sia.getServiceManagers().getGuildSettingsService().getSettings(((GuildMessageReceivedEvent) event).getGuild());
-                if ( guildSettings.getPrefix().isEmpty() )
-                    return;
+                DiscordGuild discordGuild =
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(((GuildMessageReceivedEvent) event).getGuild());
+
+                try {
+                    if (discordGuild.getGuildSettings().getPrefix().isEmpty())
+                        return;
+                } catch (NullPointerException e) { return; }
 
                 // Make sure we dont pick up the bot's prefix
                 String msgPrefix = m.getContentStripped().substring(0, defaultPrefix.length());
@@ -107,7 +109,7 @@ public class Listener implements EventListener
                         .checkCustomCommand(sia,
                             ((GuildMessageReceivedEvent) event).getMember().getRoles(),
                             ((GuildMessageReceivedEvent) event).getGuild(),
-                            sia.getServiceManagers().getGuildSettingsService().getSettings(((GuildMessageReceivedEvent) event).getGuild()),
+                            discordGuild,
                             m);
                     ((GuildMessageReceivedEvent) event).getChannel().sendMessage(message).queue();
                 }
@@ -185,7 +187,7 @@ public class Listener implements EventListener
             try {
                 Message message = sia.getServiceManagers().getWelcomeMessageService().displayActiveWelcomeMessage(
                     (GuildMemberJoinEvent) event,
-                    sia.getServiceManagers().getGuildSettingsService().getSettings(((GuildMemberJoinEvent) event).getGuild()));
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(gevent.getGuild()));
 
                 ((GuildMemberJoinEvent) event).getGuild().getDefaultChannel().sendMessage(message).complete();
             } catch (NoWelcomeMessageFound | NullPointerException ignored) { }
@@ -219,18 +221,23 @@ public class Listener implements EventListener
         else if (event instanceof GuildMemberRoleAddEvent)
         {
             GuildMemberRoleAddEvent gmrae = (GuildMemberRoleAddEvent) event;
+            DiscordGuild discordGuild =
+                sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(((GuildMemberRoleAddEvent) event).getGuild());
             
             // Signal the modlogger if someone was muted
-            Role mRole = sia.getServiceManagers().getGuildSettingsService().getSettings(gmrae.getGuild()).getMutedRole(gmrae.getGuild());
+            Role mRole = sia.getServiceManagers().getGuildSettingsService().guildSettings(discordGuild, gmrae.getGuild())
+                .getMutedRole(gmrae.getGuild());
             if(gmrae.getRoles().contains(mRole))
                 sia.getModLogger().setNeedUpdate(gmrae.getGuild());
         }
         else if (event instanceof GuildMemberRoleRemoveEvent)
         {
             GuildMemberRoleRemoveEvent gmrre = (GuildMemberRoleRemoveEvent) event;
+            DiscordGuild discordGuild =
+                sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(((GuildMemberRoleRemoveEvent) event).getGuild());
             
             // Signal the modlogger if someone was unmuted
-            Role mRole = sia.getServiceManagers().getGuildSettingsService().getSettings(gmrre.getGuild()).getMutedRole(gmrre.getGuild());
+            Role mRole = discordGuild.getGuildSettings().getMutedRole(gmrre.getGuild());
             if(gmrre.getRoles().contains(mRole))
             {
                 try {
@@ -291,7 +298,18 @@ public class Listener implements EventListener
         else if (event instanceof GuildJoinEvent)
         {
             TextChannel defaultChannel = ((GuildJoinEvent) event).getGuild().getDefaultChannel();
+            Pair<Boolean, DiscordGuild> discordGuildPair =
+                sia.getServiceManagers().getDiscordGuildService().discordGuildExists(((GuildJoinEvent) event).getGuild());
+
+            String welcomeBack = "";
+            if ( discordGuildPair.getKey() )
+                welcomeBack =
+                    "Thanks for having me back **" + discordGuildPair.getValue().getGuildName() + "**! All your settings are still" +
+                        " present from the last time I was here. If it's been awhile, make sure to check out any new" +
+                        " things i may be able to do. As a reminder:\n\n";
+
             String message =
+                welcomeBack +
                 "Type `" + sia.getApplicationProperties().getDiscord().getPrefix() +
                 "help" +
                 "` for help and information.\n\n" + FormatUtil.helpLinksJoin((GuildJoinEvent) event);
@@ -310,6 +328,12 @@ public class Listener implements EventListener
                     sia.getServiceManagers().getDiscordUserService().addNewUser(member.getUser().getIdLong());
             }
 
+            //create default settings
+            GuildSettings guildSettings =
+                sia.getServiceManagers().getGuildSettingsService().getGuildSettings(discordGuildPair.getValue());
+            discordGuildPair.getValue().setGuildSettings(guildSettings);
+            sia.getServiceManagers().getDiscordGuildService().save(discordGuildPair.getValue());
+
             //add the roles
             sia.getServiceManagers().guildRolesService().addAllRoles(((GuildJoinEvent) event).getGuild().getRoles());
 
@@ -326,10 +350,10 @@ public class Listener implements EventListener
 
             if (((MessageReactionAddEvent) event).getUser().isBot()) return;
 
-            GuildSettings guildSettings =
-                sia.getServiceManagers().getGuildSettingsService().getSettings(((MessageReactionAddEvent) event).getGuild());
+            DiscordGuild discordGuild =
+                sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(((MessageReactionAddEvent) event).getGuild());
             GiveAway giveAway = sia.getServiceManagers().getGiveAwayService().getGiveAway(
-                    guildSettings,
+                    discordGuild,
                     ((MessageReactionAddEvent) event).getMessageIdLong());
             if ( giveAway == null )
                 return; // message is not a giveaway ignore
@@ -357,14 +381,18 @@ public class Listener implements EventListener
             sia.getLogWebhook().send("\uD83D\uDD3A Shard `"+shardinfo+"` has connected. Guilds: `" // 🔺
                     +event.getJDA().getGuildCache().size()+"` Users: `"+event.getJDA().getUserCache().size()+"`");
 
+            // Update all guild settings if needed
+            sia.getServiceManagers().getDiscordGuildService().updateDiscordGuilds(sia);
+
             // Search for new users since last join
             sia.checkForUserSinceShutdown();
+
 
             // Launch up the threads schedulers
             sia.getThreadpool().scheduleWithFixedDelay(() ->
                 sia.getServiceManagers().getTempBansService().checkUnbans(event.getJDA()), 0, 2, TimeUnit.MINUTES);
             sia.getThreadpool().scheduleWithFixedDelay(() ->
-                sia.getServiceManagers().getTempMutesService().checkUnmutes(event.getJDA(), sia.getServiceManagers().getGuildSettingsService()), 0, 45, TimeUnit.SECONDS);
+                sia.getServiceManagers().getTempMutesService().checkUnmutes(event.getJDA(), sia.getServiceManagers().getDiscordGuildService()), 0, 45, TimeUnit.SECONDS);
             sia.getThreadpool().scheduleWithFixedDelay(() ->
                 sia.getServiceManagers().getPollService().checkExpiredPolls(event.getJDA()), 0, 30, TimeUnit.SECONDS);
             sia.getThreadpool().scheduleWithFixedDelay(() ->

@@ -1,6 +1,7 @@
 package com.trievosoftware.application.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -88,6 +89,11 @@ public class AutoMod implements Serializable {
     @Column(name = "dehoist_char", nullable = false)
     private Integer dehoistChar;
 
+    @OneToOne(mappedBy = "autoMod")
+    @JsonIgnore
+    private DiscordGuild discordGuild;
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
     public AutoMod() {}
 
     public void setDefaults(Long guildId) {
@@ -108,7 +114,6 @@ public class AutoMod implements Serializable {
         this.dehoistChar = 0;
     }
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -310,6 +315,19 @@ public class AutoMod implements Serializable {
 
     public void setDehoistChar(Integer dehoistChar) {
         this.dehoistChar = dehoistChar;
+    }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public AutoMod discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

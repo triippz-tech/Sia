@@ -61,6 +61,11 @@ public class GuildEvent implements Serializable {
     @JsonIgnoreProperties("guildevents")
     private GuildSettings guildsettings;
 
+    @ManyToOne
+    @JsonIgnoreProperties("guildEvent")
+    private DiscordGuild discordGuild;
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
     public GuildEvent(@NotNull @Size(max = 250) String eventName, @NotNull @Size(max = 250) String eventImageUrl,
                       String eventMessage, @NotNull Instant eventStart, @NotNull Long textChannelId,
                       GuildSettings guildsettings) {
@@ -86,7 +91,6 @@ public class GuildEvent implements Serializable {
     public GuildEvent() {
     }
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -187,6 +191,18 @@ public class GuildEvent implements Serializable {
         return this;
     }
 
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public GuildEvent discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     public Message getGuildEventMessage(Guild guild, Boolean sample)

@@ -98,7 +98,8 @@ public class CheckCmd extends AbstractModeratorCommand
     {
         int strikes = sia.getServiceManagers().getStrikesService().getStrikes(event.getGuild(), user.getIdLong());
         int minutesMuted = sia.getServiceManagers().getTempMutesService().timeUntilUnmute(event.getGuild(), user.getIdLong());
-        Role mRole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
+        Role mRole = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getMutedRole(event.getGuild());
         int minutesBanned = sia.getServiceManagers().getTempBansService().timeUntilUnban(event.getGuild(), user.getIdLong());
         String str = "Moderation Information for "+ FormatUtil.formatFullUser(user)+":\n"
                 + Action.STRIKE.getEmoji() + " Strikes: **"+strikes+"**\n"

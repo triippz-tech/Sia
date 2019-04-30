@@ -1,7 +1,7 @@
 package com.trievosoftware.application.repository;
 
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.GiveAway;
-import com.trievosoftware.application.domain.GuildSettings;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,10 +31,10 @@ public interface GiveAwayRepository extends JpaRepository<GiveAway, Long>, JpaSp
     @Query("select give_away from GiveAway give_away left join fetch give_away.discordusers where give_away.id =:id")
     Optional<GiveAway> findOneWithEagerRelationships(@Param("id") Long id);
 
-    List<GiveAway> findAllByGuildsettings(GuildSettings guildSettings);
-    List<GiveAway> findAllByGuildsettingsAndExpired(GuildSettings guildSettings, Boolean isExpired);
+    List<GiveAway> findAllByDiscordGuild(DiscordGuild discordGuild);
+    List<GiveAway> findAllByDiscordGuildAndExpired(DiscordGuild discordGuild, Boolean isExpired);
     List<GiveAway> findAllByFinishLessThan(Instant now);
-    List<GiveAway> findAllByGuildsettingsAndFinishLessThan(GuildSettings guildSettings, Instant now);
+    List<GiveAway> findAllByDiscordGuildAndFinishLessThan(DiscordGuild discordGuild, Instant now);
     List<GiveAway> findAllByExpired(Boolean isExpired);
-    Optional<GiveAway> findByGuildsettingsAndMessageId(GuildSettings guildSettings, Long messageId);
+    Optional<GiveAway> findByDiscordGuildAndMessageId(DiscordGuild discordGuild, Long messageId);
 }

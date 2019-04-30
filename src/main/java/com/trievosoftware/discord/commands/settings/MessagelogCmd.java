@@ -36,7 +36,8 @@ public class MessagelogCmd extends LogCommand
     @Override
     protected void showCurrentChannel(CommandEvent event)
     {
-        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMessageLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getMessageLogChannel(event.getGuild());
         if(tc==null)
             event.replyWarning("Message Logs are not currently enabled on the server. Please include a channel name.");
         else

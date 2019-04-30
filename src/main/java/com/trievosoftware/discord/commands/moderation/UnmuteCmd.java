@@ -48,7 +48,8 @@ public class UnmuteCmd extends AbstractModeratorCommand
     @SuppressWarnings("Duplicates")
     public void doCommand(CommandEvent event)
     {
-        Role muteRole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
+        Role muteRole = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getMutedRole(event.getGuild());
         if(muteRole == null)
         {
             event.replyError("No Muted role exists!");

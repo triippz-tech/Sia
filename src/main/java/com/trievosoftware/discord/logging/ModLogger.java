@@ -88,7 +88,7 @@ public class ModLogger
     
     public void setNeedUpdate(Guild guild)
     {
-        if(sia.getServiceManagers().getGuildSettingsService().getSettings(guild).getModLogChannel(guild)==null)
+        if(sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(guild).getGuildSettings().getModLogChannel(guild)==null)
             return;
         sia.getThreadpool().schedule(() ->
         {
@@ -101,7 +101,7 @@ public class ModLogger
     
     public int updateCase(Guild guild, int num, String reason)
     {
-        TextChannel modlog = sia.getServiceManagers().getGuildSettingsService().getSettings(guild).getModLogChannel(guild);
+        TextChannel modlog = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(guild).getGuildSettings().getModLogChannel(guild);
         if(modlog==null)
             return -1;
         else if(!modlog.canTalk() || !guild.getSelfMember().hasPermission(modlog, Permission.MESSAGE_HISTORY))
@@ -126,7 +126,8 @@ public class ModLogger
     
     public void postCleanCase(Member moderator, OffsetDateTime now, int numMessages, TextChannel target, String criteria, String reason, MessageEmbed embed)
     {
-        TextChannel modlog = sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getModLogChannel(moderator.getGuild());
+        TextChannel modlog = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild())
+            .getGuildSettings().getModLogChannel(moderator.getGuild());
         if(modlog==null || !modlog.canTalk())
             return;
         getCaseNumberAsync(modlog, i ->
@@ -136,7 +137,7 @@ public class ModLogger
                 modlog.sendMessage(new MessageBuilder()
                         .setEmbed(embed)
                         .append(FormatUtil.filterEveryone(LogUtil.modlogCleanFormat(now, 
-                                sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getTimezone(),
+                                sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild()).getGuildSettings().getTimezone(),
                                 i, moderator.getUser(), numMessages, target, criteria, reason)))
                         .build()).queue();
             }
@@ -146,50 +147,59 @@ public class ModLogger
     
     public void postStrikeCase(Member moderator, OffsetDateTime now, int givenStrikes, int oldStrikes, int newStrikes, User target, String reason)
     {
-        TextChannel modlog = sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getModLogChannel(moderator.getGuild());
+        TextChannel modlog = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild())
+            .getGuildSettings().getModLogChannel(moderator.getGuild());
         if(modlog==null || !modlog.canTalk())
             return;
         getCaseNumberAsync(modlog, i -> 
         {
             modlog.sendMessage(FormatUtil.filterEveryone(LogUtil.modlogStrikeFormat(now, 
-                    sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getTimezone(), i,
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild())
+                        .getGuildSettings().getTimezone(), i,
                     moderator.getUser(), givenStrikes, oldStrikes, newStrikes, target, reason))).queue();
         });
     }
     
-    public void postPardonCase(Member moderator, OffsetDateTime now, int pardonedStrikes, int oldStrikes, int newStrikes, User target, String reason)
+    public void postPardonCase(Member moderator, OffsetDateTime now, int pardonedStrikes, int oldStrikes,
+                               int newStrikes, User target, String reason)
     {
-        TextChannel modlog = sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getModLogChannel(moderator.getGuild());
+        TextChannel modlog = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild())
+            .getGuildSettings().getModLogChannel(moderator.getGuild());
         if(modlog==null || !modlog.canTalk())
             return;
         getCaseNumberAsync(modlog, i -> 
         {
             modlog.sendMessage(FormatUtil.filterEveryone(LogUtil.modlogPardonFormat(now, 
-                    sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getTimezone(), i,
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild())
+                        .getGuildSettings().getTimezone(), i,
                     moderator.getUser(), pardonedStrikes, oldStrikes, newStrikes, target, reason))).queue();
         });
     }
     
     public void postRaidmodeCase(Member moderator, OffsetDateTime now, boolean enabled, String reason)
     {
-        TextChannel modlog = sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getModLogChannel(moderator.getGuild());
+        TextChannel modlog = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild())
+            .getGuildSettings().getModLogChannel(moderator.getGuild());
         if(modlog==null || !modlog.canTalk())
             return;
         getCaseNumberAsync(modlog, i -> 
         {
             
             modlog.sendMessage(FormatUtil.filterEveryone(LogUtil.modlogRaidFormat(now, 
-                    sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getTimezone(), i,
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild())
+                        .getGuildSettings().getTimezone(), i,
                     moderator.getUser(), enabled, reason))).queue();
         });
     }
     
     public void postPseudoCase(Member moderator, OffsetDateTime now, Action act, User target, int minutes, String reason)
     {
-        TextChannel modlog = sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getModLogChannel(moderator.getGuild());
+        TextChannel modlog = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild())
+            .getGuildSettings().getModLogChannel(moderator.getGuild());
         if(modlog==null || !modlog.canTalk())
             return;
-        ZoneId timezone = sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getTimezone();
+        ZoneId timezone = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild())
+            .getGuildSettings().getTimezone();
         getCaseNumberAsync(modlog, i -> 
         {
             modlog.sendMessage(FormatUtil.filterEveryone(minutes > 0 ? 
@@ -204,7 +214,7 @@ public class ModLogger
     {
         if(guild==null)
             return;
-        GuildSettings gs = sia.getServiceManagers().getGuildSettingsService().getSettings(guild);
+        GuildSettings gs = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(guild).getGuildSettings();
         TextChannel modlog = gs.getModLogChannel(guild);
         if(modlog==null || !modlog.canTalk() || !modlog.getGuild().getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS))
             return;
@@ -253,14 +263,16 @@ public class ModLogger
                 if(act!=null)
                 {
                     User mod = ale.getUser();
-                    if(ale.getJDA().getSelfUser().equals(mod) && act==Action.MUTE && AutoMod.RESTORE_MUTE_ROLE_AUDIT.equals(ale.getReason()))
+                    if(ale.getJDA().getSelfUser().equals(mod)
+                        && act==Action.MUTE && AutoMod.RESTORE_MUTE_ROLE_AUDIT.equals(ale.getReason()))
                         continue; // restoring muted role shouldn't trigger a log entry
                     String reason = ale.getReason()==null ? "" : ale.getReason();
                     int minutes = 0;
                     User target = sia.getShardManager().getUserById(ale.getTargetIdLong());
                     if(target==null)
                         target = modlog.getJDA().retrieveUserById(ale.getTargetIdLong()).complete();
-                    ZoneId timezone = sia.getServiceManagers().getGuildSettingsService().getSettings(guild).getTimezone();
+                    ZoneId timezone = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(guild)
+                        .getGuildSettings().getTimezone();
                     if(mod.isBot())
                     {
                         ParsedAuditReason parsed = LogUtil.parse(guild, reason);

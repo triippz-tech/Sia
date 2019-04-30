@@ -71,7 +71,7 @@ public class GuildEventCommand extends AbstractModeratorCommand
             GuildEventException.IncorrectGuildEventParamsException, StringNotIntegerException
         {
             GuildSettings guildSettings =
-                sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild());
+                sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild()).getGuildSettings();
             List<GuildEvent> guildEventList =
                 sia.getServiceManagers().getGuildEventService().findAllByGuildSettingsAndExpired(guildSettings, false);
 
@@ -123,7 +123,7 @@ public class GuildEventCommand extends AbstractModeratorCommand
         public void doCommand(CommandEvent event)
         {
             GuildSettings guildSettings =
-                sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild());
+                sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild()).getGuildSettings();
             List<GuildEvent> guildEventList =
                 sia.getServiceManagers().getGuildEventService().findAllByGuildSettingsAndExpired(guildSettings, false);
 
@@ -184,7 +184,7 @@ public class GuildEventCommand extends AbstractModeratorCommand
         public void doCommand(CommandEvent event)
         {
             GuildSettings guildSettings =
-                sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild());
+                sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild()).getGuildSettings();
             List<GuildEvent> guildEventList =
                 sia.getServiceManagers().getGuildEventService().findAllByGuildSettingsAndExpired(guildSettings, false);
 

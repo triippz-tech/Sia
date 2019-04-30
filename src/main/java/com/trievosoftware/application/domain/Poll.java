@@ -2,6 +2,7 @@ package com.trievosoftware.application.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -65,30 +66,59 @@ public class Poll implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "discorduser_id", referencedColumnName = "id"))
     private Set<DiscordUser> discordusers = new HashSet<>();
 
+    @ManyToOne
+    @JsonIgnoreProperties("poll")
+    private DiscordGuild discordGuild;
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
     public Poll() {
     }
 
-    public Poll(@NotNull Long guildId, @NotNull Long userId, @NotNull String title, @NotNull Instant finishTime) {
-        this.guildId = guildId;
+//    public Poll(@NotNull Long guildId, @NotNull Long userId, @NotNull String title, @NotNull Instant finishTime) {
+//        this.guildId = guildId;
+//        this.userId = userId;
+//        this.title = title;
+//        this.finishTime = finishTime;
+//        this.textChannelId = 0L;
+//        this.messageId = 0L;
+//        this.expired = false;
+//        this.discordGuild = null;
+//    }
+//
+//    public Poll(@NotNull Long guildId, @NotNull Long userId, Long textChannelId,@NotNull Long messageId, @NotNull String title, @NotNull Instant finishTime) {
+//        this.guildId = guildId;
+//        this.userId = userId;
+//        this.textChannelId = textChannelId;
+//        this.messageId = messageId;
+//        this.title = title;
+//        this.finishTime = finishTime;
+//        this.expired = false;
+//        this.discordGuild = null;
+//    }
+
+    public Poll(DiscordGuild discordGuild, @NotNull Long userId, @NotNull String title,
+                @NotNull Instant finishTime) {
+        this.guildId = discordGuild.getGuildId();
         this.userId = userId;
         this.title = title;
         this.finishTime = finishTime;
         this.textChannelId = 0L;
         this.messageId = 0L;
         this.expired = false;
+        this.discordGuild = discordGuild;
     }
 
-    public Poll(@NotNull Long guildId, @NotNull Long userId, Long textChannelId,@NotNull Long messageId, @NotNull String title, @NotNull Instant finishTime) {
-        this.guildId = guildId;
+    public Poll(@NotNull DiscordGuild discordGuild, @NotNull Long userId, Long textChannelId,@NotNull Long messageId, @NotNull String title, @NotNull Instant finishTime) {
+        this.guildId = discordGuild.getGuildId();
         this.userId = userId;
         this.textChannelId = textChannelId;
         this.messageId = messageId;
         this.title = title;
         this.finishTime = finishTime;
         this.expired = false;
+        this.discordGuild = discordGuild;
     }
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -243,6 +273,19 @@ public class Poll implements Serializable {
 
     public void setDiscordusers(Set<DiscordUser> discordUsers) {
         this.discordusers = discordUsers;
+    }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public Poll discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

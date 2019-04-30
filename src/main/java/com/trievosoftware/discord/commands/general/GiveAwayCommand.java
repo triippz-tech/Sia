@@ -3,6 +3,7 @@ package com.trievosoftware.discord.commands.general;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.menu.SelectionDialog;
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.GiveAway;
 import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.exceptions.InvalidTimeUnitException;
@@ -75,9 +76,9 @@ public class GiveAwayCommand extends AbstractModeratorCommand
         @Override
         public void doCommand(CommandEvent event)
         {
-            GuildSettings guildSettings = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild());
+            DiscordGuild discordGuild = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild());
             List<GiveAway> giveAwayList = sia.getServiceManagers().getGiveAwayService()
-                .findAllByGuildsettingsAndExpired(guildSettings, false);
+                .findAllByDiscordGuildAndExpired(discordGuild, false);
 
             if (giveAwayList.size() > 3 ) // wait for sia pro
             {
@@ -90,13 +91,13 @@ public class GiveAwayCommand extends AbstractModeratorCommand
                 .setContent("Let's get started creating your Give Away!"
                     + CANCEL_PHRASE + NAME_PHRASE).build();
             message = event.getTextChannel().sendMessage(message).complete();
-            waitForGiveAwayName(event, message, guildSettings);
+            waitForGiveAwayName(event, message);
         }
     }
 
 
     // The events waiters for building
-    private void waitForGiveAwayName(CommandEvent event, Message oldMessage, GuildSettings guildSettings)
+    private void waitForGiveAwayName(CommandEvent event, Message oldMessage)
     {
         sia.getEventWaiter().waitForEvent(GuildMessageReceivedEvent.class,
             e -> e.getAuthor().equals(event.getAuthor())
@@ -114,7 +115,7 @@ public class GiveAwayCommand extends AbstractModeratorCommand
                     if ( giveAwayName.length() > 250 )
                     {
                         event.replyError("A Give Away name must be no more than 200 characters long");
-                        waitForGiveAwayName(event, oldMessage, guildSettings);
+                        waitForGiveAwayName(event, oldMessage);
                     }
 
                     // delete old message
@@ -128,12 +129,12 @@ public class GiveAwayCommand extends AbstractModeratorCommand
                                 .build()
                         ).build();
                     message = event.getTextChannel().sendMessage(message).complete();
-                    waitForGiveAwayMessage(event, message, guildSettings, giveAwayName);
+                    waitForGiveAwayMessage(event, message, giveAwayName);
                 }
             });
     }
 
-    private void waitForGiveAwayMessage(CommandEvent event, Message oldMessage, GuildSettings guildSettings, String name)
+    private void waitForGiveAwayMessage(CommandEvent event, Message oldMessage, String name)
     {
         sia.getEventWaiter().waitForEvent(GuildMessageReceivedEvent.class,
             e -> e.getAuthor().equals(event.getAuthor())
@@ -150,7 +151,7 @@ public class GiveAwayCommand extends AbstractModeratorCommand
                     if ( giveAwayMessage.length() > 1500 )
                     {
                         event.replyError("A Give Away Message must be no more than 1500 characters long");
-                        waitForGiveAwayMessage(event, oldMessage, guildSettings, name);
+                        waitForGiveAwayMessage(event, oldMessage, name);
                     }
 
                     // delete old message
@@ -160,12 +161,12 @@ public class GiveAwayCommand extends AbstractModeratorCommand
                     Message message = new MessageBuilder()
                         .setContent("Sweet!" + TIME_PHRASE + CANCEL_PHRASE).build();
                     message = event.getTextChannel().sendMessage(message).complete();
-                    waitForGiveAwayFinish(event, message, guildSettings, name, giveAwayMessage);
+                    waitForGiveAwayFinish(event, message, name, giveAwayMessage);
                 }
             });
     }
 
-    private void waitForGiveAwayFinish(CommandEvent event, Message oldMessage, GuildSettings guildSettings,
+    private void waitForGiveAwayFinish(CommandEvent event, Message oldMessage,
                                        String name, String message)
     {
         sia.getEventWaiter().waitForEvent(GuildMessageReceivedEvent.class,
@@ -190,21 +191,22 @@ public class GiveAwayCommand extends AbstractModeratorCommand
                         Message newMessage = new MessageBuilder()
                             .setContent("Awesome, almost done!").build();
                         newMessage = event.getTextChannel().sendMessage(newMessage).complete();
-                        waitForGiveAwayTextChannel(event, newMessage, guildSettings, name, message, finish);
+                        waitForGiveAwayTextChannel(event, newMessage, name, message, finish);
                     }
                     catch (StringNotIntegerException | InvalidTimeUnitException |  NonTimeInputException ex) {
                         event.replyError(ex.getMessage());
-                        waitForGiveAwayFinish(event, oldMessage, guildSettings, name, message);
+                        waitForGiveAwayFinish(event, oldMessage, name, message);
                     }
                 }
             });
     }
 
-    private void waitForGiveAwayTextChannel(CommandEvent event, Message oldMessage, GuildSettings guildSettings,
+    private void waitForGiveAwayTextChannel(CommandEvent event, Message oldMessage,
                                             String name, String message, Instant finish)
     {
+        DiscordGuild discordGuild = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild());
         GiveAway giveAway =
-            sia.getServiceManagers().getGiveAwayService().createGiveAway(name, message, finish, guildSettings);
+            sia.getServiceManagers().getGiveAwayService().createGiveAway(name, message, finish, discordGuild);
 
         Message newMessage = FormatUtil.formatGiveAwayMessage(giveAway, event.getGuild(), false);
         newMessage = event.getTextChannel().sendMessage(newMessage).complete();

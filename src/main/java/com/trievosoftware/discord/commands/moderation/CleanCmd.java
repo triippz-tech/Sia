@@ -82,7 +82,8 @@ public class CleanCmd extends AbstractModeratorCommand
     {
         if(event.getArgs().isEmpty() || event.getArgs().equalsIgnoreCase("help"))
             throw new CommandWarningException(noparams);
-        TextChannel modlog = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModLogChannel(event.getGuild());
+        TextChannel modlog = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getModLogChannel(event.getGuild());
         if(modlog!=null && event.getChannel().getIdLong()==modlog.getIdLong())
             throw new CommandWarningException("This command cannot be used in the modlog!");
         int num = -1;
@@ -220,7 +221,8 @@ public class CleanCmd extends AbstractModeratorCommand
             }
             event.replySuccess("Cleaned **"+del.size()+"** messages."+(week2?week2limit:""));
             event.getClient().applyCooldown(getCooldownKey(event), 1);
-            if(sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModLogChannel(event.getGuild())==null)
+            if(sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+                .getGuildSettings().getModLogChannel(event.getGuild())==null)
                 return;
             final String params;
             if(!all)

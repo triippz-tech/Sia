@@ -150,7 +150,8 @@ public class StrikeHandler
             if(muteDuration>0 && canMute)
             {
                 sia.getServiceManagers().getTempMutesService().setMute(moderator.getGuild(), target.getIdLong(), muteTime(now, muteDuration));
-                Role muted = sia.getServiceManagers().getGuildSettingsService().getSettings(moderator.getGuild()).getMutedRole(moderator.getGuild());
+                Role muted = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(moderator.getGuild())
+                    .getGuildSettings().getMutedRole(moderator.getGuild());
                 Member mem = moderator.getGuild().getMember(target);
                 if(muted==null || mem==null || !moderator.getGuild().getSelfMember().canInteract(muted))
                 {

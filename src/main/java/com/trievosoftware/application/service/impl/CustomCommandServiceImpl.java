@@ -1,18 +1,16 @@
 package com.trievosoftware.application.service.impl;
 
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.service.CustomCommandService;
 import com.trievosoftware.application.domain.CustomCommand;
 import com.trievosoftware.application.domain.GuildRoles;
-import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.exceptions.CustomCommandException;
 import com.trievosoftware.application.repository.CustomCommandRepository;
-import com.trievosoftware.application.service.CustomCommandService;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.utils.FormatUtil;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Service Implementation for managing CustomCommand.
@@ -118,7 +115,7 @@ public class CustomCommandServiceImpl implements CustomCommandService {
 
     @Override
     public CustomCommand addNewCommand(Sia sia, Guild guild, String commandName, List<Role> roles,
-                                       String message, GuildSettings guildsettings)
+                                       String message, DiscordGuild discordGuild)
         throws CustomCommandException.CommandExistsException, CustomCommandException.CommandInvalidParamException {
         log.debug("Request to create new Command={} for Guild={}", commandName, guild);
 
@@ -133,7 +130,7 @@ public class CustomCommandServiceImpl implements CustomCommandService {
             throw new CustomCommandException.CommandInvalidParamException("A custom command's message must not be longer" +
                 " than 2000 characters. As this is the max Discord Allows. Current number of characters: `" + message.length() + "`");
 
-        CustomCommand customCommand = new CustomCommand(guild.getIdLong(), commandName.trim().toUpperCase(), message, guildsettings);
+        CustomCommand customCommand = new CustomCommand(guild.getIdLong(), commandName.trim().toUpperCase(), message, discordGuild);
 
         // add the roles
         for ( Role guildRole : roles ) {
@@ -262,12 +259,12 @@ public class CustomCommandServiceImpl implements CustomCommandService {
     }
 
     @Override
-    public Message checkCustomCommand(Sia sia, List<Role> roles, Guild guild, GuildSettings settings, Message m)
+    public Message checkCustomCommand(Sia sia, List<Role> roles, Guild guild, DiscordGuild discordGuild, Message m)
         throws CustomCommandException.NoCommandExistsException, CustomCommandException.NoPrefixSetException,
         CustomCommandException.InvalidRolePermissionException
     {
-        String msgPrefix = m.getContentStripped().substring(0, settings.getPrefix().length() );
-        if ( !msgPrefix.equalsIgnoreCase(settings.getPrefix()))
+        String msgPrefix = m.getContentStripped().substring(0, discordGuild.getGuildSettings().getPrefix().length() );
+        if ( !msgPrefix.equalsIgnoreCase(discordGuild.getGuildSettings().getPrefix()))
             throw new CustomCommandException.NoPrefixSetException("This guild has no prefix set. A guild must set a prefix to use" +
                 " custom commands. To set your prefix type: `/prefix <prefix>`");
 

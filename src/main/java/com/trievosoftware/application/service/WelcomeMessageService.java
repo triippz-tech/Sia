@@ -1,6 +1,7 @@
 package com.trievosoftware.application.service;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.domain.WelcomeMessage;
 import com.trievosoftware.application.exceptions.IncorrectWelcomeMessageParamsException;
@@ -53,19 +54,19 @@ public interface WelcomeMessageService {
     void delete(Long id);
 
 
-    List<WelcomeMessage> findAllByGuildsettings(GuildSettings guildSettings);
+    List<WelcomeMessage> findAllByDiscordGuild(DiscordGuild discordGuild);
 
-    Optional<WelcomeMessage> findByGuildsettingsAndActive(GuildSettings guildSettings);
+    Optional<WelcomeMessage> findByDiscordGuildAndActive(DiscordGuild discordGuild);
 
-    Optional<WelcomeMessage> findByGuildsettingsAndName(GuildSettings guildSettings, String name);
+    Optional<WelcomeMessage> findByDiscordGuildAndName(DiscordGuild discordGuild, String name);
 
-    Boolean welcomeMessageExists(GuildSettings guildSettings, String name);
+    Boolean welcomeMessageExists(DiscordGuild discordGuild, String name);
 
-    Boolean hasActiveMessage(GuildSettings guildSettings);
+    Boolean hasActiveMessage(DiscordGuild discordGuild);
 
-    Boolean hasWelcomeMessage(GuildSettings guildSettings);
+    Boolean hasWelcomeMessage(DiscordGuild discordGuild);
 
-    WelcomeMessage getActiveWelcome(GuildSettings guildSettings) throws NoActiveWelcomeMessage;
+    WelcomeMessage getActiveWelcome(DiscordGuild discordGuild) throws NoActiveWelcomeMessage;
 
     void createWelcomeMessage(WelcomeMessage welcomeMessage);
 
@@ -74,15 +75,15 @@ public interface WelcomeMessageService {
     void setActive(WelcomeMessage welcomeMessage);
 
     @SuppressWarnings("Duplicates")
-    WelcomeMessage generateWelcomeMessage(CommandEvent event,Sia sia, String name, String title, String body,
+    WelcomeMessage generateWelcomeMessage(CommandEvent event, String name, String title, String body,
                                           String footer, String url, String logo, String activeStr,
-                                          GuildSettings guildSettings) throws IncorrectWelcomeMessageParamsException;
+                                          DiscordGuild discordGuild) throws IncorrectWelcomeMessageParamsException;
 
     @SuppressWarnings("Duplicates")
-    WelcomeMessage modifyWelcomeMessage(CommandEvent event, Sia sia, String name, String title, String body,
+    WelcomeMessage modifyWelcomeMessage(CommandEvent event, String name, String title, String body,
                                         String footer, String url, String logo, String activeStr,
-                                        GuildSettings guildSettings)
+                                        DiscordGuild discordGuild)
         throws IncorrectWelcomeMessageParamsException, NoActiveWelcomeMessage;
 
-    Message displayActiveWelcomeMessage(GuildMemberJoinEvent event, GuildSettings settings) throws NoWelcomeMessageFound;
+    Message displayActiveWelcomeMessage(GuildMemberJoinEvent event, DiscordGuild discordGuild) throws NoWelcomeMessageFound;
 }

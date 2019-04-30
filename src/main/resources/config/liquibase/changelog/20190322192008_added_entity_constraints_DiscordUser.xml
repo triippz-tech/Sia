@@ -13,6 +13,10 @@
                                  constraintName="fk_discord_user_pollitems_id"
                                  referencedColumnNames="id"
                                  referencedTableName="poll_items"/>
-
+        <addForeignKeyConstraint baseColumnNames="discord_guild_id"
+                                 baseTableName="discord_user"
+                                 constraintName="fk_discord_user_discord_guild_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="discord_guild"/>
     </changeSet>
 </databaseChangeLog>

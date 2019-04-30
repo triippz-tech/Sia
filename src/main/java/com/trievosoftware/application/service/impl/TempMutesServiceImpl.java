@@ -1,6 +1,8 @@
 package com.trievosoftware.application.service.impl;
 
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.exceptions.UserNotMutedException;
+import com.trievosoftware.application.service.DiscordGuildService;
 import com.trievosoftware.application.service.GuildSettingsService;
 import com.trievosoftware.application.service.TempMutesService;
 import com.trievosoftware.application.domain.TempMutes;
@@ -236,10 +238,10 @@ public class TempMutesServiceImpl implements TempMutesService {
     /**
      *
      * @param jda
-     * @param guildSettingsService
+     * @param discordGuildService
      */
     @Override
-    public void checkUnmutes(JDA jda, GuildSettingsService guildSettingsService)
+    public void checkUnmutes(JDA jda, DiscordGuildService discordGuildService)
     {
         log.debug("Request to check unmutes");
         List<TempMutes> tempMutesList = findAllByFinishIsLessThan(Instant.now());
@@ -248,7 +250,7 @@ public class TempMutesServiceImpl implements TempMutesService {
             Guild g = jda.getGuildById(tempMutes.getGuildId());
             if(g==null || !g.isAvailable() || !g.getSelfMember().hasPermission(Permission.MANAGE_ROLES))
                 continue;
-            Role mRole = guildSettingsService.getSettings(g).getMutedRole(g);
+            Role mRole = discordGuildService.getDiscordGuild(g).getGuildSettings().getMutedRole(g);
             if(mRole==null || !g.getSelfMember().canInteract(mRole))
             {
                 delete(tempMutes.getId());

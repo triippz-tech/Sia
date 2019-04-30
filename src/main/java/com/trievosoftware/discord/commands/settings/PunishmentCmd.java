@@ -113,7 +113,8 @@ public class PunishmentCmd extends AbstractModeratorCommand
                 }
                 sia.getServiceManagers().getActionsService().setAction(event.getGuild(), numstrikes, Action.MUTE, minutes);
                 successMessage = "Users will now be `muted` "+(minutes>0 ? "for "+ FormatUtil.secondsToTime(minutes*60)+" " : "")+"upon reaching `"+numstrikes+"` strikes.";
-                if(sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild())==null)
+                if(sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+                    .getGuildSettings().getMutedRole(event.getGuild())==null)
                     successMessage += event.getClient().getWarning()+" No muted role currently exists!";
                 break;
             }

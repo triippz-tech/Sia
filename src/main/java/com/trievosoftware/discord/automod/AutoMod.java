@@ -132,7 +132,8 @@ public class AutoMod
         if(event.getMember().getUser().isBot())
             return;
         
-        boolean inRaidMode = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).isInRaidMode();
+        boolean inRaidMode = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().isInRaidMode();
         com.trievosoftware.application.domain.AutoMod ams = sia.getServiceManagers().getAutoModService().getSettings(event.getGuild());
         OffsetDateTime now = OffsetDateTime.now();
         boolean kicking = false;
@@ -187,8 +188,10 @@ public class AutoMod
                 try
                 {
                     event.getGuild().getController()
-                            .addSingleRoleToMember(event.getMember(), sia.getServiceManagers().getGuildSettingsService()
-                                .getSettings(event.getGuild()).getMutedRole(event.getGuild()))
+                            .addSingleRoleToMember(
+                                event.getMember(),
+                                sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+                                    .getGuildSettings().getMutedRole(event.getGuild()))
                             .reason(RESTORE_MUTE_ROLE_AUDIT).queue();
                 } catch(Exception ignore)
                 {

@@ -162,7 +162,8 @@ public class SetupCmd extends AbstractModeratorCommand
         @Override
         public void doCommand(CommandEvent event)
         {
-            Role muted = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
+            Role muted = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+                .getGuildSettings().getMutedRole(event.getGuild());
             String confirmation;
             if(muted!=null)
             {

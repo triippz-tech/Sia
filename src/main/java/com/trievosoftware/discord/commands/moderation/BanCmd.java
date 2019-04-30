@@ -69,7 +69,8 @@ public class BanCmd extends AbstractModeratorCommand
         else
             minutes = 1;
         String reason = LogUtil.auditReasonFormat(event.getMember(), minutes, args.reason);
-        Role modrole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getModeratorRole(event.getGuild());
         StringBuilder builder = new StringBuilder();
         List<Long> ids = new ArrayList<>(args.ids);
         

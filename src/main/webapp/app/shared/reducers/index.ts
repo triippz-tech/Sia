@@ -87,6 +87,10 @@ import guildEvent, {
 import giveAway, {
   GiveAwayState
 } from 'app/entities/give-away/give-away.reducer';
+// prettier-ignore
+import discordGuild, {
+  DiscordGuildState
+} from 'app/entities/discord-guild/discord-guild.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -115,6 +119,7 @@ export interface IRootState {
   readonly customCommand: CustomCommandState;
   readonly guildEvent: GuildEventState;
   readonly giveAway: GiveAwayState;
+  readonly discordGuild: DiscordGuildState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -145,6 +150,7 @@ const rootReducer = combineReducers<IRootState>({
   customCommand,
   guildEvent,
   giveAway,
+  discordGuild,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

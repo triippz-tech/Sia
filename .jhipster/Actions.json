@@ -1,7 +1,15 @@
 {
     "fluentMethods": true,
     "clientRootFolder": "",
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "discordGuild",
+            "otherEntityRelationshipName": "actions",
+            "relationshipName": "discordGuild",
+            "otherEntityField": "id"
+        }
+    ],
     "fields": [
         {
             "fieldName": "guildId",

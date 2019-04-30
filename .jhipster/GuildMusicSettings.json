@@ -43,6 +43,41 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "stayInChannel",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "songInGame",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "nowPlayingImages",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "useEval",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "maxSeconds",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "relationships": [
@@ -53,6 +88,13 @@
             "relationshipName": "playlist",
             "otherEntityField": "id",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "discordGuild",
+            "otherEntityRelationshipName": "guildmusicsettings",
+            "relationshipName": "discordGuild",
+            "ownerSide": false
         }
     ],
     "changelogDate": "20190311195325",

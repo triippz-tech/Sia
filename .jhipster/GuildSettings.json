@@ -28,6 +28,13 @@
             "otherEntityName": "giveAway",
             "otherEntityRelationshipName": "guildsettings",
             "relationshipName": "giveaway"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "discordGuild",
+            "otherEntityRelationshipName": "guildsettings",
+            "relationshipName": "discordGuild",
+            "ownerSide": false
         }
     ],
     "fields": [

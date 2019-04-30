@@ -1,8 +1,8 @@
 package com.trievosoftware.application.service.impl;
 
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.domain.GiveAway;
-import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.application.repository.GiveAwayRepository;
 import com.trievosoftware.application.service.GiveAwayService;
 import com.trievosoftware.discord.Sia;
@@ -12,7 +12,6 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.webhook.WebhookClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -100,25 +99,25 @@ public class GiveAwayServiceImpl implements GiveAwayService {
     }
 
     @Override
-    public List<GiveAway> findAllByGuildsettingsAndExpired(GuildSettings guildSettings, Boolean isExpired)
+    public List<GiveAway> findAllByDiscordGuildAndExpired(DiscordGuild discordGuild, Boolean isExpired)
     {
-        log.debug("Request to get all active Give Aways for Guild={}", guildSettings.getGuildId());
-        return giveAwayRepository.findAllByGuildsettingsAndExpired(guildSettings, isExpired);
+        log.debug("Request to get all active Give Aways for Guild={}", discordGuild.getGuildId());
+        return giveAwayRepository.findAllByDiscordGuildAndExpired(discordGuild, isExpired);
     }
 
     @Override
-    public GiveAway getGiveAway(GuildSettings guildSettings, Long messageId)
+    public GiveAway getGiveAway(DiscordGuild discordGuild, Long messageId)
     {
         log.debug("Request to find Give Away for Guild");
-        Optional<GiveAway> giveAway = giveAwayRepository.findByGuildsettingsAndMessageId(guildSettings, messageId);
+        Optional<GiveAway> giveAway = giveAwayRepository.findByDiscordGuildAndMessageId(discordGuild, messageId);
         return giveAway.orElse(null);
     }
 
     @Override
-    public GiveAway createGiveAway(String name, String message, Instant finish, GuildSettings guildSettings)
+    public GiveAway createGiveAway(String name, String message, Instant finish, DiscordGuild discordGuild)
     {
         log.debug("Request to create non-persisted GiveAway");
-        return new GiveAway(name, message, finish, guildSettings);
+        return new GiveAway(name, message, finish, discordGuild);
     }
 
     @Override
@@ -130,7 +129,7 @@ public class GiveAwayServiceImpl implements GiveAwayService {
         if ( giveAway.getDiscordusers().contains(discordUser))
         {
             log.debug("User={} has already voted", user.getName());
-            sia.getJDA(giveAway.getGuildsettings().getGuildId()).getUserById(user.getIdLong()).
+            sia.getJDA(giveAway.getDiscordGuild().getGuildId()).getUserById(user.getIdLong()).
                 openPrivateChannel().complete().sendMessage("You have already voted on `" + giveAway.getName() + "`").queue();
             return;
         }
@@ -151,7 +150,7 @@ public class GiveAwayServiceImpl implements GiveAwayService {
         {
             if ( !giveAway.isExpired() )
             {
-                Guild guild = jda.getGuildById(giveAway.getGuildsettings().getGuildId());
+                Guild guild = jda.getGuildById(giveAway.getDiscordGuild().getGuildId());
                 DiscordUser winner = OtherUtil.randomUser(giveAway.getDiscordusers());
 
                 if ( winner == null ) {
@@ -206,11 +205,11 @@ public class GiveAwayServiceImpl implements GiveAwayService {
             {
                 delete(giveAway.getId());
                 Guild guild =
-                    sia.getJDA(giveAway.getGuildsettings().getGuildId()).getGuildById(giveAway.getGuildsettings().getGuildId());
-                GuildSettings guildSettings =
-                    sia.getServiceManagers().getGuildSettingsService().getSettings(guild);
-                guildSettings.removeGiveaway(giveAway);
-                sia.getServiceManagers().getGuildSettingsService().save(guildSettings);
+                    sia.getJDA(giveAway.getDiscordGuild().getGuildId()).getGuildById(giveAway.getDiscordGuild().getGuildId());
+                DiscordGuild discordGuild =
+                    sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(guild);
+                discordGuild.removeGiveAway(giveAway);
+                sia.getServiceManagers().getDiscordGuildService().save(discordGuild);
             }
         }
 

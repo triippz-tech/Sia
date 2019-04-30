@@ -1,5 +1,6 @@
 package com.trievosoftware.application.service;
 
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.domain.Poll;
 import com.trievosoftware.application.domain.PollItems;
@@ -82,7 +83,7 @@ public interface PollService {
 
     void createPoll(Poll poll);
 
-    Poll createPoll(Long guildId, Long userId, String title, Instant finishTime);
+    Poll createPoll(DiscordGuild discordGuild, Long userId, String title, Instant finishTime);
 
     void addItemToPoll(Long pollId, PollItems item) throws NoPollsFoundException;
 

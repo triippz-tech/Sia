@@ -51,7 +51,8 @@ public class MuteCmd extends AbstractModeratorCommand
     @SuppressWarnings("Duplicates")
     public void doCommand(CommandEvent event)
     {
-        Role muteRole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getMutedRole(event.getGuild());
+        Role muteRole = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getMutedRole(event.getGuild());
         if(muteRole == null)
         {
             event.replyError("No Muted role exists!");
@@ -84,7 +85,8 @@ public class MuteCmd extends AbstractModeratorCommand
         else
             minutes = 1;
         String reason = LogUtil.auditReasonFormat(event.getMember(), minutes, args.reason);
-        Role modrole = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModeratorRole(event.getGuild());
+        Role modrole = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getModeratorRole(event.getGuild());
         StringBuilder builder = new StringBuilder();
         List<Member> toMute = new LinkedList<>();
         

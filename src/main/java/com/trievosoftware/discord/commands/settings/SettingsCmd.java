@@ -16,6 +16,7 @@
 package com.trievosoftware.discord.commands.settings;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.PremiumInfo;
 import com.trievosoftware.discord.Sia;
 import com.trievosoftware.discord.commands.meta.AbstractModeratorCommand;
@@ -43,12 +44,13 @@ public class SettingsCmd extends AbstractModeratorCommand
     public void doCommand(CommandEvent event)
     {
         PremiumInfo pi = sia.getServiceManagers().getPremiumService().getPremiumInfo(event.getGuild());
+        DiscordGuild discordGuild = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild());
         event.getChannel().sendMessage(new MessageBuilder().append("**")
             .append(event.getSelfUser().getName()).append("** settings on **")
             .append(event.getGuild().getName()).append("**:")
                 .setEmbed(new EmbedBuilder()
                         //.setThumbnail(event.getGuild().getIconId()==null ? event.getSelfUser().getEffectiveAvatarUrl() : event.getGuild().getIconUrl())
-                        .addField(sia.getServiceManagers().getGuildSettingsService().getSettingsDisplay(event.getGuild()))
+                        .addField(sia.getServiceManagers().getGuildSettingsService().getSettingsDisplay(discordGuild, event.getGuild()))
                         .addField(sia.getServiceManagers().getActionsService().getAllPunishmentsDisplay(event.getGuild()))
                         .addField(sia.getServiceManagers().getAutoModService().getSettingsDisplay(event.getGuild()))
                         .setFooter(pi.getFooterString(), null)

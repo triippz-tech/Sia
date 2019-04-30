@@ -85,7 +85,8 @@ public class ReasonCmd extends AbstractModeratorCommand
                     break;
                 default:
                     event.replySuccess("Updated case **"+result+"** in "+
-                        sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getModLogChannel(event.getGuild()).getAsMention());
+                        sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+                            .getGuildSettings().getModLogChannel(event.getGuild()).getAsMention());
                     break;
             }
         });

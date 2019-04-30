@@ -14,5 +14,10 @@
                                  referencedColumnNames="id"
                                  referencedTableName="custom_command"/>
 
+        <addForeignKeyConstraint baseColumnNames="discord_guild_id"
+                                 baseTableName="guild_roles"
+                                 constraintName="fk_guild_roles_discord_guild_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="discord_guild"/>
     </changeSet>
 </databaseChangeLog>

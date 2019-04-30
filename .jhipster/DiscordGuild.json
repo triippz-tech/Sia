@@ -1,0 +1,142 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipName": "guildSettings",
+            "otherEntityName": "guildSettings",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "guildId",
+            "ownerSide": true,
+            "useJPADerivedIdentifier": false,
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "auditCache",
+            "otherEntityName": "auditCache",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "useJPADerivedIdentifier": false,
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "autoMod",
+            "otherEntityName": "autoMod",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "useJPADerivedIdentifier": false,
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "guildMusicSettings",
+            "otherEntityName": "guildMusicSettings",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "useJPADerivedIdentifier": false,
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "discordUser",
+            "otherEntityName": "discordUser",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "ignored",
+            "otherEntityName": "ignored",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "tempMutes",
+            "otherEntityName": "tempMutes",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "tempBans",
+            "otherEntityName": "tempBans",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "poll",
+            "otherEntityName": "poll",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "guildRoles",
+            "otherEntityName": "guildRoles",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "customCommand",
+            "otherEntityName": "customCommand",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "actions",
+            "otherEntityName": "actions",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "strikes",
+            "otherEntityName": "strikes",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "welcomeMessage",
+            "otherEntityName": "welcomeMessage",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "guildEvent",
+            "otherEntityName": "guildEvent",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        },
+        {
+            "relationshipName": "giveAway",
+            "otherEntityName": "giveAway",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "discordGuild"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "guildId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "guildName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "inviteLink",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20190423152118",
+    "dto": "no",
+    "searchEngine": false,
+    "service": "serviceImpl",
+    "entityTableName": "discord_guild",
+    "databaseType": "sql",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination"
+}

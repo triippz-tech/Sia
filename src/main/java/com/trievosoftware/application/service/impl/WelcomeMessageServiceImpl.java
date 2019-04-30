@@ -1,7 +1,7 @@
 package com.trievosoftware.application.service.impl;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.trievosoftware.application.domain.GuildSettings;
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.WelcomeMessage;
 import com.trievosoftware.application.exceptions.IncorrectWelcomeMessageParamsException;
 import com.trievosoftware.application.exceptions.NoActiveWelcomeMessage;
@@ -14,7 +14,6 @@ import com.trievosoftware.discord.utils.Pair;
 import com.trievosoftware.discord.utils.Validate;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Service Implementation for managing WelcomeMessage.
@@ -94,49 +91,49 @@ public class WelcomeMessageServiceImpl implements WelcomeMessageService {
     }
 
     @Override
-    public List<WelcomeMessage> findAllByGuildsettings(GuildSettings guildSettings) {
-        log.debug("Request to find all WelcomeMessages for Guild={}", guildSettings.getGuildId());
-        return welcomeMessageRepository.findAllByGuildsettings(guildSettings);
+    public List<WelcomeMessage> findAllByDiscordGuild(DiscordGuild discordGuild) {
+        log.debug("Request to find all WelcomeMessages for Guild={}", discordGuild.getGuildId());
+        return welcomeMessageRepository.findAllByDiscordGuild(discordGuild);
     }
 
     @Override
-    public Optional<WelcomeMessage> findByGuildsettingsAndActive(GuildSettings guildSettings) {
-        log.debug("Request to find Active WelcomeMessage for Guild={}", guildSettings.getGuildId());
-        return welcomeMessageRepository.findByGuildsettingsAndActive(guildSettings, true);
+    public Optional<WelcomeMessage> findByDiscordGuildAndActive(DiscordGuild discordGuild) {
+        log.debug("Request to find Active WelcomeMessage for Guild={}", discordGuild.getGuildId());
+        return welcomeMessageRepository.findByDiscordGuildAndActive(discordGuild, true);
     }
 
     @Override
-    public Optional<WelcomeMessage> findByGuildsettingsAndName(GuildSettings guildSettings, String name) {
-        log.debug("Request to find WelcomeMessage={} for Guild={}", name, guildSettings);
-        return welcomeMessageRepository.findByGuildsettingsAndName(guildSettings, name);
+    public Optional<WelcomeMessage> findByDiscordGuildAndName(DiscordGuild discordGuild, String name) {
+        log.debug("Request to find WelcomeMessage={} for Guild={}", name, discordGuild);
+        return welcomeMessageRepository.findByDiscordGuildAndName(discordGuild, name);
     }
 
     @Override
-    public Boolean welcomeMessageExists(GuildSettings guildSettings, String name)
+    public Boolean welcomeMessageExists(DiscordGuild discordGuild, String name)
     {
         log.debug("Request to see if WelcomeMessage={} exists", name);
-        Optional<WelcomeMessage> welcomeMessage = findByGuildsettingsAndName(guildSettings, name);
+        Optional<WelcomeMessage> welcomeMessage = findByDiscordGuildAndName(discordGuild, name);
         return welcomeMessage.isPresent();
     }
 
     @Override
-    public Boolean hasActiveMessage(GuildSettings guildSettings) {
-        log.debug("Request to see if Guild={} has Active WelcomeMessage", guildSettings.getGuildId());
-        Optional<WelcomeMessage> welcomeMessage = findByGuildsettingsAndActive(guildSettings);
+    public Boolean hasActiveMessage(DiscordGuild discordGuild) {
+        log.debug("Request to see if Guild={} has Active WelcomeMessage", discordGuild.getGuildId());
+        Optional<WelcomeMessage> welcomeMessage = findByDiscordGuildAndActive(discordGuild);
         return welcomeMessage.isPresent();
     }
 
     @Override
-    public Boolean hasWelcomeMessage(GuildSettings guildSettings) {
-        log.debug("Request to see if Guild={} has WelcomeMessage", guildSettings.getGuildId());
-        List<WelcomeMessage> welcomeMessages = findAllByGuildsettings(guildSettings);
+    public Boolean hasWelcomeMessage(DiscordGuild discordGuild) {
+        log.debug("Request to see if Guild={} has WelcomeMessage", discordGuild.getGuildId());
+        List<WelcomeMessage> welcomeMessages = findAllByDiscordGuild(discordGuild);
         return !welcomeMessages.isEmpty();
     }
 
     @Override
-    public WelcomeMessage getActiveWelcome(GuildSettings guildSettings) throws NoActiveWelcomeMessage {
-        log.debug("Request to get active WelcomeMessage for Guild={}", guildSettings.getGuildId());
-        Optional<WelcomeMessage> welcomeMessage = findByGuildsettingsAndActive(guildSettings);
+    public WelcomeMessage getActiveWelcome(DiscordGuild discordGuild) throws NoActiveWelcomeMessage {
+        log.debug("Request to get active WelcomeMessage for Guild={}", discordGuild.getGuildId());
+        Optional<WelcomeMessage> welcomeMessage = findByDiscordGuildAndActive(discordGuild);
         if ( !welcomeMessage.isPresent() )
             throw new NoActiveWelcomeMessage("This Guild has no active Welcome Message set");
 
@@ -152,7 +149,7 @@ public class WelcomeMessageServiceImpl implements WelcomeMessageService {
         if (welcomeMessage.isActive())
         {
             // Check if there is a current meessage marked as active
-            Optional<WelcomeMessage> activeMessage = findByGuildsettingsAndActive(welcomeMessage.getGuildsettings());
+            Optional<WelcomeMessage> activeMessage = findByDiscordGuildAndActive(welcomeMessage.getDiscordGuild());
             if ( activeMessage.isPresent() )
             {
                 // if there is make it inactive
@@ -174,7 +171,7 @@ public class WelcomeMessageServiceImpl implements WelcomeMessageService {
     public void setActive(WelcomeMessage welcomeMessage)
     {
         log.debug("Request to change active welcome message");
-        Optional<WelcomeMessage> activeMessage = findByGuildsettingsAndActive(welcomeMessage.getGuildsettings());
+        Optional<WelcomeMessage> activeMessage = findByDiscordGuildAndActive(welcomeMessage.getDiscordGuild());
 
         // Set the old message to inactive
         if ( activeMessage.isPresent() )
@@ -189,15 +186,15 @@ public class WelcomeMessageServiceImpl implements WelcomeMessageService {
     }
 
     @Override
-    public WelcomeMessage generateWelcomeMessage(CommandEvent event, Sia sia, String name, String title, String body,
+    public WelcomeMessage generateWelcomeMessage(CommandEvent event, String name, String title, String body,
                                                  String footer, String url, String logo, String activeStr,
-                                                 GuildSettings guildSettings)
+                                                 DiscordGuild discordGuild)
         throws IncorrectWelcomeMessageParamsException
     {
         log.debug("Building welcome message for Guild={}", event.getGuild().getName());
 
         WelcomeMessage.WelcomeMessageBuilder builder = new WelcomeMessage.WelcomeMessageBuilder();
-        if ( welcomeMessageExists(sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()), name) )
+        if ( welcomeMessageExists(discordGuild, name) )
             throw new IncorrectWelcomeMessageParamsException("A Welcome Message with that name already exists");
         if ( body.length() > 2000 )
             throw new IncorrectWelcomeMessageParamsException("The body of a Welcome Message must not be longer than " +
@@ -231,21 +228,21 @@ public class WelcomeMessageServiceImpl implements WelcomeMessageService {
         builder.websiteUrl(url);
         builder.logoUrl(logo);
         builder.isActive(active);
-        builder.guildSettings(guildSettings);
+        builder.discordGuild(discordGuild);
 
         return builder.build();
     }
 
     @Override
     @SuppressWarnings("Duplicates")
-    public WelcomeMessage modifyWelcomeMessage(CommandEvent event, Sia sia, String name, String title, String body,
+    public WelcomeMessage modifyWelcomeMessage(CommandEvent event, String name, String title, String body,
                                                String footer, String url, String logo, String activeStr,
-                                               GuildSettings guildSettings)
+                                               DiscordGuild discordGuild)
         throws IncorrectWelcomeMessageParamsException, NoActiveWelcomeMessage
     {
         log.debug("Modifying welcome message for Guild={}", event.getGuild().getName());
 
-        Optional<WelcomeMessage> welcomeMessage = findByGuildsettingsAndActive(guildSettings);
+        Optional<WelcomeMessage> welcomeMessage = findByDiscordGuildAndActive(discordGuild);
         if ( !welcomeMessage.isPresent() ) throw new NoActiveWelcomeMessage("Error getting greeting `" + name + "`");
 
         if ( body.length() > 2000 )
@@ -278,8 +275,8 @@ public class WelcomeMessageServiceImpl implements WelcomeMessageService {
 
 
     @Override
-    public Message displayActiveWelcomeMessage(GuildMemberJoinEvent event, GuildSettings settings) throws NoWelcomeMessageFound {
-        Optional<WelcomeMessage> welcomeMessage = findByGuildsettingsAndActive(settings);
+    public Message displayActiveWelcomeMessage(GuildMemberJoinEvent event, DiscordGuild discordGuild) throws NoWelcomeMessageFound {
+        Optional<WelcomeMessage> welcomeMessage = findByDiscordGuildAndActive(discordGuild);
         if (!welcomeMessage.isPresent()) throw new NoWelcomeMessageFound("Guild has no welcome message");
         return FormatUtil.formatWelcomeMessage(welcomeMessage.get(), event);
     }

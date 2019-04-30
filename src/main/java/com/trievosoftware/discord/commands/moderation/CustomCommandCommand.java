@@ -5,7 +5,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.jagrosh.jdautilities.menu.ButtonMenu;
 import com.trievosoftware.application.domain.CustomCommand;
-import com.trievosoftware.application.domain.GuildSettings;
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.exceptions.CustomCommandException;
 import com.trievosoftware.discord.Constants;
 import com.trievosoftware.discord.Sia;
@@ -72,9 +72,9 @@ public class CustomCommandCommand extends AbstractModeratorCommand {
                 event.replyError("A command must contain: A command code, one or more roles, a message to display when the command is called");
                 return;
             }
-            GuildSettings guildSettings = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild());
+            DiscordGuild discordGuild = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild());
 
-            if ( guildSettings.getPrefix().isEmpty() )
+            if ( discordGuild.getGuildSettings().getPrefix().isEmpty() )
             {
                 event.replyError("Your guild must have a custom prefix set to create custom commands. To set a prefix type:" +
                     " `/prefix <prefix>`");
@@ -95,13 +95,13 @@ public class CustomCommandCommand extends AbstractModeratorCommand {
             }
 
             CustomCommand customCommand = sia.getServiceManagers().getCustomCommandService()
-                .addNewCommand(sia, event.getGuild(), args[0].replaceAll(" ", ""), roles, args[2], guildSettings);
+                .addNewCommand(sia, event.getGuild(), args[0].replaceAll(" ", ""), roles, args[2], discordGuild);
 
             waitForConfirmation(event,"Please confirm that the command message looks ok", customCommand.getMessage(),
                 () -> {
                     event.getMessage().delete().complete();
                     event.replySuccess("New Custom Command created. To use this command type: `"
-                        + guildSettings.getPrefix() + args[0].trim() + "`");
+                        + discordGuild.getGuildSettings().getPrefix() + args[0].trim() + "`");
                 },
                 () -> {
                     try {
@@ -133,13 +133,13 @@ public class CustomCommandCommand extends AbstractModeratorCommand {
                 return;
             }
             CustomCommand command = sia.getServiceManagers().getCustomCommandService().getCommand(event.getGuild(), event.getArgs());
-            GuildSettings settings = command.getGuildsettings();
+            DiscordGuild discordGuild = command.getDiscordGuild();
 
             waitForConfirmation(event, "Are you sure you want to delete this command?", command.getMessage(),
                 () -> {
                     try {
                         sia.getServiceManagers().getCustomCommandService().removeCommand(event.getGuild(), command.getCommandName());
-                        event.replySuccess("Command `" + settings.getPrefix() + command.getCommandName() + "` has been deleted from guild.");
+                        event.replySuccess("Command `" + discordGuild.getGuildSettings().getPrefix() + command.getCommandName() + "` has been deleted from guild.");
                         event.getMessage().delete().queue();
                     } catch (CustomCommandException.NoCommandExistsException e) {
                         event.replyError(e.getMessage());
@@ -337,7 +337,7 @@ public class CustomCommandCommand extends AbstractModeratorCommand {
                     () -> {
                         event.getMessage().delete().complete();
                         event.replySuccess("Custom Command message changed. To use this command type: `"
-                            + oldCommand.getGuildsettings().getPrefix() + args[0].trim() + "`");
+                            + oldCommand.getDiscordGuild().getGuildSettings().getPrefix() + args[0].trim() + "`");
                     },
                     () -> {
                         try {
@@ -372,14 +372,14 @@ public class CustomCommandCommand extends AbstractModeratorCommand {
                 return;
             }
 
-            GuildSettings settings = customCommands.get(0).getGuildsettings();
+            DiscordGuild discordGuild = customCommands.get(0).getDiscordGuild();
             MessageBuilder builder = new MessageBuilder();
             StringBuilder stringBuilder = new StringBuilder();
             builder.setContent("Custom Commands for **" + event.getGuild().getName() + "**");
 
             for ( CustomCommand command : customCommands )
             {
-                stringBuilder.append(settings.getPrefix()).append(command.getCommandName()).append("\n");
+                stringBuilder.append(discordGuild.getGuildSettings().getPrefix()).append(command.getCommandName()).append("\n");
             }
 
             builder.setEmbed(new EmbedBuilder().setDescription(stringBuilder.toString()).build());

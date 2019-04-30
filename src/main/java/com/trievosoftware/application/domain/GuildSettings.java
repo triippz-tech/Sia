@@ -1,6 +1,7 @@
 package com.trievosoftware.application.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -91,12 +92,16 @@ public class GuildSettings implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<GiveAway> giveaways = new HashSet<>();
 
+    @OneToOne(mappedBy = "guildSettings")
+    @JsonIgnore
+    private DiscordGuild discordGuild;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
     public GuildSettings () {}
 
-    public void setDefaults(Long guildId) {
-        this.guildId = guildId;
+    public void setDefaults(DiscordGuild discordGuild) {
+        this.guildId = discordGuild.getGuildId();
         this.modRoleId = 0L;
         this.modLogId = 0L;
         this.muteRole = 0L;
@@ -107,6 +112,24 @@ public class GuildSettings implements Serializable {
         this.prefix = "";
         this.timezone = DEFAULT_TIMEZONE.toString();
         this.raidMode = -2;
+
+        this.discordGuild = discordGuild;
+    }
+
+    public void setDefaults(Guild guild) {
+        this.guildId = guild.getIdLong();
+        this.modRoleId = 0L;
+        this.modLogId = 0L;
+        this.muteRole = 0L;
+        this.serverLogId = 0L;
+        this.messageLogId = 0L;
+        this.voiceLogId = 0L;
+        this.avatarLogId = 0L;
+        this.prefix = "";
+        this.timezone = DEFAULT_TIMEZONE.toString();
+        this.raidMode = -2;
+
+        this.discordGuild = null;
     }
 
     public Long getId() {
@@ -354,6 +377,19 @@ public class GuildSettings implements Serializable {
 
     public void setGiveaways(Set<GiveAway> giveAways) {
         this.giveaways = giveAways;
+    }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public GuildSettings discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

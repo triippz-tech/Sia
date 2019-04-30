@@ -1,6 +1,7 @@
 package com.trievosoftware.application.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jagrosh.jdautilities.command.GuildSettingsProvider;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.trievosoftware.discord.utils.FormatUtil;
@@ -80,35 +81,10 @@ public class GuildMusicSettings implements Serializable, GuildSettingsProvider {
     @JoinColumn(unique = true)
     private Playlist playlist;
 
-    public void setDefaults(Long guildId) {
-        this.guildId = guildId;
-        this.textChannelId = 0L;
-        this.voiceChannelId = 0L;
-        this.djRoleId = 0L;
-        this.volume = 100;
-        this.playlist = null;
-        this.repeat = false;
-        this.stayInChannel = false;
-        this.songInGame = false;
-        this.nowPlayingImages = false;
-        this.use_eval = false;
-        this.maxSeconds = 0L;
-    }
+    @OneToOne(mappedBy = "guildMusicSettings")
+    @JsonIgnore
+    private DiscordGuild discordGuild;
 
-    public Role getDjRole(Guild guild)
-    {
-        return guild.getRoleById(djRoleId);
-    }
-
-    public TextChannel getTextChannelId(Guild guild)
-    {
-        return guild.getTextChannelById(textChannelId);
-    }
-
-    public VoiceChannel getVoiceChannelId(Guild guild)
-    {
-        return guild.getVoiceChannelById(voiceChannelId);
-    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -282,7 +258,50 @@ public class GuildMusicSettings implements Serializable, GuildSettingsProvider {
     public void setPlaylist(Playlist playlist) {
         this.playlist = playlist;
     }
+
+    public DiscordGuild getDiscordGuild() {
+        return discordGuild;
+    }
+
+    public GuildMusicSettings discordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+        return this;
+    }
+
+    public void setDiscordGuild(DiscordGuild discordGuild) {
+        this.discordGuild = discordGuild;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public void setDefaults(Long guildId) {
+        this.guildId = guildId;
+        this.textChannelId = 0L;
+        this.voiceChannelId = 0L;
+        this.djRoleId = 0L;
+        this.volume = 100;
+        this.playlist = null;
+        this.repeat = false;
+        this.stayInChannel = false;
+        this.songInGame = false;
+        this.nowPlayingImages = false;
+        this.use_eval = false;
+        this.maxSeconds = 0L;
+    }
+
+    public Role getDjRole(Guild guild)
+    {
+        return guild.getRoleById(djRoleId);
+    }
+
+    public TextChannel getTextChannelId(Guild guild)
+    {
+        return guild.getTextChannelById(textChannelId);
+    }
+
+    public VoiceChannel getVoiceChannelId(Guild guild)
+    {
+        return guild.getVoiceChannelById(voiceChannelId);
+    }
 
     public boolean isTooLong(AudioTrack track)
     {

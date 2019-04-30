@@ -7,6 +7,13 @@
             "otherEntityName": "guildRoles",
             "relationshipType": "one-to-many",
             "otherEntityRelationshipName": "customcommand"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "discordGuild",
+            "otherEntityRelationshipName": "customcommand",
+            "relationshipName": "discordGuild",
+            "otherEntityField": "guildName"
         }
     ],
     "fields": [

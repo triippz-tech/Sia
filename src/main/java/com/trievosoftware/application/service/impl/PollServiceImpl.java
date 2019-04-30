@@ -1,5 +1,6 @@
 package com.trievosoftware.application.service.impl;
 
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.DiscordUser;
 import com.trievosoftware.application.domain.PollItems;
 import com.trievosoftware.application.exceptions.NoPollsFoundException;
@@ -213,12 +214,12 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public Poll createPoll(Long guildId, Long userId, String title, Instant finishTime)
+    public Poll createPoll(DiscordGuild discordGuild, Long userId, String title, Instant finishTime)
     {
-        log.debug("Request to create new Poll={} for Guild={}", title, guildId);
-        Poll poll = new Poll(guildId, userId, title, finishTime);
+        log.debug("Request to create new Poll={} for Guild={}", title, discordGuild.getGuildName());
+        Poll poll = new Poll(discordGuild, userId, title, finishTime);
         save(poll);
-        log.debug("Poll={} created for Guild={}", title, guildId);
+        log.debug("Poll={} created for Guild={}", title, discordGuild.getGuildName());
         return poll;
     }
 
@@ -473,11 +474,6 @@ public class PollServiceImpl implements PollService {
         builder.setEmbed(embedBuilder.build());
 
         Message message = textChannel.sendMessage(builder.build()).complete();
-
-//        for ( int x = 0; x < i; x++ )
-//        {
-//            message.addReaction(Constants.NUMBERS[x]).submit();
-//        }
 
         poll.setMessageId(message.getIdLong());
         poll.setTextChannelId(textChannel.getIdLong());

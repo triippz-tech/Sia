@@ -1,5 +1,6 @@
 package com.trievosoftware.application.service;
 
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.domain.GiveAway;
 import com.trievosoftware.application.domain.GuildSettings;
 import com.trievosoftware.discord.Sia;
@@ -57,11 +58,11 @@ public interface GiveAwayService {
      */
     void delete(Long id);
 
-    List<GiveAway> findAllByGuildsettingsAndExpired(GuildSettings guildSettings, Boolean isExpired);
+    List<GiveAway> findAllByDiscordGuildAndExpired(DiscordGuild discordGuild, Boolean isExpired);
 
-    GiveAway getGiveAway(GuildSettings guildSettings, Long messageId);
+    GiveAway getGiveAway(DiscordGuild discordGuild, Long messageId);
 
-    GiveAway createGiveAway(String name, String message, Instant finish, GuildSettings guildSettings);
+    GiveAway createGiveAway(String name, String message, Instant finish, DiscordGuild discordGuild);
 
     void enterVote(Sia sia, GiveAway giveAway, User user);
 

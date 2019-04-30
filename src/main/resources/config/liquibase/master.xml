@@ -25,6 +25,7 @@
     <include file="config/liquibase/changelog/20190403160322_added_entity_CustomCommand.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190410175650_added_entity_GuildEvent.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190415184230_added_entity_GiveAway.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190423152118_added_entity_DiscordGuild.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20190311195325_added_entity_constraints_GuildMusicSettings.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190311195327_added_entity_constraints_Songs.xml" relativeToChangelogFile="false"/>
@@ -34,5 +35,11 @@
     <include file="config/liquibase/changelog/20190403160322_added_entity_constraints_CustomCommand.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190410175650_added_entity_constraints_GuildEvent.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190415184230_added_entity_constraints_GiveAway.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190423152118_added_entity_constraints_DiscordGuild.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190306005221_added_entity_constraints_Ignored.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190306165728_added_entity_constraints_Actions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190306200753_added_entity_constraints_Strikes.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190306202748_added_entity_constraints_TempMutes.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190306222130_added_entity_constraints_TempBans.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

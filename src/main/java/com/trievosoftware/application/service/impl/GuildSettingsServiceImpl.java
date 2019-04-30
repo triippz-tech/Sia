@@ -1,6 +1,7 @@
 package com.trievosoftware.application.service.impl;
 
 import com.jagrosh.jdautilities.command.GuildSettingsManager;
+import com.trievosoftware.application.domain.DiscordGuild;
 import com.trievosoftware.application.exceptions.SetPrefixException;
 import com.trievosoftware.application.service.GuildSettingsService;
 import com.trievosoftware.application.domain.GuildSettings;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -117,10 +119,64 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
         } else {
             log.info("No settings found for Guild={}, creating new. . .", guild.getName());
             GuildSettings settings = new GuildSettings();
-            settings.setDefaults(guild.getIdLong());
+            settings.setDefaults(guild);
             save(settings);
             cache.put(guild.getIdLong(), settings);
             return settings;
+        }
+    }
+
+    @Override
+    public GuildSettings guildSettings(DiscordGuild discordGuild, Guild guild)
+    {
+        GuildSettings guildSettings = getSettings(guild);
+        Objects.requireNonNull(guildSettings).setDiscordGuild(discordGuild);
+        save(guildSettings);
+        return guildSettings;
+    }
+
+    @Override
+    public GuildSettings getGuildSettings(DiscordGuild discordGuild)
+    {
+        log.info("Request to get settings for Guild={}", discordGuild.getGuildName());
+        if(cache.contains(discordGuild.getGuildId()))
+            return cache.get(discordGuild.getGuildId());
+        Optional<GuildSettings> tempSettings = findByGuildId(discordGuild.getGuildId());
+        if ( tempSettings.isPresent() )
+        {
+            log.info("Settings found for Guild={}", discordGuild.getGuildName());
+            cache.put(discordGuild.getGuildId(), tempSettings.get());
+            return tempSettings.get();
+        } else {
+            log.info("No settings found for Guild={}, creating new. . .", discordGuild.getGuildName());
+            GuildSettings settings = new GuildSettings();
+            settings.setDefaults(discordGuild);
+            save(settings);
+            cache.put(discordGuild.getGuildId(), settings);
+            return settings;
+
+        }
+    }
+
+    @Override
+    public void setDefaultSettings(DiscordGuild discordGuild)
+    {
+        log.debug("Request to set default settings for new guild={}", discordGuild.getGuildName());
+        if(cache.contains(discordGuild.getGuildId()))
+            return;
+        Optional<GuildSettings> tempSettings = findByGuildId(discordGuild.getGuildId());
+        if ( tempSettings.isPresent() )
+        {
+            log.info("Settings found for Guild={}", discordGuild.getGuildName());
+            cache.put(discordGuild.getGuildId(), tempSettings.get());
+            return;
+        } else {
+            log.info("No settings found for Guild={}, creating new. . .", discordGuild.getGuildName());
+            GuildSettings settings = new GuildSettings();
+            settings.setDefaults(discordGuild);
+            save(settings);
+            cache.put(discordGuild.getGuildId(), settings);
+            return;
 
         }
     }
@@ -144,10 +200,10 @@ public class GuildSettingsServiceImpl implements GuildSettingsService, GuildSett
     }
 
     @Override
-    public MessageEmbed.Field getSettingsDisplay(Guild guild)
+    public MessageEmbed.Field getSettingsDisplay(DiscordGuild discordGuild, Guild guild)
     {
         log.debug("Request to get Settings Display Message for Guild={}", guild.getName());
-        GuildSettings settings = getSettings(guild);
+        GuildSettings settings = getGuildSettings(discordGuild);
         TextChannel modlog = settings.getModLogChannel(guild);
         TextChannel serverlog = settings.getServerLogChannel(guild);
         TextChannel messagelog = settings.getMessageLogChannel(guild);

@@ -38,7 +38,8 @@ public class AvatarlogCmd extends LogCommand
     @Override
     protected void showCurrentChannel(CommandEvent event)
     {
-        TextChannel tc = sia.getServiceManagers().getGuildSettingsService().getSettings(event.getGuild()).getAvatarLogChannel(event.getGuild());
+        TextChannel tc = sia.getServiceManagers().getDiscordGuildService().getDiscordGuild(event.getGuild())
+            .getGuildSettings().getAvatarLogChannel(event.getGuild());
         if(tc==null)
             event.replyWarning("Avatar Logs are not currently enabled on the server. Please include a channel name.");
         else
